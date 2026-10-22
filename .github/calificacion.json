@@ -1,0 +1,53 @@
+{
+  "curso": "🔧 Llave Maestra · Taller Full Stack · Módulo 3",
+  "fechaLimite": "2026-11-15T23:59:00-05:00",
+  "patronTest": "^\\s*(it\\(|@Test\\b)",
+  "entregables": [
+    "api/src/main/",
+    "web/src/app/",
+    "web/src/styles.css",
+    "web/src/index.html",
+    "web/public/",
+    "PRUEBAS.md",
+    "BITACORA-IA.md"
+  ],
+  "protegidos": [
+    ".github/",
+    "scripts/",
+    "fases/",
+    "package.json",
+    "api/pom.xml",
+    "api/mvnw",
+    "api/mvnw.cmd",
+    "api/.mvn/",
+    "api/src/test/",
+    "web/src/pruebas/",
+    "web/package.json",
+    "web/package-lock.json",
+    "web/angular.json",
+    "web/tsconfig.json",
+    "web/tsconfig.app.json",
+    "web/tsconfig.spec.json"
+  ],
+  "ejercicios": [
+    { "id": "1.1", "titulo": "Backend · Login y token", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase1/Fase1LoginTest.java" },
+    { "id": "1.2", "titulo": "Backend · Catálogo", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase1/Fase1HerramientasTest.java" },
+    { "id": "1.3", "titulo": "Backend · Retirar herramientas", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase1/Fase1PermisosHerramientasTest.java" },
+    { "id": "1.4", "titulo": "Backend · Clientes y bloqueo", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase1/Fase1ClientesTest.java" },
+    { "id": "1.5", "titulo": "Angular · Sesión", "test": "web/src/pruebas/fase1/05-sesion.spec.ts" },
+    { "id": "1.6", "titulo": "Angular · Interceptor y guards", "test": "web/src/pruebas/fase1/06-guards-interceptor.spec.ts" },
+    { "id": "1.7", "titulo": "Angular · *appSiPuede", "test": "web/src/pruebas/fase1/07-si-puede.spec.ts" },
+    { "id": "1.8", "titulo": "Angular · Herramientas", "test": "web/src/pruebas/fase1/08-herramientas.spec.ts" },
+    { "id": "1.9", "titulo": "Angular · Clientes y menú", "test": "web/src/pruebas/fase1/09-clientes-menu.spec.ts" },
+    { "id": "1.10", "titulo": "Estructura de la Fase 1", "test": "web/src/pruebas/fase1/10-estructura.test.mjs" },
+    { "id": "2.1", "titulo": "Backend · Crear alquiler", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase2/Fase2CrearAlquilerTest.java" },
+    { "id": "2.2", "titulo": "Backend · Reglas de fechas", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase2/Fase2ReglasFechasTest.java" },
+    { "id": "2.3", "titulo": "Backend · Disponibilidad", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase2/Fase2DisponibilidadTest.java" },
+    { "id": "2.4", "titulo": "Backend · Mis alquileres y cancelar", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase2/Fase2MisAlquileresTest.java" },
+    { "id": "2.5", "titulo": "Angular · Validaciones", "test": "web/src/pruebas/fase2/05-validaciones.spec.ts" },
+    { "id": "2.6", "titulo": "Angular · Errores y servicio", "test": "web/src/pruebas/fase2/06-alquileres-service.spec.ts" },
+    { "id": "2.7", "titulo": "Angular · Página Alquilar", "test": "web/src/pruebas/fase2/07-alquilar.spec.ts" },
+    { "id": "2.8", "titulo": "Angular · Mis alquileres", "test": "web/src/pruebas/fase2/08-mis-alquileres.spec.ts" },
+    { "id": "2.9", "titulo": "Estructura y PRUEBAS.md", "test": "web/src/pruebas/fase2/09-estructura.test.mjs" }
+  ]
+}

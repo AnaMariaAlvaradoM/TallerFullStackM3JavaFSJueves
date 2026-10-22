@@ -1,0 +1,9 @@
+{
+  "name": "taller-fullstack-m3-jueves",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Llave Maestra · Taller Full Stack del Módulo 3 · Java Full Stack Developer · Dev Senior Code · jueves",
+  "scripts": {
+    "calificar": "node scripts/calificar.js"
+  }
+}
