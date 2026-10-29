@@ -11,8 +11,8 @@ public enum Rol {
             ALQUILERES_VER_TODOS,
             ALQUILERES_GESTIONAR,
             CLIENTES_GESTIONAR,
-            REPORTES_VER,
-            ALQUILERES_CANCELAR_TODAS
+            REPORTES_VER
+            
     )),
     CLIENTE(Set.of(
             HERRAMIENTAS_VER,
