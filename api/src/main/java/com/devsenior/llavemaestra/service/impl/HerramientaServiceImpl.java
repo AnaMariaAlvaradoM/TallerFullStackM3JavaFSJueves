@@ -26,7 +26,7 @@ public class HerramientaServiceImpl implements HerramientaService {
 
     @Override
     public List<HerramientaResponse> listar(Authentication authentication) {
-        List<Herramienta> herramientas = Permiso.ALQUILERES_GESTIONAR.estaEn(authentication)
+        List<Herramienta> herramientas = Permiso.HERRAMIENTAS_GESTIONAR.estaEn(authentication)
                 ? herramientaRepository.findAllByOrderByNombreAsc()
                 :herramientaRepository.findByActivaTrueOrderByNombreAsc();
         return herramientas.stream().map(this::toResponse).toList();

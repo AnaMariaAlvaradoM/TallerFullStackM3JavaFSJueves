@@ -12,6 +12,7 @@ public class Herramienta {
     @Column(nullable = false, unique = true, length = 80)
     private String nombre;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Categoria categoria;
 
@@ -29,7 +30,7 @@ public class Herramienta {
     @Column(nullable = false)
     private Integer unidades;
     @Column(nullable = false)
-    private boolean activa = true;
+    private boolean activa = false;
 
     public Long getId() {
         return id;

@@ -46,7 +46,7 @@ public class DataInitializer implements CommandLineRunner {
         // Herramientas en el inventario
         Herramienta taladroPercutor = herramienta("Taladro percutor",Categoria.ELECTRICA,25000,100000,3,"Perfora y cincela superficies resistentes.","https://loremflickr.com/320/240/hammer,drill",true);
         Herramienta pulidoraAngular = herramienta("Pulidora angular",Categoria.ELECTRICA,22000,80000,2,"Corta, desbasta y pule materiales.","https://loremflickr.com/320/240/Angle,Grinder",true);
-        Herramienta mezcladoraDeConcreto = herramienta("Mezcladora de concreto",Categoria.CONSTRUCCION,60000,30000,1,"Mezcla concreto y mortero uniformemente.","https://loremflickr.com/320/240/Concrete,Mixer",true);
+        Herramienta mezcladoraDeConcreto = herramienta("Mezcladora de concreto",Categoria.CONSTRUCCION,60000,300000,1,"Mezcla concreto y mortero uniformemente.","https://loremflickr.com/320/240/Concrete,Mixer",true);
         Herramienta andamioTubular = herramienta("Andamio tubular",Categoria.CONSTRUCCION,15000,120000,4,"Estructura para trabajo seguro en altura.","https://loremflickr.com/320/240/Tubular,Scaffolding",true);
         Herramienta guadanadora = herramienta("Guadañadora",Categoria.JARDIN,35000,150000,2,"Corta maleza y césped en exteriores.","https://loremflickr.com/320/240/Brush,Cutter",true);
         Herramienta nivelLáser = herramienta("Nivel láser",Categoria.MEDICION,30000,200000,1,"Proyecta líneas para nivelación precisa.","https://loremflickr.com/320/240/Laser,Level",false);
