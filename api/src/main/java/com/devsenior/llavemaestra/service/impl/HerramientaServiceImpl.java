@@ -43,10 +43,10 @@ public class HerramientaServiceImpl implements HerramientaService {
     }
 
     @Override
-    public HerramientaResponse cambiarEstado(Long id, boolean activa) {
+    public HerramientaResponse cambiarEstado(Long id, boolean activo) {
 
         Herramienta herramienta = buscarEntidad(id);
-        herramienta.setActivo(activa);
+        herramienta.setActivo(activo);
 
         return toResponse(herramientaRepository.save(herramienta));
     }
