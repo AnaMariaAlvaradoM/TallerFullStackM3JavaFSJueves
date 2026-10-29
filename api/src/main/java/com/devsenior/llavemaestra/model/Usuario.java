@@ -22,7 +22,7 @@ public class Usuario {
     @Column(nullable = false, length = 20)
     private Rol rol;
     @Column(nullable = false)
-    private boolean activo = true;
+    private boolean activa = true;
 
     public Long getId() {
         return id;
@@ -59,11 +59,11 @@ public class Usuario {
         this.rol = rol;
     }
 
-    public boolean isActivo() {
-        return activo;
+    public boolean isActiva() {
+        return activa;
     }
-    public void setActivo(boolean activo) {
-        this.activo = activo;
+    public void setActiva(boolean activa) {
+        this.activa = activa;
     }
 
     public LocalDateTime getCreadoEn() {

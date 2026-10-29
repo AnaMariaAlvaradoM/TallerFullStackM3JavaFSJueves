@@ -13,7 +13,7 @@ class Fase1PermisosHerramientasTest extends PruebaApi {
         long id = idHerramienta("Taladro percutor");
         Respuesta r = patch("/api/herramientas/" + id + "/estado", token(PEDRO), "{\"activa\":false}");
         assertEquals(403, r.estado(), "Pedro no tiene HERRAMIENTAS_GESTIONAR: debería recibir 403 (¿usaste @PreAuthorize(\"hasAuthority(...)\")?)");
-        assertTrue(herramienta("Taladro percutor").path("activa").asBoolean(), "El taladro debería seguir activo después del intento de Pedro");
+        assertTrue(herramienta("Taladro percutor").path("activa").asBoolean(), "El taladro debería seguir activa después del intento de Pedro");
     }
 
     @Test

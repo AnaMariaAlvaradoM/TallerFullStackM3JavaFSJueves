@@ -9,7 +9,7 @@ public record UsuarioResponse(
         String nombre,
         String email,
         Rol rol,
-        boolean activo,
+        boolean activa,
         LocalDateTime creadoEn
 ) {
 }
