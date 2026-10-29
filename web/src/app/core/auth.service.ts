@@ -27,7 +27,7 @@ interface ContenidoToken{
 }
 
 // nombre de la llave con la que se guardan las token en locarStorage.
-const CLAVE_TOKEN = 'llaveMaestra_token'
+const llave_token = 'llave_token'
 
 
 function leerToken(token:string): ContenidoToken | null{
@@ -56,7 +56,7 @@ export class AuthService {
     private router = inject(Router);
 
     // Al recargar la página, la sesión sigue gracias a localStorage
-    private tokenSignal = signal<string | null>(localStorage.getItem(CLAVE_TOKEN));
+    private tokenSignal = signal<string | null>(localStorage.getItem(llave_token));
     private errorSignal = signal<string | null>(null);
     private cargandoSignal = signal(false);
 
@@ -92,8 +92,8 @@ export class AuthService {
         this.http.post<RespuestaAuth>(`${API_URL}/auth/login`, credenciales).subscribe({
             next: (respuesta) => {
                 this.tokenSignal.set(respuesta.token);
-                localStorage.setItem(CLAVE_TOKEN, respuesta.token);
-                this.cargandoSignal.set(false);
+                localStorage.setItem(llave_token, respuesta.token);
+                this.cargandoSignal.set(true);
                 this.router.navigateByUrl('/espacios');
             },
             error: (error: HttpErrorResponse) => {
@@ -105,7 +105,7 @@ export class AuthService {
 
     cerrarSesion(){
         this.tokenSignal.set(null);
-        localStorage.removeItem(CLAVE_TOKEN);
+        localStorage.removeItem(llave_token);
         this.router.navigateByUrl('/login');
     }
 }

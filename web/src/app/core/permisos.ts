@@ -13,7 +13,7 @@ export type Permiso =
 
 export const NOMBRE_ROL: Record<Rol, string> ={
     ADMIN: 'Administración',
-    USER: "Cliente"
+    USER: 'Cliente'
 };
 
 export const DESCRIPCION_PERMISO:Record<Permiso,string>={

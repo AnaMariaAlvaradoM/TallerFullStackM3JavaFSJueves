@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import {Rol} from '../core/permisos';
+import { mensajeDeError } from '../core/errores';
 
 export interface Usuario {
     id: number;
@@ -26,6 +27,7 @@ export class UsuariosService {
     cargando = this.cargandoSignal.asReadonly();
     error = this.errorSignal.asReadonly();
 
+    //Carga los usuario: Puede cargaar todos los usuario o solo los que esten activos
     cargar(){
         this.cargandoSignal.set(true);
         this.errorSignal.set(null);
@@ -35,15 +37,27 @@ export class UsuariosService {
                 this.lista.set(datos);
                 this.cargandoSignal.set(false);
             },
-            error: () => {
-                this.errorSignal.set(
-                    'No se pudo establecer conexión con el servidor de LlaveMaestra. Verifica que el backend este corriendo en el puerto 8080.'
-                );
+            error: (error: HttpErrorResponse) => {
+                this.errorSignal.set(mensajeDeError(error));
                 this.cargandoSignal.set(false);
             }
         });
     }
-    
+
+    // Permite cambiar el esta de una cuenta, si esta activa o no
+    cambiarEstado(usuario: Usuario, activo: boolean){
+        this.errorSignal.set(null);
+
+        this.http.patch<Usuario>(`${this.apiUrl}/${usuario.id}/estado`,{activo}).subscribe({
+            next: (actualizado) => {
+                this.lista.update(actuales =>
+                    actuales.map(u => (u.id === actualizado.id ? actualizado:u))
+                );
+            },
+            error: (error:HttpErrorResponse)=> this.errorSignal.set(mensajeDeError(error))
+        });
+    }
+
 
    
 }
