@@ -30,7 +30,7 @@ public class Herramienta {
     @Column(nullable = false)
     private Integer unidades;
     @Column(nullable = false)
-    private boolean activo = false;
+    private boolean activo = true;
 
     public Long getId() {
         return id;
