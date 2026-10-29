@@ -26,8 +26,8 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(request));
     }
 
-    @PostMapping("/registro")
-    public ResponseEntity<AuthResponse> registro(@Valid@RequestBody RegistroRequest request){
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.registrar(request));
-    }
+//    @PostMapping("/registro")
+//    public ResponseEntity<AuthResponse> registro(@Valid@RequestBody RegistroRequest request){
+//        return ResponseEntity.status(HttpStatus.CREATED).body(authService.registrar(request));
+//    }
 }

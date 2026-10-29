@@ -3,7 +3,7 @@ package com.devsenior.llavemaestra.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Herramientas")
+@Table(name = "herramientas")
 public class Herramienta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
