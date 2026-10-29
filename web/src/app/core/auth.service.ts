@@ -21,12 +21,14 @@ interface ContenidoToken{
     sub: string;               //Identificador del usuario
     nombre: string;
     rol: Rol;
+    // arreglo de permisos
     permisos: Permiso[];
     exp: number; //expiración, en segundos
 }
 
 // nombre de la llave con la que se guardan las token en locarStorage.
 const CLAVE_TOKEN = 'llaveMaestra_token'
+
 
 function leerToken(token:string): ContenidoToken | null{
     try{
@@ -53,6 +55,7 @@ export class AuthService {
     private http = inject(HttpClient);
     private router = inject(Router);
 
+    // Al recargar la página, la sesión sigue gracias a localStorage
     private tokenSignal = signal<string | null>(localStorage.getItem(CLAVE_TOKEN));
     private errorSignal = signal<string | null>(null);
     private cargandoSignal = signal(false);
@@ -67,6 +70,7 @@ export class AuthService {
         return contenido != null && contenido.exp * 1000 > Date.now();
     });
 
+    //Esto es lo que la app puede leer: nombre, email, rol  y permiso, mas los computed readOnly del  estado.
     nombre = computed(() => (this.sesionActiva()?this.contenido()!.nombre : ''));
     email = computed(() => (this.sesionActiva()?this.contenido()!.sub : ''));
     rol = computed(() => (this.sesionActiva()?this.contenido()!.rol : ''));
@@ -76,6 +80,7 @@ export class AuthService {
     error = this.errorSignal.asReadonly();
     cargando = this.cargandoSignal.asReadonly();
 
+    // Esta es la que decide que puede hacer cada usuario y determina que se muestra en pantall 
     puede(permiso: Permiso): boolean {
         return this.permisos().includes(permiso);
       }
