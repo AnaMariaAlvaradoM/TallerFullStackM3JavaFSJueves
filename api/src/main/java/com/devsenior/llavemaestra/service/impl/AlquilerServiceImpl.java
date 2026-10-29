@@ -50,7 +50,7 @@ public class AlquilerServiceImpl implements AlquilerService {
         Herramienta herramienta = herramientaRepository.findById(request.herramientaId())
                 .orElseThrow(()->new RecursoNoEncontradoException(
                         "No existe una herramienta con id " + request.herramientaId()));
-        if (!herramienta.isActiva()){
+        if (!herramienta.isActivo()){
             throw  new ReglaNegocioException(herramienta.getNombre() + "no esta disponible para alquilar");
         }
 //        validarFecha(request.fecha(), request.fechaInicio(),request.fechaFin());

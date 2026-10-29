@@ -2,7 +2,6 @@ package com.devsenior.llavemaestra.service.impl;
 
 import com.devsenior.llavemaestra.dto.HerramientaResponse;
 import com.devsenior.llavemaestra.exception.RecursoNoEncontradoException;
-import com.devsenior.llavemaestra.model.Alquiler;
 import com.devsenior.llavemaestra.model.Herramienta;
 import com.devsenior.llavemaestra.model.Permiso;
 import com.devsenior.llavemaestra.repository.AlquilerRepository;
@@ -28,7 +27,7 @@ public class HerramientaServiceImpl implements HerramientaService {
     public List<HerramientaResponse> listar(Authentication authentication) {
         List<Herramienta> herramientas = Permiso.HERRAMIENTAS_GESTIONAR.estaEn(authentication)
                 ? herramientaRepository.findAllByOrderByNombreAsc()
-                :herramientaRepository.findByActivaTrueOrderByNombreAsc();
+                :herramientaRepository.findByActivoTrueOrderByNombreAsc();
         return herramientas.stream().map(this::toResponse).toList();
     }
 
@@ -36,7 +35,7 @@ public class HerramientaServiceImpl implements HerramientaService {
     public HerramientaResponse buscarPorId(Long id, Authentication authentication) {
         Herramienta herramienta = buscarEntidad(id);
 
-        if (!herramienta.isActiva() &&!Permiso.HERRAMIENTAS_GESTIONAR.estaEn(authentication)){
+        if (!herramienta.isActivo() &&!Permiso.HERRAMIENTAS_GESTIONAR.estaEn(authentication)){
             throw new RecursoNoEncontradoException("No existe una herramienta con id " + id);
         }
 
@@ -47,7 +46,7 @@ public class HerramientaServiceImpl implements HerramientaService {
     public HerramientaResponse cambiarEstado(Long id, boolean activa) {
 
         Herramienta herramienta = buscarEntidad(id);
-        herramienta.setActiva(activa);
+        herramienta.setActivo(activa);
 
         return toResponse(herramientaRepository.save(herramienta));
     }
@@ -66,7 +65,7 @@ public class HerramientaServiceImpl implements HerramientaService {
                 herramienta.getDescripcion(),
                 herramienta.getImagenUrl(),
                 herramienta.getUnidades(),
-                herramienta.isActiva()
+                herramienta.isActivo()
 
         );
     }

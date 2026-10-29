@@ -8,7 +8,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -184,7 +183,7 @@ public class DataInitializer implements CommandLineRunner {
         herramienta.setUnidades(unidades);
         herramienta.setDescripcion(descripcion);
         herramienta.setImagenUrl(imagenUrl);
-        herramienta.setActiva(activa);
+        herramienta.setActivo(activa);
         return  herramientaRepository.save(herramienta);
     }
 
