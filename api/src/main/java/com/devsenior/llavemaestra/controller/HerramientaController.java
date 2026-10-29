@@ -37,7 +37,7 @@ public class HerramientaController {
     @PreAuthorize("hasAuthority('HERRAMIENTAS_GESTIONAR')")
     @PatchMapping("/{id}/estado")
     public ResponseEntity<HerramientaResponse> cambiarEstado(@PathVariable Long id, @Valid @RequestBody EstadoRequest request){
-        return ResponseEntity.ok(herramientaService.cambiarEstado(id,request.activo()));
+        return ResponseEntity.ok(herramientaService.cambiarEstado(id,request.activa()));
     }
 
 }

@@ -11,7 +11,7 @@ public record HerramientaResponse(
         String descripcion,
         String imagenUrl,
         int unidades,
-        boolean activo
+        boolean activa
 
 
 ) {

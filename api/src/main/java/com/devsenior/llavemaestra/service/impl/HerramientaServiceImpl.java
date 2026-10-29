@@ -27,7 +27,7 @@ public class HerramientaServiceImpl implements HerramientaService {
     public List<HerramientaResponse> listar(Authentication authentication) {
         List<Herramienta> herramientas = Permiso.HERRAMIENTAS_GESTIONAR.estaEn(authentication)
                 ? herramientaRepository.findAllByOrderByNombreAsc()
-                :herramientaRepository.findByActivoTrueOrderByNombreAsc();
+                :herramientaRepository.findByActivaTrueOrderByNombreAsc();
         return herramientas.stream().map(this::toResponse).toList();
     }
 
@@ -35,7 +35,7 @@ public class HerramientaServiceImpl implements HerramientaService {
     public HerramientaResponse buscarPorId(Long id, Authentication authentication) {
         Herramienta herramienta = buscarEntidad(id);
 
-        if (!herramienta.isActivo() &&!Permiso.HERRAMIENTAS_GESTIONAR.estaEn(authentication)){
+        if (!herramienta.isActiva() &&!Permiso.HERRAMIENTAS_GESTIONAR.estaEn(authentication)){
             throw new RecursoNoEncontradoException("No existe una herramienta con id " + id);
         }
 
@@ -43,10 +43,10 @@ public class HerramientaServiceImpl implements HerramientaService {
     }
 
     @Override
-    public HerramientaResponse cambiarEstado(Long id, boolean activo) {
+    public HerramientaResponse cambiarEstado(Long id, boolean activa) {
 
         Herramienta herramienta = buscarEntidad(id);
-        herramienta.setActivo(activo);
+        herramienta.setActiva(activa);
 
         return toResponse(herramientaRepository.save(herramienta));
     }
@@ -65,7 +65,7 @@ public class HerramientaServiceImpl implements HerramientaService {
                 herramienta.getDescripcion(),
                 herramienta.getImagenUrl(),
                 herramienta.getUnidades(),
-                herramienta.isActivo()
+                herramienta.isActiva()
 
         );
     }

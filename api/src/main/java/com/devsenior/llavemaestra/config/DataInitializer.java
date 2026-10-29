@@ -183,7 +183,7 @@ public class DataInitializer implements CommandLineRunner {
         herramienta.setUnidades(unidades);
         herramienta.setDescripcion(descripcion);
         herramienta.setImagenUrl(imagenUrl);
-        herramienta.setActivo(activa);
+        herramienta.setActiva(activa);
         return  herramientaRepository.save(herramienta);
     }
 

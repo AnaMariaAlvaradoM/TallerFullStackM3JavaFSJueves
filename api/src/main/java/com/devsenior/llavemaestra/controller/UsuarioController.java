@@ -29,6 +29,6 @@ public class UsuarioController {
     @PatchMapping("/{id}/estado")
     public ResponseEntity<UsuarioResponse> cambiarEstado(@PathVariable Long id, @Valid @RequestBody EstadoRequest request,
                                                          Authentication autentication){
-        return  ResponseEntity.ok(usuarioService.cambiarEstado(id, request.activo(), autentication.getName()));
+        return  ResponseEntity.ok(usuarioService.cambiarEstado(id, request.activa(), autentication.getName()));
     }
 }

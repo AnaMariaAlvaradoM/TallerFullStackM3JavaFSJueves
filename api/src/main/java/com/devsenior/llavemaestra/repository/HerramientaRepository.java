@@ -9,9 +9,9 @@ import java.util.List;
 public interface HerramientaRepository extends JpaRepository<Herramienta,Long> {
 
     List<Herramienta> findAllByOrderByNombreAsc();
-    List<Herramienta> findByActivoTrueOrderByNombreAsc();
+    List<Herramienta> findByActivaTrueOrderByNombreAsc();
     boolean existsByNombreIgnoreCase(String nombre);
     boolean existsByNombreIgnoreCaseAndIdNot(String nombre, Long id);
-    long countByActivoTrue();
+    long countByActivaTrue();
 
 }

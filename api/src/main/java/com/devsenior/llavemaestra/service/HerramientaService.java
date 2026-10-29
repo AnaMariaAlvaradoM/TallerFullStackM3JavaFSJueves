@@ -8,6 +8,6 @@ import java.util.List;
 public interface HerramientaService {
 List<HerramientaResponse>listar(Authentication authentication);
 HerramientaResponse buscarPorId(Long id, Authentication authentication);
-HerramientaResponse cambiarEstado(Long id, boolean activo);
+HerramientaResponse cambiarEstado(Long id, boolean activa);
 
 }
