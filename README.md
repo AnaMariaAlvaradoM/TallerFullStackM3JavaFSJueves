@@ -37,7 +37,7 @@ Cada vez que haces `git push`, GitHub corre las **pruebas automáticas** del tal
 |---|---|---|---|---|
 | 1 | Jue 22 oct | Base y control de acceso | [`fases/FASE-1.md`](fases/FASE-1.md) | Mié 28 oct · 11:59 p. m. |
 | 2 | Jue 22 oct | Alquilar con reglas | [`fases/FASE-2.md`](fases/FASE-2.md) | Mié 4 nov · 11:59 p. m. |
-| 3 | Jue 29 oct | La vista del negocio + revisión entre pares | Se publica después de la Clase 3 | Dom 8 nov |
+| 3 | Jue 29 oct | La vista del negocio + revisión entre pares | [`fases/FASE-3.md`](fases/FASE-3.md) | Dom 8 nov · 11:59 p. m. |
 | 4 | Jue 5 nov | Calidad, refactor y entrega | Se publica después de la Clase 4 | **Dom 15 nov** |
 
 Todas las fases se trabajan **en este mismo repo** y se entregan en **el mismo Pull Request**.
