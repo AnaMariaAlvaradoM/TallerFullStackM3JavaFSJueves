@@ -1,0 +1,54 @@
+<header class="encabezado-pagina">
+    <div>
+        <h1 class="titulo-pagina"> Herramientas</h1>
+        @if (gestiona()) {
+            <p class="subtitulo"> Catálogo · {{herramientas().length}} herramientas, {{inactivos()}} {{inactivos() ==1?'inactivo': 'inactivos'}}</p>>
+        }@else {
+            <p class="subtitulo">Elige la herramienta que necesitas</p>
+        }
+    </div>
+</header>
+
+@if (error()) {
+    <p class="alerta alerta-error" role="alert">{{ error() }}</p>
+}
+
+@if (cargando()) {
+  <div class="grilla">
+    <div class="esqueleto tarjeta-esqueleto"></div>
+    <div class="esqueleto tarjeta-esqueleto"></div>
+    <div class="esqueleto tarjeta-esqueleto"></div>
+  </div>
+} @else{
+    <div class="grilla">
+        @for (e of herramientasFiltradas(); track e.id) {
+            <article class="espacio tarjeta" [class.inactivo]="!e.activa">
+                <div class="foto">
+                    @if (e.imagenUrl) {
+                        <img [src]="e.imagenUrl" [alt]="'Foto de '+ e.nombre" loading="lazy">
+                    }
+                    <span class="chip chip-naranja categoria">{{nombreCategoria[e.categoria]}} </span>
+                    @if (!e.activa) {
+                        <span class="chi chip-neutro estado">inactivo</span>
+                    }
+                </div>
+                <div class="cuerpo">
+                    <h2 class="nombre">{{e.nombre}}</h2>
+                    <p class="descripcion"> {{e.decripcion}}</p>
+
+                    <dl class="datos">
+                        <div>
+                            <dt>Por día</dt>
+                            <dd>{{pesos( e.preciaDia)}}</dd>
+                        </div>
+                    </dl>
+
+                    
+
+                </div>
+            </article>
+        }
+    </div>
+    
+}
+

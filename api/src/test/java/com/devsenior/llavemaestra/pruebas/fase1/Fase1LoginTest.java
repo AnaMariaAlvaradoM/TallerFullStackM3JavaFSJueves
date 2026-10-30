@@ -68,7 +68,7 @@ class Fase1LoginTest extends PruebaApi {
     @Test
     void unaCuentaBloqueadaNoPuedeEntrar() {
         Respuesta r = login(JORGE, CLAVE);
-        assertEquals(401, r.estado(), "Jorge está bloqueado (activo = false): su login debería responder 401");
+        assertEquals(401, r.estado(), "Jorge está bloqueado (activa = false): su login debería responder 401");
         tieneMensaje(r, "Cuenta bloqueada");
     }
 }

@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class Fase1ClientesTest extends PruebaApi {
 
     private Respuesta cambiarEstado(String token, long id, boolean activo) {
-        return patch("/api/usuarios/" + id + "/estado", token, "{\"activo\":" + activo + "}");
+        return patch("/api/usuarios/" + id + "/estado", token, "{\"activa\":" + activo + "}");
     }
 
     @Test
@@ -47,7 +47,7 @@ class Fase1ClientesTest extends PruebaApi {
         try {
             Respuesta r = cambiarEstado(admin, diana, false);
             assertEquals(200, r.estado(), "El administrador debería poder bloquear a Diana (200)");
-            assertFalse(r.json().path("activo").asBoolean(), "La respuesta debería traer la cuenta con activo = false");
+            assertFalse(r.json().path("activa").asBoolean(), "La respuesta debería traer la cuenta con activa = false");
             assertEquals(401, login(DIANA, CLAVE).estado(), "Diana bloqueada no debería poder iniciar sesión (401)");
         } finally {
             assertEquals(200, cambiarEstado(admin, diana, true).estado(), "El administrador debería poder desbloquear a Diana (200)");
