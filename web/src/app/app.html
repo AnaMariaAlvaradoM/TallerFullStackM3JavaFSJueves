@@ -1,6 +1,54 @@
+@if (authservice.sesionActiva()) {
+  <div class="app">
+    <aside class="lateral">
+      <a routerLink="/herramientas" class="marca">
+        <img src="favicon.svg" alt="" with="36" height="36">
+        <span>LLave <small>Maestra</small></span>
+      </a>
+      <nav class="menu" aria-label="Menu principal">
+        @for (enlace of enlaces(); track enlace.ruta) {
+          <a [routerLink]="enlace.ruta" routerLinkActive="activo" class="menu-enlace">
+            {{ enlace.texto }} 
+          </a>
+        }
+      </nav>
+
+      <details class="acceso">
+        <summary>Tu acceso</summary>
+        <ul>
+          @for (permiso of authservice.permisos(); track permiso) {
+            <li> {{descripcionPermiso[permiso]}}</li>
+          }
+        </ul>
+      </details>
+    </aside>
+
+    <div class="principal">
+      <header class="barra">
+      <p class="saludo">
+        Hola, <strong> {{authservice.nombre()}}</strong>
+        <span class="chip"[class.chip-naranja]="authservice.rol()== 'ADMIN'"
+          [class.chip-miel]="authservice.rol() === 'USER'">{{ nombreRol() }}</span>
+      </p>
+
+      <button type="button" class="btn btn-secundario btn-sm" (click)="authservice.cerrarSesion()">
+        Cerrar sesion
+      </button>
+    </header>
+
+    <main class="contenido">
+      <router-outlet/>
+    </main>
+    </div>
+
+  </div>
+}@else {
+  <router-outlet/>
+}
+
+
 <main class="bienvenida">
-  <h1 class="titulo-pagina">Llave Maestra</h1>
-  <p class="subtitulo">Taller del Módulo 3 · Abre fases/FASE-1.md para empezar.</p>
+  <router-outlet />
 </main>
 
-<router-outlet />
+

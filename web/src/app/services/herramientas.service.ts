@@ -70,10 +70,10 @@ export class HerramientasService {
     cambiarEstado(herramienta: Herramienta, activa:boolean){
         this.errorsignal.set(null);
 
-        this.http.patch<Herramienta>(`${this.apiUrl}/${herramienta.id}estado`, {activa}).subscribe({
-            next: (actualizada) =>{
+        this.http.patch<Herramienta>(`${this.apiUrl}/${herramienta.id}/estado`, {activa}).subscribe({
+            next: (actualizado) =>{
                 this.lista.update(actuales =>
-                    actuales.map(e => e.id === actualizada.id ? actualizada: e)
+                    actuales.map(e => e.id === actualizado.id ? actualizado: e)
                 );
             },
             error: (error: HttpErrorResponse) => this.errorsignal.set(mensajeDeError(error))

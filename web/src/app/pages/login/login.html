@@ -1,1 +1,32 @@
-<p>login works!</p>
+<main class="login">
+
+    <form class="tarjeta-formulario" (submit)="ingresar($event)">
+        <div class="marca">
+            <img src="favicon.svg" alt="" width="44" height="44">
+            <span>Llave <small>Maestra</small></span>
+        </div>
+
+        <div>
+            <h1 class="titulo-pagina"> Ingresa a tu cuenta </h1>
+            <p class="subtitulo"> Aquí podrás Alquilar las herramientas de construcción para tus proyectos</p>
+        </div>
+
+        @if (error()) {
+            <p class="alerta alerta-error" role="alert">{{error()}}</p>
+        }
+
+        <label class="campo">
+            <span>Email</span>
+            <input name="email" type="email" autocomplete="username" requierd autofocus>    
+        </label>
+
+        <label class="campo">
+            <span>Password</span>
+            <input type="password" name="password" autocomplete="current-password" required>
+        </label>
+
+        <button  type="submit" class="btn btn-primario btn-bloque" [disabled]="cargando()">
+            {{cargando()? 'Ingresando...': 'Ingresar'}}
+        </button>
+    </form>
+</main>

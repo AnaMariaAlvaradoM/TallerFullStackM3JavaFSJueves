@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import {Rol} from '../core/permisos';
 import { mensajeDeError } from '../core/errores';
+import { API_URL } from '../core/api';
 
 export interface Usuario {
     id: number;
@@ -17,7 +18,7 @@ export interface Usuario {
 @Injectable({providedIn: 'root'})
 export class UsuariosService {
     private http = inject(HttpClient);
-    private apiUrl = '${API_URL}/usuarios';
+    private apiUrl = `${API_URL}/usuarios`;
 
     private lista = signal<Usuario[]>([]);
     private cargandoSignal = signal(false);
@@ -33,7 +34,7 @@ export class UsuariosService {
         this.errorSignal.set(null);
 
         this.http.get<Usuario[]>(this.apiUrl).subscribe({
-            next: (datos) =>{
+            next: (datos) => {
                 this.lista.set(datos);
                 this.cargandoSignal.set(false);
             },

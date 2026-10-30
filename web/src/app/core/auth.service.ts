@@ -94,7 +94,7 @@ export class AuthService {
                 this.tokenSignal.set(respuesta.token);
                 localStorage.setItem(llave_token, respuesta.token);
                 this.cargandoSignal.set(true);
-                this.router.navigateByUrl('/espacios');
+                this.router.navigateByUrl('/herramientas');
             },
             error: (error: HttpErrorResponse) => {
                 this.cargandoSignal.set(false);
