@@ -33,5 +33,5 @@ export const routes: Routes = [
     {path:'',pathMatch: 'full', redirectTo: 'herramientas'},
 
     //"**" cualquier otra dirección
-    {path: '**', redirectTo: 'espacios'}
+    {path: '**', redirectTo: 'herramientas'}
 ];

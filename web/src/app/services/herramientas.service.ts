@@ -14,7 +14,7 @@ export interface Herramienta{
     id: number,
     nombre: string,
     categoria: Categoria,
-    preciaDia: number,
+    precioDia: number,
     deposito: number,
     decripcion: string,
     imagenUrl: string,
