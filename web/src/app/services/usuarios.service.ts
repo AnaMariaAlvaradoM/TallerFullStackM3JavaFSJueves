@@ -10,7 +10,7 @@ export interface Usuario {
     email: string;
     password: string;
     rol: Rol;
-    activa: boolean;
+    activo: boolean;
     creadoEn: string;
 }
 
@@ -45,11 +45,11 @@ export class UsuariosService {
         });
     }
 
-    // Permite cambiar el esta de una cuenta, si esta activa o no
-    cambiarEstado(usuario: Usuario, activo: boolean){
+    // Permite cambiar el estado de una cuenta, si esta activa o no
+    cambiarEstado(usuario: Usuario, activa: boolean){
         this.errorSignal.set(null);
 
-        this.http.patch<Usuario>(`${this.apiUrl}/${usuario.id}/estado`,{activo}).subscribe({
+        this.http.patch<Usuario>(`${this.apiUrl}/${usuario.id}/estado`,{activa}).subscribe({
             next: (actualizado) => {
                 this.lista.update(actuales =>
                     actuales.map(u => (u.id === actualizado.id ? actualizado:u))

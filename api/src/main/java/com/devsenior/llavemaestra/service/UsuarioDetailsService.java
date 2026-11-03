@@ -31,7 +31,7 @@ public class UsuarioDetailsService implements UserDetailsService {
         return User.withUsername(usuario.getEmail())
                 .password(usuario.getPassword())
                 .authorities(autoridadesDe(usuario.getRol()))
-                .disabled(!usuario.isActiva())
+                .disabled(!usuario.isActivo())
                 .build();
     }
 

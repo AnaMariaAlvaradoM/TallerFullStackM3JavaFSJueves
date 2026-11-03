@@ -38,6 +38,7 @@
 .espacio {
   display: flex;
   flex-direction: column;
+  gap: var(--espacio-sm);
   overflow: hidden;
   transition: transform var(--transicion);
 }
@@ -67,6 +68,7 @@
 
 .tipo,
 .estado {
+  
   position: absolute;
   top: 12px;
 }

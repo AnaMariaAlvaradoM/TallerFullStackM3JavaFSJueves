@@ -53,7 +53,7 @@ public class UsuarioServiceImpl implements UsuarioService {
            throw new ReglaNegocioException("No puedes desactivar tu propia cuenta");
        }
 
-       usuario.setActiva(activo);
+       usuario.setActivo(activo);
         return toResponse(usuarioRepository.save(usuario));
     }
 
@@ -63,7 +63,7 @@ public class UsuarioServiceImpl implements UsuarioService {
                 usuario.getNombre(),
                 usuario.getEmail(),
                 usuario.getRol(),
-                usuario.isActiva(),
+                usuario.isActivo(),
                 usuario.getCreadoEn()
         );
     }

@@ -43,7 +43,7 @@ public class DataInitializer implements CommandLineRunner {
         Usuario jorgePinzon = usuario("Jorge Pinzón","jorge@correo.com",Rol.CLIENTE,false);
 
         // Herramientas en el inventario
-        Herramienta taladroPercutor = herramienta("Taladro percutor",Categoria.ELECTRICA,25000,100000,3,"Perfora y cincela superficies resistentes.","https://picsum.photos/320/240",true);
+        Herramienta taladroPercutor = herramienta("Taladro percutor",Categoria.ELECTRICA,25000,100000,3,"Perfora y cincela superficies resistentes.","https://loremflickr.com/320/240/hammer,drill",true);
         Herramienta pulidoraAngular = herramienta("Pulidora angular",Categoria.ELECTRICA,22000,80000,2,"Corta, desbasta y pule materiales.","https://loremflickr.com/320/240/Angle,Grinder",true);
         Herramienta mezcladoraDeConcreto = herramienta("Mezcladora de concreto",Categoria.CONSTRUCCION,60000,300000,1,"Mezcla concreto y mortero uniformemente.","https://loremflickr.com/320/240/Concrete,Mixer",true);
         Herramienta andamioTubular = herramienta("Andamio tubular",Categoria.CONSTRUCCION,15000,120000,4,"Estructura para trabajo seguro en altura.","https://loremflickr.com/320/240/Tubular,Scaffolding",true);
@@ -170,7 +170,7 @@ public class DataInitializer implements CommandLineRunner {
         usuario.setEmail(email);
         usuario.setPassword(passwordEncoder.encode(CLAVE_DEMO));
         usuario.setRol(rol);
-        usuario.setActiva(activa);
+        usuario.setActivo(activa);
         return  usuarioRepository.save(usuario);
     }
 

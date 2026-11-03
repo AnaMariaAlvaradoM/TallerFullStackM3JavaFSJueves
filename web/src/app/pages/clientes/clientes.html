@@ -1,1 +1,85 @@
-<p>clientes works!</p>
+<header class="encabezado-pagina">
+    <div>
+        <h1 class="titulo-pagina">Clientes</h1>
+        <p class="subtitulo"> Personas con cuenta en LLave Maestra</p>
+    </div>
+</header>
+
+<section class="resumen" aria-label="Resumen de clientes">
+    <article class="tarjeta indicador">
+        <span class="numero">{{usuarios().length}}</span>
+        <span class="etiqueta">Cuentas</span>
+    </article>
+    <article class="tarjeta indicador">
+        <span class="numero">{{activos()}}</span>
+        <span class="etiqueta">Activas</span>
+    </article>
+
+    <article class="tarjeta indicador">
+        <span class="numero">{{ administradores().length }}</span>
+        <span class="etiqueta">Administración</span>
+    </article>
+</section>
+
+@if (error()) {
+    <p class="alerta alerta-error" role="alert">{{error()}}</p>
+}
+
+@if (cargando()) {
+    <div class="esqueleto tabla-esqueleto"></div>
+}@else {
+    <div class="tarjeta tabla-contenedor">
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Rol</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Desde</th>
+                    <th scope="col"><span class="oculto">Acciones</span></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (u of usuarios(); track u.id) {
+                    <tr  data-testid="cliente" [class.inactivo]="!u.activo">
+                        <td>
+                            <strong>{{u.nombre}}</strong>
+                            
+                        </td>
+                        <td>
+                            <span class="email">{{u.email}}</span>
+                        </td>
+                        <td>
+                            <span class="chip" [class.chip-neutro] = "u.rol === 'ADMIN'" [class.chip-acero] = "u.rol === 'USER'" >
+                                {{nombreRol[u.rol]}}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="chip" [class.chip-exito]="u.activo" [class.chip-neutro] ="!u.activo">
+                            {{ u.activo ? 'Activa' : 'Inactiva'}}
+                            </span>
+                        </td>
+                        <td>{{fechaCorta(u.creadoEn)}}</td>
+                        <td class="celda-accion">
+                            @if (esYo(u)) {
+                                <span class="tu-cuenta">Tu cuenta</span>
+                            }@else{
+                                <button
+                                type="button"
+                                class="btn btn-sm"
+                                data-testid="boton-estado"
+                                [class.btn-peligro]="u.activo"
+                                [class.btn-secundario]="!u.activo"
+                                (click)="alternarEstado(u)">
+                                {{u.activo ? 'Desactivar' : 'Activar'}}
+                            </button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
