@@ -164,13 +164,13 @@ public class DataInitializer implements CommandLineRunner {
 
     }
 
-    private Usuario usuario(String nombre, String email, Rol rol, boolean activa) {
+    private Usuario usuario(String nombre, String email, Rol rol, boolean activo) {
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
         usuario.setEmail(email);
         usuario.setPassword(passwordEncoder.encode(CLAVE_DEMO));
         usuario.setRol(rol);
-        usuario.setActivo(activa);
+        usuario.setActivo(activo);
         return  usuarioRepository.save(usuario);
     }
 

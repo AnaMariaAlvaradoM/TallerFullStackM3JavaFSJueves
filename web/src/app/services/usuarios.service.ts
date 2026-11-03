@@ -46,10 +46,10 @@ export class UsuariosService {
     }
 
     // Permite cambiar el estado de una cuenta, si esta activa o no
-    cambiarEstado(usuario: Usuario, activa: boolean){
+    cambiarEstado(usuario: Usuario, activo: boolean){
         this.errorSignal.set(null);
 
-        this.http.patch<Usuario>(`${this.apiUrl}/${usuario.id}/estado`,{activa}).subscribe({
+        this.http.patch<Usuario>(`${this.apiUrl}/${usuario.id}/estado`,{activo}).subscribe({
             next: (actualizado) => {
                 this.lista.update(actuales =>
                     actuales.map(u => (u.id === actualizado.id ? actualizado:u))

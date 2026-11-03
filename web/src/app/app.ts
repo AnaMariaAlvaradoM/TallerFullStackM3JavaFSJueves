@@ -7,12 +7,13 @@ interface EnlaceMenu{
   ruta: string;
   texto: string;
   permiso: Permiso;
+  testid: string;
 }
 
 const MENU: EnlaceMenu[] = [
-  {ruta: '/herramientas', texto: 'Herramientas', permiso: 'HERRAMIENTAS_VER'},
-  {ruta: '/mis-herramientas', texto: 'Mis Herramientas', permiso:'ALQUILERES_VER_PROPIOS'},
-  {ruta: '/clientes',texto:'Clientes', permiso:'CLIENTES_GESTIONAR'}
+  {ruta: '/herramientas', texto: 'Herramientas', permiso: 'HERRAMIENTAS_VER', testid:'menu-herramientas'},
+  {ruta: '/mis-herramientas', texto: 'Mis Herramientas', permiso:'ALQUILERES_VER_PROPIOS',testid:'menu-alquiler'},
+  {ruta: '/clientes',texto:'Clientes', permiso:'CLIENTES_GESTIONAR',testid:'menu-clientes'}
 ];
 
 @Component({
