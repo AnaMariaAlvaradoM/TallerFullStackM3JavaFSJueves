@@ -1,0 +1,24 @@
+<section class="login tarjeta">
+  <h1 class="titulo-pagina">Llave Maestra</h1>
+  <p class="subtitulo">Alquiler de herramientas · Cajicá</p>
+
+  <form (submit)="iniciar($event)">
+    <label class="campo">
+      <span>Email</span>
+      <input name="email" type="email" autocomplete="username" required placeholder="tu@correo.com" />
+    </label>
+
+    <label class="campo">
+      <span>Contraseña</span>
+      <input name="password" type="password" autocomplete="current-password" required />
+    </label>
+
+    @if (auth.error()) {
+      <p class="alerta alerta-error" data-testid="error-login">{{ auth.error() }}</p>
+    }
+
+    <button class="btn btn-acento btn-bloque" type="submit" [disabled]="auth.cargando()">
+      {{ auth.cargando() ? 'Entrando…' : 'Entrar' }}
+    </button>
+  </form>
+</section>
