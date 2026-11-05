@@ -29,9 +29,9 @@ public class AlquileresController {
         AlquilerResponse creada = alquilerService.crear(request,authentication.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(creada);
     }
-
+    // Este controller permite que cada cliente vea sus propios alquileres
     @PreAuthorize("hasAuthority('ALQUILERES_VER_PROPIOS')")
-    @GetMapping("/mias")
+    @GetMapping("/mios")
     public ResponseEntity<List<AlquilerResponse>> listarMias(Authentication authentication){
         return ResponseEntity.ok(alquilerService.listarMias(authentication.getName()));
     }

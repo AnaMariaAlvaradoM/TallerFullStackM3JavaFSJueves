@@ -59,16 +59,23 @@ public class AlquilerServiceImpl implements AlquilerService {
         limiteAlquiler(email);
         validarDias(request.fechaInicio(),request.fechaFin());
 
-        boolean seCruza = alquilerRepository
-                .existsByHerramientaIdAndEstadoAndFechaInicioLessThanAndFechaFinGreaterThan(
-                        herramienta.getId(), EstadoAlquiler.RESERVADO,
+//        boolean seCruza = alquilerRepository
+//                .existsByHerramientaIdAndEstadoInAndFechaInicioLessThanEqualAndFechaFinGreaterThanEqual(
+//                        herramienta.getId(), List.of(EstadoAlquiler.RESERVADO,EstadoAlquiler.ENTREGADO),
+//                        request.fechaFin(),request.fechaInicio());
+//
+//        if (seCruza){
+//            throw new ReglaNegocioException( herramienta.getNombre() +" ya se encuentra alquilada en esta fecha");
+//        }
+
+        long seCruza = alquilerRepository
+                .countByHerramientaIdAndEstadoInAndFechaInicioLessThanEqualAndFechaFinGreaterThanEqual(
+                        herramienta.getId(), List.of(EstadoAlquiler.RESERVADO,EstadoAlquiler.ENTREGADO),
                         request.fechaFin(),request.fechaInicio());
-        
-        if (seCruza){
-            throw new ReglaNegocioException(herramienta.getNombre() +" ya se encuentra alquilada en esta fecha");
+
+        if (seCruza>=herramienta.getUnidades()){
+            throw new ReglaNegocioException( herramienta.getNombre() +" ya se encuentra alquilada en esta fecha");
         }
-
-
 
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(()-> new RecursoNoEncontradoException("No existe el usuario "+ email));
@@ -118,6 +125,14 @@ public class AlquilerServiceImpl implements AlquilerService {
         return toResponse(alquilerRepository.save(alquiler));
     }
 
+//    private long limiteCantidades(long herramientaId){
+//        Herramienta herramienta = herramientaRepository.findById(herramientaId)
+//                .orElseThrow(()-> new RecursoNoEncontradoException("No existe una herramienta con id " + herramientaId));
+//        List<EstadoAlquiler> estados = List.of(EstadoAlquiler.ENTREGADO,EstadoAlquiler.RESERVADO);
+//
+//        long unidadesHerramientaAlquilada = alquilerRepository.countByHerramientaIdAndEstadoInAndFechaInicioLessThanEqualAndFechaFinGreaterThanEqual(herramientaId,estados);
+//        return unidadesHerramientaAlquilada;
+//    }
     private void limiteAlquiler(String email){
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(()->new RecursoNoEncontradoException("No existe un usuario con email " + email));

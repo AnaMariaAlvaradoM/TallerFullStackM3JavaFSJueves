@@ -17,13 +17,9 @@ List<Alquiler> findByUsuarioEmail(String email);
 List<Alquiler> findAllByOrderByFechaInicio();
 List<Alquiler> findByFechaInicio(LocalDate fecha);
 List<Alquiler> findByHerramientaIdAndEstadoAndFechaInicio(Long herramientaId,EstadoAlquiler estado, LocalDate fechaInicio);
-List<Alquiler> findByUsuarioAndEstado(Usuario usuario, EstadoAlquiler estado);
 long countByUsuarioAndEstadoIn(Usuario usuario, Collection<EstadoAlquiler> estados);
-
-
-boolean existsByHerramientaIdAndEstadoAndFechaInicioLessThanAndFechaFinGreaterThan(
-        Long herramientaId, EstadoAlquiler estado, LocalDate finNueva, LocalDate inicioNueva);
-
+long countByHerramientaIdAndEstadoInAndFechaInicioLessThanEqualAndFechaFinGreaterThanEqual(
+        Long herramientaId, Collection<EstadoAlquiler> estados, LocalDate finNueva, LocalDate inicioNueva);
 
 
 List<Alquiler> findByFechaInicioBetweenAndEstado(LocalDate desde, LocalDate hasta, EstadoAlquiler estado);
