@@ -22,13 +22,13 @@
 } @else{
     <div class="grilla">
         @for (e of herramientasFiltradas(); track e.id) {
-            <article class="espacio tarjeta"   [class.inactivo]="!e.activa" data-testid="herramienta">
+            <article class="espacio tarjeta"   [class.inactivo]="!e.activo" data-testid="herramienta">
                 <div class="foto">
                     @if (e.imagenUrl) {
                         <img [src]="e.imagenUrl" [alt]="'Foto de '+ e.nombre" loading="lazy">
                     }
                     <span class="chip chip-naranja categoria">{{nombreCategoria[e.categoria]}} </span>
-                    @if (!e.activa) {
+                    @if (!e.activo) {
                         <span class="chi chip-neutro estado">inactivo</span>
                     }
                 </div>
@@ -58,10 +58,10 @@
                         type="button"
                         class="btn btn-sm"
                         data-testid="boton-estado"
-                        [class.btn-peligro] = "e.activa"
-                        [class.btn-primario] = "!e.activa"
+                        [class.btn-peligro] = "e.activo"
+                        [class.btn-primario] = "!e.activo"
                         (click) = "alternarEstado(e)">
-                        {{e.activa? 'Desactivar' : "Activar"}}
+                        {{e.activo? 'Desactivar' : "Activar"}}
                         </button>
                     
                 </div>

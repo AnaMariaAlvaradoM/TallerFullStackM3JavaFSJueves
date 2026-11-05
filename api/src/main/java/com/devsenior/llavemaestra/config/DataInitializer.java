@@ -37,130 +37,23 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         // Clientes de LLaveMaestra
-        Usuario hernanRojas = usuario("Hernán Rojas","admin@llavemaestra.co",Rol.ADMIN,true);
-        Usuario pedroSalazar = usuario("Pedro Salazar","pedro@correo.com",Rol.CLIENTE,true);
-        Usuario dianaMejia = usuario("Diana Mejía","diana@correo.com",Rol.CLIENTE,true);
-        Usuario jorgePinzon = usuario("Jorge Pinzón","jorge@correo.com",Rol.CLIENTE,false);
+        Usuario hernanRojas = usuario("Hernán Rojas", "admin@llavemaestra.co", Rol.ADMIN, true);
+        Usuario pedroSalazar = usuario("Pedro Salazar", "pedro@correo.com", Rol.CLIENTE, true);
+        Usuario dianaMejia = usuario("Diana Mejía", "diana@correo.com", Rol.CLIENTE, true);
+        Usuario jorgePinzon = usuario("Jorge Pinzón", "jorge@correo.com", Rol.CLIENTE, false);
 
         // Herramientas en el inventario
-        Herramienta taladroPercutor = herramienta("Taladro percutor",Categoria.ELECTRICA,25000,100000,3,"Perfora y cincela superficies resistentes.","https://loremflickr.com/320/240/hammer,drill",true);
-        Herramienta pulidoraAngular = herramienta("Pulidora angular",Categoria.ELECTRICA,22000,80000,2,"Corta, desbasta y pule materiales.","https://loremflickr.com/320/240/Angle,Grinder",true);
-        Herramienta mezcladoraDeConcreto = herramienta("Mezcladora de concreto",Categoria.CONSTRUCCION,60000,300000,1,"Mezcla concreto y mortero uniformemente.","https://loremflickr.com/320/240/Concrete,Mixer",true);
-        Herramienta andamioTubular = herramienta("Andamio tubular",Categoria.CONSTRUCCION,15000,120000,4,"Estructura para trabajo seguro en altura.","https://loremflickr.com/320/240/Tubular,Scaffolding",true);
-        Herramienta guadanadora = herramienta("Guadañadora",Categoria.JARDIN,35000,150000,2,"Corta maleza y césped en exteriores.","https://loremflickr.com/320/240/Brush,Cutter",true);
-        Herramienta nivelLáser = herramienta("Nivel láser",Categoria.MEDICION,30000,200000,1,"Proyecta líneas para nivelación precisa.","https://loremflickr.com/320/240/Laser,Level",false);
+        Herramienta taladroPercutor = herramienta("Taladro percutor", Categoria.ELECTRICA, 25000, 100000, 3, "Perfora y cincela superficies resistentes.", "https://loremflickr.com/320/240/hammer,drill", true);
+        Herramienta pulidoraAngular = herramienta("Pulidora angular", Categoria.ELECTRICA, 22000, 80000, 2, "Corta, desbasta y pule materiales.", "https://loremflickr.com/320/240/Angle,Grinder", true);
+        Herramienta mezcladoraDeConcreto = herramienta("Mezcladora de concreto", Categoria.CONSTRUCCION, 60000, 300000, 1, "Mezcla concreto y mortero uniformemente.", "https://loremflickr.com/320/240/Concrete,Mixer", true);
+        Herramienta andamioTubular = herramienta("Andamio tubular", Categoria.CONSTRUCCION, 15000, 120000, 4, "Estructura para trabajo seguro en altura.", "https://loremflickr.com/320/240/Tubular,Scaffolding", true);
+        Herramienta guadanadora = herramienta("Guadañadora", Categoria.JARDIN, 35000, 150000, 2, "Corta maleza y césped en exteriores.", "https://loremflickr.com/320/240/Brush,Cutter", true);
+        Herramienta nivelLáser = herramienta("Nivel láser", Categoria.MEDICION, 30000, 200000, 1, "Proyecta líneas para nivelación precisa.", "https://loremflickr.com/320/240/Laser,Level", false);
 
         // Herramientas Reservadas por los clientes
         LocalDate hoy = LocalDate.now();
 
         // Pedro Salazar
-
-        alquiler(
-                taladroPercutor,
-                pedroSalazar,
-                hoy,
-                "2026-11-02",
-                "2026-11-05",
-                "Perforación para instalación eléctrica.",
-                EstadoAlquiler.ALQUILADA
-        );
-
-        alquiler(
-                pulidoraAngular,
-                pedroSalazar,
-                hoy,
-                "2026-11-08",
-                "2026-11-11",
-                "Corte de perfiles metálicos.",
-                EstadoAlquiler.ALQUILADA
-        );
-
-        alquiler(
-                andamioTubular,
-                pedroSalazar,
-                hoy,
-                "2026-11-15",
-                "2026-11-18",
-                "Pintura de fachada.",
-                EstadoAlquiler.CANCELADA
-        );
-
-
-// Diana Mejía
-
-        alquiler(
-                mezcladoraDeConcreto,
-                dianaMejia,
-                hoy,
-                "2026-11-03",
-                "2026-11-06",
-                "Preparación de concreto para ampliación.",
-                EstadoAlquiler.ALQUILADA
-        );
-
-        alquiler(
-                guadanadora,
-                dianaMejia,
-                hoy,
-                "2026-11-10",
-                "2026-11-13",
-                "Mantenimiento de jardín.",
-                EstadoAlquiler.ALQUILADA
-        );
-
-        alquiler(
-                taladroPercutor,
-                dianaMejia,
-                hoy,
-                "2026-11-20",
-                "2026-11-23",
-                "Instalación de repisas.",
-                EstadoAlquiler.SIN_ALQUILAR
-        );
-
-        alquiler(
-                pulidoraAngular,
-                dianaMejia,
-                hoy,
-                "2026-11-25",
-                "2026-11-28",
-                "Pulido de estructuras metálicas.",
-                EstadoAlquiler.CANCELADA
-        );
-
-
-// Jorge Pinzón
-
-        alquiler(
-                guadanadora,
-                jorgePinzon,
-                hoy,
-                "2026-11-05",
-                "2026-11-08",
-                "Limpieza de lote.",
-                EstadoAlquiler.ALQUILADA
-        );
-
-        alquiler(
-                andamioTubular,
-                jorgePinzon,
-                hoy,
-                "2026-11-12",
-                "2026-11-15",
-                "Trabajo en altura para remodelación.",
-                EstadoAlquiler.SIN_ALQUILAR
-        );
-
-        alquiler(
-                mezcladoraDeConcreto,
-                jorgePinzon,
-                hoy,
-                "2026-11-18",
-                "2026-11-21",
-                "Preparación de mortero.",
-                EstadoAlquiler.ALQUILADA
-        );
-
 
     }
 
@@ -187,20 +80,16 @@ public class DataInitializer implements CommandLineRunner {
         return  herramientaRepository.save(herramienta);
     }
 
-    private void  alquiler(Herramienta herramienta, Usuario usuario, LocalDate fecha,String inicio, String fin,
-                              String nota,EstadoAlquiler estado){
+    private void  alquiler(Herramienta herramienta, Usuario usuario,String inicio, String fin,
+                              EstadoAlquiler estado){
         LocalDate fechaInicio = LocalDate.parse(inicio);
         LocalDate fechaFin = LocalDate.parse(fin);
         long dias = ChronoUnit.DAYS.between(fechaInicio,fechaFin);
-
         Alquiler alquiler = new Alquiler();
-
         alquiler.setHerramienta(herramienta);
         alquiler.setUsuario(usuario);
-        alquiler.setFecha(fecha);
         alquiler.setFechaInicio(fechaInicio);
         alquiler.setFechaFin(fechaFin);
-        alquiler.setNota(nota);
         alquiler.setValorTotal((int) (herramienta.getPrecioDia()*dias));
         alquiler.setEstado(estado);
         alquilerRepository.save(alquiler);

@@ -11,6 +11,8 @@ import java.util.List;
 public interface AlquilerService {
     List<AlquilerResponse> listarMias(String email);
     List<AlquilerResponse> listarTodas(LocalDate fecha);
+
     AlquilerResponse crear(AlquilerRequest request, String email);
-    AlquilerResponse cancelar(Long id, Authentication autentication);
+
+    AlquilerResponse cancelar(Long id, Authentication authentication);
 }

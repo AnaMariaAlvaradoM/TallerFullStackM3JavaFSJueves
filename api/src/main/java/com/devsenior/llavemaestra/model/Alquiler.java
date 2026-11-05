@@ -21,7 +21,7 @@ public class Alquiler {
     private Usuario usuario;
 
     @Column(nullable = false)
-    private LocalDate fecha;
+    private int dias;
 
     @Column(nullable = false)
     private LocalDate fechaInicio;
@@ -29,18 +29,15 @@ public class Alquiler {
     @Column(nullable = false)
     private LocalDate fechaFin;
 
-    @Column(length = 200)
-    private String nota;
-
     @Column(nullable = false)
     private int valorTotal;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private EstadoAlquiler estado = EstadoAlquiler.ALQUILADA;
+    private EstadoAlquiler estado = EstadoAlquiler.RESERVADO;
 
     @Column(nullable = false)
-    private LocalDateTime creadaEn = LocalDateTime.now();
+    private LocalDateTime creadoEn = LocalDateTime.now();
 
     public Long getId() {
         return id;
@@ -66,14 +63,6 @@ public class Alquiler {
         this.usuario = usuario;
     }
 
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
     public LocalDate getFechaInicio() {
         return fechaInicio;
     }
@@ -90,13 +79,6 @@ public class Alquiler {
         this.fechaFin = fechaFin;
     }
 
-    public String getNota() {
-        return nota;
-    }
-
-    public void setNota(String nota) {
-        this.nota = nota;
-    }
 
     public int getValorTotal() {
         return valorTotal;
@@ -114,11 +96,19 @@ public class Alquiler {
         this.estado = estado;
     }
 
-    public LocalDateTime getCreadaEn() {
-        return creadaEn;
+    public LocalDateTime getCreadoEn() {
+        return creadoEn;
     }
 
-    public void setCreadaEn(LocalDateTime creadaEn) {
-        this.creadaEn = creadaEn;
+    public void setCreadoEn(LocalDateTime creadoEn) {
+        this.creadoEn = creadoEn;
+    }
+
+    public int getDias() {
+        return dias;
+    }
+
+    public void setDias(int dias) {
+        this.dias = dias;
     }
 }

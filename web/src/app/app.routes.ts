@@ -23,6 +23,13 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/clientes/clientes').then(m =>m.Clientes)
     },
     {
+        path:'mis-alquileres',
+        title: 'Alquilar · Mis alquileres',
+        canActivate:[authGuard, permisoGuard('ALQUILERES_VER_PROPIOS')],
+        loadComponent: () => import('./pages/mis-alquileres/mis-alquileres').then(m=>m.MisAlquileres)
+    },
+    
+    {
         path: 'sin-acceso',
         title: 'sin acceso · LlaveMaestra',
         canActivate: [authGuard],

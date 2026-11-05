@@ -94,4 +94,5 @@ public class Herramienta {
     public void setActiva(boolean activa) {
         this.activa = activa;
     }
+
 }

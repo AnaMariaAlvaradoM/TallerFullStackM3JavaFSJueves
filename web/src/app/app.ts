@@ -12,7 +12,7 @@ interface EnlaceMenu{
 
 const MENU: EnlaceMenu[] = [
   {ruta: '/herramientas', texto: 'Herramientas', permiso: 'HERRAMIENTAS_VER', testid:'menu-herramientas'},
-  {ruta: '/mis-herramientas', texto: 'Mis Herramientas', permiso:'ALQUILERES_VER_PROPIOS',testid:'menu-alquiler'},
+  {ruta: '/mis-alquileres', texto: 'Mis Alquileres', permiso:'ALQUILERES_VER_PROPIOS',testid:'menu-alquiler'},
   {ruta: '/clientes',texto:'Clientes', permiso:'CLIENTES_GESTIONAR',testid:'menu-clientes'}
 ];
 

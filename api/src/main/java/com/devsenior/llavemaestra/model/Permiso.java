@@ -18,6 +18,8 @@ public enum Permiso {
     CLIENTES_GESTIONAR,
     REPORTES_VER;
 
+
+
     public boolean estaEn(Authentication authentication) {
         return  authentication.getAuthorities().stream()
                 .anyMatch(autoridad -> autoridad.getAuthority().equals(name()));

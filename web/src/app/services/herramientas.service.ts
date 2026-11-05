@@ -19,7 +19,7 @@ export interface Herramienta{
     decripcion: string,
     imagenUrl: string,
     unidades: number,
-    activa: boolean,
+    activo: boolean,
 
 }
 
@@ -67,10 +67,10 @@ export class HerramientasService {
 
     }
 
-    cambiarEstado(herramienta: Herramienta, activa:boolean){
+    cambiarEstado(herramienta: Herramienta, activo:boolean){
         this.errorsignal.set(null);
 
-        this.http.patch<Herramienta>(`${this.apiUrl}/${herramienta.id}/estado`, {activa}).subscribe({
+        this.http.patch<Herramienta>(`${this.apiUrl}/${herramienta.id}/estado`, {activo}).subscribe({
             next: (actualizado) =>{
                 this.lista.update(actuales =>
                     actuales.map(e => e.id === actualizado.id ? actualizado: e)

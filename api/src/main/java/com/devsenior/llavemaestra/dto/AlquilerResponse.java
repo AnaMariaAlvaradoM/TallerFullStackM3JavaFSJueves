@@ -1,6 +1,5 @@
 package com.devsenior.llavemaestra.dto;
 
-import com.devsenior.llavemaestra.model.Categoria;
 import com.devsenior.llavemaestra.model.EstadoAlquiler;
 
 import java.time.LocalDate;
@@ -10,16 +9,15 @@ public record AlquilerResponse(
         Long id,
         Long herramientaId,
         String herramientaNombre,
-        Categoria categoria,
         Long clienteId,
         String clienteNombre,
-        LocalDate fecha,
-        LocalDate diaInicio,
-        LocalDate diaFin,
-        String nota,
+        LocalDate fechaInicio,
+        LocalDate fechaFin,
+        long dias,
         int valorTotal,
+        int deposito,
         EstadoAlquiler estado,
-        LocalDateTime creadaEn
+        LocalDateTime creadoEn
 
 
 

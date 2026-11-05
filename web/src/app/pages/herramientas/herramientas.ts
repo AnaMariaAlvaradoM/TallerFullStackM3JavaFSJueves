@@ -25,7 +25,7 @@ export class Herramientas {
   pesos = pesos
 
   gestiona = computed(()=>this.authservice.puede('HERRAMIENTAS_GESTIONAR'));
-  inactivos = computed(()=> this.herramientas().filter(e => !e.activa).length);
+  inactivos = computed(()=> this.herramientas().filter(e => !e.activo).length);
 
   filtro = signal<Filtro>('TODAS')
 
@@ -39,6 +39,6 @@ export class Herramientas {
   }
   
   alternarEstado(herramienta: Herramienta){
-    this.herramientasService.cambiarEstado(herramienta, !herramienta.activa);
+    this.herramientasService.cambiarEstado(herramienta, !herramienta.activo);
   }
 }
