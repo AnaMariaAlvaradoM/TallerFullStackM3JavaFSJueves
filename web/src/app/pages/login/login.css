@@ -1,0 +1,18 @@
+.login {
+  max-width: 400px;
+  margin: var(--espacio-lg) auto;
+  padding: var(--espacio-lg) var(--espacio-md);
+}
+
+.login .subtitulo {
+  margin-bottom: var(--espacio-md);
+}
+
+form {
+  display: grid;
+  gap: var(--espacio-sm);
+}
+
+form .alerta {
+  margin-bottom: 0;
+}

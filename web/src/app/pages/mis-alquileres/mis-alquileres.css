@@ -1,0 +1,36 @@
+.lista {
+  display: grid;
+  gap: var(--espacio-sm);
+}
+
+.alquiler {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-sm);
+  padding: var(--espacio-sm) var(--espacio-md);
+}
+
+h2 {
+  font-family: var(--fuente-titulos);
+  font-size: var(--texto-lg);
+}
+
+.info p {
+  color: var(--texto-suave);
+  font-size: var(--texto-sm);
+}
+
+.lado,
+.confirmacion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-xs);
+}
+
+.confirmacion span {
+  font-size: var(--texto-sm);
+  font-weight: 700;
+}

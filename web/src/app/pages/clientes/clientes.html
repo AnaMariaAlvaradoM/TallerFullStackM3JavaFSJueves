@@ -1,0 +1,59 @@
+<header class="encabezado-pagina">
+  <div>
+    <h1 class="titulo-pagina">Clientes</h1>
+    <p class="subtitulo">Bloquea a quien no devuelve las herramientas</p>
+  </div>
+</header>
+
+@if (servicio.error()) {
+  <p class="alerta alerta-error">{{ servicio.error() }}</p>
+}
+
+<div class="tarjeta tabla-contenedor">
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>Desde</th>
+        <th>Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (u of servicio.usuarios(); track u.id) {
+        <tr data-testid="cliente">
+          <td>{{ u.nombre }}</td>
+          <td>{{ u.email }}</td>
+          <td><span class="chip chip-acero">{{ u.rol }}</span></td>
+          <td>{{ fechaCorta(u.creadoEn) }}</td>
+          <td>
+            <span class="chip" [class.chip-exito]="u.activo" [class.chip-peligro]="!u.activo">
+              {{ u.activo ? 'Activo' : 'Bloqueado' }}
+            </span>
+          </td>
+          <td>
+            <!-- Nadie se bloquea a sí mismo: en tu propia fila no hay botón -->
+            @if (u.email !== auth.email()) {
+              <button
+                type="button"
+                class="btn btn-sm"
+                [class.btn-peligro]="u.activo"
+                [class.btn-secundario]="!u.activo"
+                (click)="servicio.cambiarEstado(u, !u.activo)"
+                data-testid="boton-estado"
+              >
+                {{ u.activo ? 'Bloquear' : 'Desbloquear' }}
+              </button>
+            }
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="6" class="vacio">{{ servicio.cargando() ? 'Cargando…' : 'No hay cuentas.' }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

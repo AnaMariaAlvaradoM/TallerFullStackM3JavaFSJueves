@@ -1,6 +1,22 @@
-<main class="bienvenida">
-  <h1 class="titulo-pagina">Llave Maestra</h1>
-  <p class="subtitulo">Taller del Módulo 3 · Abre fases/FASE-1.md para empezar.</p>
-</main>
+@if (auth.sesionActiva()) {
+  <header class="barra">
+    <a class="marca" routerLink="/herramientas">🔧 Llave Maestra</a>
 
-<router-outlet />
+    <!-- Cada enlace aparece solo si la sesión tiene el permiso -->
+    <nav class="menu">
+      <a *appSiPuede="'HERRAMIENTAS_VER'" routerLink="/herramientas" routerLinkActive="activo" data-testid="menu-herramientas">Herramientas</a>
+      <a *appSiPuede="'ALQUILERES_VER_PROPIOS'" routerLink="/mis-alquileres" routerLinkActive="activo" data-testid="menu-mis-alquileres">Mis alquileres</a>
+      <a *appSiPuede="'CLIENTES_GESTIONAR'" routerLink="/clientes" routerLinkActive="activo" data-testid="menu-clientes">Clientes</a>
+    </nav>
+
+    <div class="usuario">
+      <span data-testid="nombre-usuario">{{ auth.nombre() }}</span>
+      <span class="chip chip-naranja">{{ auth.rol() }}</span>
+      <button type="button" class="btn btn-secundario btn-sm" (click)="auth.cerrarSesion()" data-testid="cerrar-sesion">Salir</button>
+    </div>
+  </header>
+}
+
+<main class="contenido">
+  <router-outlet />
+</main>
