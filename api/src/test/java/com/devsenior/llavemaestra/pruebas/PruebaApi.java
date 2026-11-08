@@ -71,6 +71,10 @@ public abstract class PruebaApi {
         return enviar("PATCH", ruta, token, cuerpoJson);
     }
 
+    protected Respuesta put(String ruta, String token, String cuerpoJson) {
+        return enviar("PUT", ruta, token, cuerpoJson);
+    }
+
     private Respuesta enviar(String metodo, String ruta, String token, String cuerpoJson) {
         HttpRequest.Builder peticion = HttpRequest.newBuilder(URI.create("http://localhost:" + puerto + ruta))
                 .timeout(Duration.ofSeconds(20))
@@ -186,6 +190,32 @@ public abstract class PruebaApi {
         for (Long id : alquileres) {
             cancelar(token, id);
         }
+    }
+
+    // ---------- Vista de Hernan (Fase 3) ----------
+
+    protected Respuesta entregar(String token, long alquilerId) {
+        return patch("/api/alquileres/" + alquilerId + "/entregar", token, null);
+    }
+
+    protected Respuesta devolver(String token, long alquilerId) {
+        return patch("/api/alquileres/" + alquilerId + "/devolver", token, null);
+    }
+
+    // Cierra un alquiler que ya no se puede cancelar (por ejemplo, uno que empieza hoy): entregar y devolver
+    protected void cerrar(long alquilerId) {
+        String admin = token(ADMIN);
+        entregar(admin, alquilerId);
+        devolver(admin, alquilerId);
+    }
+
+    protected Respuesta resumen(String token) {
+        return get("/api/reportes/resumen", token);
+    }
+
+    // Un email que nunca se repite, para registrar cuentas nuevas
+    protected static String emailNuevo(String prefijo) {
+        return prefijo + System.nanoTime() + "@correo.com";
     }
 
     protected static String resumir(String texto) {
