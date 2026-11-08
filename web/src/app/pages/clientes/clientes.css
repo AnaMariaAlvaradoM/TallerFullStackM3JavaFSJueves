@@ -1,0 +1,54 @@
+.resumen {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--espacio-sm);
+    margin-bottom: var(--espacio-md);
+  }
+  
+  .indicador {
+    display: flex;
+    flex-direction: column;
+    padding: var(--espacio-sm) var(--espacio-md);
+  }
+  
+  .numero {
+    font-size: var(--texto-xl);
+    font-weight: 800;
+  }
+  
+  .etiqueta {
+    color: var(--texto-suave);
+    font-size: var(--texto-sm);
+  }
+  
+  .tabla-esqueleto {
+    height: 280px;
+  }
+  
+  .email {
+    display: block;
+    color: var(--texto-suave);
+    font-size: var(--texto-xs);
+  }
+  
+  tr.inactivo td {
+    color: var(--texto-suave);
+  }
+  
+  .celda-accion {
+    text-align: right;
+  }
+  
+  .tu-cuenta {
+    color: var(--texto-suave);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+  }
+  
+  .oculto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }

@@ -1,7 +1,139 @@
-.bienvenida {
+.app {
   display: grid;
-  place-content: center;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+/* ---------- Menú lateral ---------- */
+.lateral {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-md);
+  padding: var(--espacio-md) var(--espacio-sm);
+  background: var(--acero);
+  color: #ffffff;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-size: var(--texto-lg);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.marca small {
+  display: block;
+  color: var(--naranja);
+  font-size: var(--texto-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.menu-enlace {
+  padding: 10px 14px;
+  border-radius: var(--radio-sm);
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background var(--transicion), color var(--transicion);
+}
+
+.menu-enlace:hover {
+  background: var(--acero-suave);
+  color: #ffffff;
+}
+
+.menu-enlace.activo {
+  background: var(--naranja);
+  color: var(--acero);
+}
+
+/* ---------- "Tu acceso": los permisos que trae el token ---------- */
+.acceso {
+  font-size: var(--texto-xs);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.acceso summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.acceso ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: var(--espacio-xs);
+}
+
+.acceso li::before {
+  content: '▸ ';
+  color: var(--naranja);
+}
+
+/* ---------- Barra superior y contenido ---------- */
+.barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-sm);
+  padding: 14px var(--espacio-lg);
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borde);
+}
+
+.saludo {
+  display: flex;
+  align-items: center;
   gap: var(--espacio-xs);
-  min-height: 60vh;
-  text-align: center;
+}
+
+.contenido {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--espacio-lg);
+}
+
+/* ---------- Pantallas angostas: el menú pasa arriba ---------- */
+@media (max-width: 800px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .lateral {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .menu {
+    flex-direction: row;
+  }
+
+  .acceso {
+    display: none;
+  }
+
+  .barra,
+  .contenido {
+    padding-left: var(--espacio-sm);
+    padding-right: var(--espacio-sm);
+  }
 }
