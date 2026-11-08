@@ -1,1 +1,79 @@
-<p>clientes works!</p>
+<header class="encabezado-pagina">
+    <div>
+      <h1 class="titulo-pagina">Clientes</h1>
+      <p class="subtitulo">Personas con cuenta en Llave Maestra</p>
+    </div>
+  </header>
+  
+  <section class="resumen" aria-label="Resumen de cuentas">
+    <article class="tarjeta indicador">
+      <span class="numero">{{ usuarios().length }}</span>
+      <span class="etiqueta">Cuentas</span>
+    </article>
+    <article class="tarjeta indicador">
+      <span class="numero">{{ activos() }}</span>
+      <span class="etiqueta">Activas</span>
+    </article>
+    <article class="tarjeta indicador">
+      <span class="numero">{{ bloqueados() }}</span>
+      <span class="etiqueta">Bloqueadas</span>
+    </article>
+  </section>
+  
+  @if (error()) {
+    <p class="alerta alerta-error" role="alert">{{ error() }}</p>
+  }
+  
+  @if (cargando()) {
+    <div class="esqueleto tabla-esqueleto"></div>
+  } @else {
+    <div class="tarjeta tabla-contenedor">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th scope="col">Persona</th>
+            <th scope="col">Rol</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Desde</th>
+            <th scope="col"><span class="oculto">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of usuarios(); track u.id) {
+            <tr [class.inactivo]="!u.activo" data-testid="cliente">
+              <td>
+                <strong>{{ u.nombre }}</strong>
+                <span class="email">{{ u.email }}</span>
+              </td>
+              <td>
+                <span class="chip" [class.chip-acero]="u.rol === 'ADMIN'" [class.chip-naranja]="u.rol === 'CLIENTE'">
+                  {{ nombreRol[u.rol] }}
+                </span>
+              </td>
+              <td>
+                <span class="chip" [class.chip-exito]="u.activo" [class.chip-peligro]="!u.activo">
+                  {{ u.activo ? 'Activa' : 'Bloqueada' }}
+                </span>
+              </td>
+              <td>{{ fechaCorta(u.creadoEn) }}</td>
+              <td class="celda-accion">
+                @if (esYo(u)) {
+                  <span class="tu-cuenta">Tu cuenta</span>
+                } @else {
+                  <button
+                    type="button"
+                    class="btn btn-sm"
+                    [class.btn-peligro]="u.activo"
+                    [class.btn-secundario]="!u.activo"
+                    data-testid="boton-estado"
+                    (click)="alternarEstado(u)">
+                    {{ u.activo ? 'Bloquear' : 'Desbloquear' }}
+                  </button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }

@@ -1,1 +1,85 @@
-<p>herramientas works!</p>
+<header class="encabezado-pagina">
+    <div>
+      <h1 class="titulo-pagina">Herramientas</h1>
+      @if (gestiona()) {
+        <p class="subtitulo">Inventario de Llave Maestra · {{ herramientas().length }} herramientas, {{ retiradas() }} {{ retiradas() === 1 ? 'retirada' : 'retiradas' }}</p>
+      } @else {
+        <p class="subtitulo">Elige la herramienta que necesitas</p>
+      }
+    </div>
+  
+    <div class="filtros" role="group" aria-label="Filtrar por categoría">
+      @for (opcion of filtros; track opcion.valor) {
+        <button
+          type="button"
+          class="filtro"
+          [class.activo]="filtro() === opcion.valor"
+          [attr.aria-pressed]="filtro() === opcion.valor"
+          (click)="filtro.set(opcion.valor)">
+          {{ opcion.texto }}
+        </button>
+      }
+    </div>
+  </header>
+  
+  @if (error()) {
+    <p class="alerta alerta-error" role="alert">{{ error() }}</p>
+  }
+  
+  @if (cargando()) {
+    <div class="grilla">
+      <div class="esqueleto tarjeta-esqueleto"></div>
+      <div class="esqueleto tarjeta-esqueleto"></div>
+      <div class="esqueleto tarjeta-esqueleto"></div>
+    </div>
+  } @else {
+    <div class="grilla">
+      @for (h of herramientasFiltradas(); track h.id) {
+        <article class="herramienta tarjeta" [class.retirada]="!h.activa" data-testid="herramienta">
+          <div class="foto">
+            @if (h.imagenUrl) {
+              <img [src]="h.imagenUrl" [alt]="'Foto de ' + h.nombre" loading="lazy">
+            }
+            <span class="chip chip-naranja categoria">{{ nombreCategoria[h.categoria] }}</span>
+            @if (!h.activa) {
+              <span class="chip chip-neutro estado">Retirada</span>
+            }
+          </div>
+  
+          <div class="cuerpo">
+            <h2 class="nombre" data-testid="nombre-herramienta">{{ h.nombre }}</h2>
+            <p class="descripcion">{{ h.descripcion }}</p>
+  
+            <dl class="datos">
+              <div>
+                <dt>Por día</dt>
+                <dd data-testid="precio-dia">{{ pesos(h.precioDia) }}</dd>
+              </div>
+              <div>
+                <dt>Depósito</dt>
+                <dd>{{ pesos(h.deposito) }}</dd>
+              </div>
+              <div>
+                <dt>Unidades</dt>
+                <dd>{{ h.unidades }}</dd>
+              </div>
+            </dl>
+  
+            <div class="acciones" *appSiPuede="'HERRAMIENTAS_GESTIONAR'">
+              <button
+                type="button"
+                class="btn btn-sm"
+                [class.btn-peligro]="h.activa"
+                [class.btn-primario]="!h.activa"
+                data-testid="boton-estado"
+                (click)="alternarEstado(h)">
+                {{ h.activa ? 'Retirar' : 'Volver a ofrecer' }}
+              </button>
+            </div>
+          </div>
+        </article>
+      } @empty {
+        <p class="estado-vacio sin-resultados">No hay herramientas en esta categoría.</p>
+      }
+    </div>
+  }

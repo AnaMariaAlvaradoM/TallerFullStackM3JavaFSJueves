@@ -1,0 +1,122 @@
+.filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  
+  .filtro {
+    padding: 6px 14px;
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-pildora);
+    background: var(--superficie);
+    font-size: var(--texto-sm);
+    font-weight: 700;
+    cursor: pointer;
+  }
+  
+  .filtro.activo {
+    background: var(--acero);
+    border-color: var(--acero);
+    color: #ffffff;
+  }
+  
+  .grilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--espacio-md);
+  }
+  
+  .tarjeta-esqueleto {
+    height: 340px;
+  }
+  
+  .sin-resultados {
+    grid-column: 1 / -1;
+  }
+  
+  /* ---------- Tarjeta de herramienta ---------- */
+  .herramienta {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform var(--transicion);
+  }
+  
+  .herramienta:hover {
+    transform: translateY(-3px);
+  }
+  
+  .herramienta.retirada .foto,
+  .herramienta.retirada .nombre,
+  .herramienta.retirada .datos {
+    opacity: 0.5;
+    filter: grayscale(1);
+  }
+  
+  .foto {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, var(--naranja-clara), var(--naranja));
+  }
+  
+  .foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .categoria,
+  .estado {
+    position: absolute;
+    top: 12px;
+  }
+  
+  .categoria {
+    left: 12px;
+  }
+  
+  .estado {
+    right: 12px;
+  }
+  
+  .cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacio-xs);
+    flex: 1;
+    padding: var(--espacio-sm) var(--espacio-md) var(--espacio-md);
+  }
+  
+  .nombre {
+    font-size: var(--texto-lg);
+    font-weight: 800;
+  }
+  
+  .descripcion {
+    color: var(--texto-suave);
+    font-size: var(--texto-sm);
+    flex: 1;
+  }
+  
+  .datos {
+    display: flex;
+    gap: var(--espacio-md);
+  }
+  
+  .datos dt {
+    color: var(--texto-suave);
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  
+  .datos dd {
+    font-weight: 800;
+  }
+  
+  .acciones {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: var(--espacio-xs);
+    border-top: 1px solid var(--borde);
+  }

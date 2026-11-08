@@ -1,6 +1,48 @@
-<main class="bienvenida">
-  <h1 class="titulo-pagina">Llave Maestra</h1>
-  <p class="subtitulo">Taller del Módulo 3 · Abre fases/FASE-1.md para empezar.</p>
-</main>
+@if (authService.sesionActiva()) {
+  <div class="app">
+    <aside class="lateral">
+      <a routerLink="/herramientas" class="marca">
+        <img src="favicon.svg" alt="" width="36" height="36">
+        <span>Llave Maestra <small>Alquiler de herramientas</small></span>
+      </a>
 
-<router-outlet />
+      <nav class="menu" aria-label="Menú principal">
+        @for (enlace of enlaces(); track enlace.ruta) {
+          <a [routerLink]="enlace.ruta" routerLinkActive="activo" class="menu-enlace"
+             [attr.data-testid]="enlace.testid">
+            {{ enlace.texto }}
+          </a>
+        }
+      </nav>
+
+      <details class="acceso">
+        <summary>Tu acceso</summary>
+        <ul>
+          @for (permiso of authService.permisos(); track permiso) {
+            <li>{{ descripcionPermiso[permiso] }}</li>
+          }
+        </ul>
+      </details>
+    </aside>
+
+    <div class="principal">
+      <header class="barra">
+        <p class="saludo">
+          Hola, <strong data-testid="nombre-usuario">{{ authService.nombre() }}</strong>
+          <span class="chip" [class.chip-acero]="authService.rol() === 'ADMIN'"
+                [class.chip-naranja]="authService.rol() === 'CLIENTE'">{{ nombreRol() }}</span>
+        </p>
+        <button type="button" class="btn btn-secundario btn-sm" data-testid="cerrar-sesion"
+                (click)="authService.cerrarSesion()">
+          Cerrar sesión
+        </button>
+      </header>
+
+      <main class="contenido">
+        <router-outlet />
+      </main>
+    </div>
+  </div>
+} @else {
+  <router-outlet />
+}
