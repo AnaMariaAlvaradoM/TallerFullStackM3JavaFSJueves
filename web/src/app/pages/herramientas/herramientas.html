@@ -1,0 +1,74 @@
+<header class="encabezado-pagina">
+    <div>
+        <h1 class="titulo-pagina"> Herramientas</h1>
+        @if (gestiona()) {
+            <p class="subtitulo"> Catálogo · {{herramientas().length}} herramientas, {{inactivos()}} {{inactivos() ==1?'inactivo': 'inactivos'}}</p>
+        }@else {
+            <p class="subtitulo">Elige la herramienta que necesitas</p>
+        }
+    </div>
+</header>
+
+@if (error()) {
+    <p class="alerta alerta-error" role="alert">{{ error() }}</p>
+}
+
+@if (cargando()) {
+  <div class="grilla">
+    <div class="esqueleto tarjeta-esqueleto"></div>
+    <div class="esqueleto tarjeta-esqueleto"></div>
+    <div class="esqueleto tarjeta-esqueleto"></div>
+  </div>
+} @else{
+    <div class="grilla">
+        @for (e of herramientasFiltradas(); track e.id) {
+            <article class="espacio tarjeta"   [class.inactivo]="!e.activo" data-testid="herramienta">
+                <div class="foto">
+                    @if (e.imagenUrl) {
+                        <img [src]="e.imagenUrl" [alt]="'Foto de '+ e.nombre" loading="lazy">
+                    }
+                    <span class="chip chip-naranja categoria">{{nombreCategoria[e.categoria]}} </span>
+                    @if (!e.activo) {
+                        <span class="chi chip-neutro estado">inactivo</span>
+                    }
+                </div>
+                <div class="cuerpo" >
+                    <h2 class="nombre"data-testid="nombre-herramienta">{{e.nombre}}</h2>
+                    <p class="descripcion"> {{e.decripcion}}</p>
+
+                    <dl class="datos">
+                        <div>
+                            <dt>Por día</dt>
+                            <dd>{{pesos( e.precioDia)}}</dd>
+                        </div>
+                        <div>
+                            <dt>Valor del deposito</dt>
+                            <dd>{{pesos(e.deposito)}}</dd>
+                        </div>
+                        <div>
+                            <dt>Unidades: </dt>
+                            <dd>{{e.unidades}}</dd>
+                        </div>
+                    </dl>
+                    
+                <div class="acciones">
+                    
+                        <button
+                         *appSiPuede="'HERRAMIENTAS_GESTIONAR'"
+                        type="button"
+                        class="btn btn-sm"
+                        data-testid="boton-estado"
+                        [class.btn-peligro] = "e.activo"
+                        [class.btn-primario] = "!e.activo"
+                        (click) = "alternarEstado(e)">
+                        {{e.activo? 'Desactivar' : "Activar"}}
+                        </button>
+                    
+                </div>
+                </div>
+            </article>
+        }
+    </div>
+    
+}
+

@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// 2.3 · Disponibilidad: existe, esta activa, quedan unidades y el cliente no pasa de 3
+// 2.3 · Disponibilidad: existe, esta activo, quedan unidades y el cliente no pasa de 3
 class Fase2DisponibilidadTest extends PruebaApi {
 
     @Test

@@ -1,7 +1,133 @@
-.bienvenida {
+.app{
   display: grid;
-  place-content: center;
+  grid-template-columns: 240px 1fr;
+  min-height:  100vh;
+}
+
+.lateral {
+  position: sticky;
+  top: 0;
+  height: 100hv;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-lg);
+  padding: var(--espacio-md) var(--espacio-sm);
+  background: var(--naranja);
+  color: #ffffff;
+}
+
+.marca{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-size: var(--texto-lg);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.marca small{
+  display: block;
+  font-size: var(--texto-lg);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.menu{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.menu-enlace{
+  padding: 10 px 14 px;
+  border-radius: var(--radio-sm);
+  color:rgba(255, 255, 255, 0.75);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.menu-enlace:hover{
+  background: var(naranja-clara);
+  color: rgb(255, 255, 255);;
+}
+
+.menu-enlace.activo{
+  background: var(--naranja-oscura);
+  color: #ffffff;
+}
+
+.acceso{
+  font-size: var(--texto-sm);
+  color: #ffffff;
+}
+
+.acceso summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.acceso ul{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: var(--espacio-xs);
+}
+
+.acceso li::before {
+  content: '⬢ ';
+  color: var(--naranja);
+}
+
+
+.barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-sm);
+  padding: 14px var(--espacio-lg);
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borde);
+}
+
+.saludo {
+  display: flex;
+  align-items: center;
   gap: var(--espacio-xs);
-  min-height: 60vh;
-  text-align: center;
+}
+.contenido {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--espacio-lg);
+}
+
+@media (max-width: 800px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .lateral {
+    position: static;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .menu {
+    flex-direction: row;
+  }
+
+  .acceso {
+    display: none;
+  }
+
+  .barra,
+  .contenido {
+    padding-left: var(--espacio-sm);
+    padding-right: var(--espacio-sm);
+  }
 }
