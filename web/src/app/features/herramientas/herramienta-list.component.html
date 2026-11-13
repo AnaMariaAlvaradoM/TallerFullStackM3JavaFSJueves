@@ -1,0 +1,47 @@
+<div class="container mx-auto p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-3xl font-bold text-gray-800">Catálogo de Herramientas</h2>
+  </div>
+
+  @if (cargando()) {
+  <div class="flex justify-center items-center py-10">
+    <p class="text-lg text-gray-500">Cargando herramientas...</p>
+  </div>
+  } @else {
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for (h of herramientas(); track h.id) {
+    <div class="bg-white border border-gray-200 rounded-lg shadow-md p-5 flex flex-col justify-between">
+      <div>
+        <div class="flex justify-between items-start mb-2">
+          <h3 class="text-xl font-semibold text-gray-800">{{ h.nombre }}</h3>
+          <span class="px-2.5 py-0.5 text-xs font-medium rounded-full" [class.bg-green-100]="h.activa"
+            [class.text-green-800]="h.activa" [class.bg-red-100]="!h.activa" [class.text-red-800]="!h.activa">
+            {{ h.activa ? 'Activa' : 'Inactiva' }}
+          </span>
+        </div>
+
+        <p class="text-gray-600 text-sm mb-4">{{ h.descripcion }}</p>
+
+        <div class="text-sm text-gray-700 mb-4">
+          <p><strong>Categoría:</strong> {{ h.categoria }}</p>
+          <p><strong>Precio por día:</strong> ${{ h.precioDia | number:'1.2-2' }}</p>
+        </div>
+      </div>
+
+      <!-- Validación de Permisos con AuthService -->
+      @if (authService.tienePermiso('HERRAMIENTAS_GESTIONAR')) {
+      <div class="mt-4 pt-4 border-t border-gray-100 flex justify-end">
+        <button (click)="cambiarEstado(h.id, h.activa)"
+          class="px-4 py-2 text-sm font-medium text-white rounded-md transition-colors" [class.bg-red-600]="h.activa"
+          [class.hover:bg-red-700]="h.activa" [class.bg-green-600]="!h.activa" [class.hover:bg-green-700]="!h.activa">
+          {{ h.activa ? 'Retirar Herramienta' : 'Activar Herramienta' }}
+        </button>
+      </div>
+      }
+    </div>
+    } @empty {
+    <p class="text-gray-500 col-span-full text-center py-10">No hay herramientas registradas en el sistema.</p>
+    }
+  </div>
+  }
+</div>
