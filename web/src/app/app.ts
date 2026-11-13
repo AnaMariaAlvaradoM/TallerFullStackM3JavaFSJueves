@@ -14,6 +14,6 @@ import { NavbarComponent } from './core/components/navbar/navbar.component';
     </main>
   `,
 })
-export class AppComponent {
+export class App {
   title = 'llave-maestra-frontend';
 }
