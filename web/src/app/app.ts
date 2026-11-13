@@ -1,10 +1,19 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './core/components/navbar/navbar.component';
 
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
-  styleUrl: './app.css',
-  templateUrl: './app.html',
+  standalone: true,
+  imports: [CommonModule, RouterOutlet, NavbarComponent],
+  template: `
+    <app-navbar />
+    <main>
+      <router-outlet />
+    </main>
+  `,
 })
-export class App {}
+export class AppComponent {
+  title = 'llave-maestra-frontend';
+}
