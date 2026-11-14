@@ -125,14 +125,7 @@ public class AlquilerServiceImpl implements AlquilerService {
         return toResponse(alquilerRepository.save(alquiler));
     }
 
-//    private long limiteCantidades(long herramientaId){
-//        Herramienta herramienta = herramientaRepository.findById(herramientaId)
-//                .orElseThrow(()-> new RecursoNoEncontradoException("No existe una herramienta con id " + herramientaId));
-//        List<EstadoAlquiler> estados = List.of(EstadoAlquiler.ENTREGADO,EstadoAlquiler.RESERVADO);
-//
-//        long unidadesHerramientaAlquilada = alquilerRepository.countByHerramientaIdAndEstadoInAndFechaInicioLessThanEqualAndFechaFinGreaterThanEqual(herramientaId,estados);
-//        return unidadesHerramientaAlquilada;
-//    }
+
     private void limiteAlquiler(String email){
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(()->new RecursoNoEncontradoException("No existe un usuario con email " + email));
@@ -159,7 +152,7 @@ public class AlquilerServiceImpl implements AlquilerService {
         }
         // No se puede hacer una reserva en un día que ya pasó
         if (inicio.isBefore(LocalDate.now())){
-            throw  new DatoInvalidoException("No se puede hacer una reserva en un día que ya pasó");
+            throw  new DatoInvalidoException("No se puede Hacer un alquiler en un día que ya pasó");
         }
     }
 

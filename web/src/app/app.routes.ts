@@ -16,6 +16,13 @@ export const routes: Routes = [
         canActivate: [authGuard, permisoGuard('HERRAMIENTAS_VER')],
         loadComponent: () => import('./pages/herramientas/herramientas').then(m =>m.Herramientas)
     },
+     {
+        path:'herramientas/:id/alquilar',
+        title: 'Alquilar · LaveMaestra',
+        canActivate: [authGuard,permisoGuard('ALQUILERES_CREAR')],
+        loadComponent: () => import('./pages/alquilar/alquilar').then(m => m.Alquilar)
+
+    },
     {
         path: 'clientes',
         title: 'Clientes · LlaveMaestra',
@@ -28,7 +35,7 @@ export const routes: Routes = [
         canActivate:[authGuard, permisoGuard('ALQUILERES_VER_PROPIOS')],
         loadComponent: () => import('./pages/mis-alquileres/mis-alquileres').then(m=>m.MisAlquileres)
     },
-    
+   
     {
         path: 'sin-acceso',
         title: 'sin acceso · LlaveMaestra',

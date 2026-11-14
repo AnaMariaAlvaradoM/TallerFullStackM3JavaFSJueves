@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable,inject, signal } from '@angular/core';
 import { API_URL } from '../core/api';
 import { mensajeDeError } from '../core/errores';
+import { Observable } from 'rxjs';
 
 export type Categoria = 
     |'ELECTRICA'
@@ -16,7 +17,7 @@ export interface Herramienta{
     categoria: Categoria,
     precioDia: number,
     deposito: number,
-    decripcion: string,
+    descripcion: string,
     imagenUrl: string,
     unidades: number,
     activo: boolean,
@@ -48,6 +49,10 @@ export class HerramientasService {
     herramientas = this.lista.asReadonly();
     cargando = this.cargandoSignal.asReadonly();
     error = this.errorsignal.asReadonly();
+
+    obtener(id:number): Observable <Herramienta> {
+        return this.http.get<Herramienta>(`${this.apiUrl}/${id}`);
+    }
 
     //Lo usa el backend para saber si devuelve todas las herramientas o solo las activos
     cargar(){

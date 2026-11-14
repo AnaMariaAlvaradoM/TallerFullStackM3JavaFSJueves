@@ -34,7 +34,7 @@
                 </div>
                 <div class="cuerpo" >
                     <h2 class="nombre"data-testid="nombre-herramienta">{{e.nombre}}</h2>
-                    <p class="descripcion"> {{e.decripcion}}</p>
+                    <p class="descripcion"> {{e.descripcion}}</p>
 
                     <dl class="datos">
                         <div>
@@ -50,23 +50,30 @@
                             <dd>{{e.unidades}}</dd>
                         </div>
                     </dl>
-                    
-                <div class="acciones">
+
+                    <div class="acciones">
+                        @if (e.activo) {
+                        <a *appSiPuede="'ALQUILERES_CREAR'" [routerLink]="['/herramientas',e.id,'alquilar']" 
+                        class="btn btn-primario" data-testid="boton-alquilar" >
+                        Alquilar</a>}
+                        
                     
                         <button
                          *appSiPuede="'HERRAMIENTAS_GESTIONAR'"
                         type="button"
                         class="btn btn-sm"
-                        data-testid="boton-estado"
                         [class.btn-peligro] = "e.activo"
                         [class.btn-primario] = "!e.activo"
                         (click) = "alternarEstado(e)">
                         {{e.activo? 'Desactivar' : "Activar"}}
                         </button>
                     
+                    
                 </div>
                 </div>
             </article>
+        }@empty {
+            <p class="estado-vacio sin-resultados">No hay Herramientas de este tipo.</p>
         }
     </div>
     

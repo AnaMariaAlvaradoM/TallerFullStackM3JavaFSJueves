@@ -1,1 +1,58 @@
-<p>mis-alquileres works!</p>
+<header class="encabezado-pagina">
+    <div>
+        <h1 class="titulo-pagina">Mis herramientas Alquiladas</h1>
+    </div>
+    <a routerLink="/herramientas" class="btn btn-primario">Reservar otra herrmaienta</a>
+</header>
+
+@if (error()) {
+    <p class="alerta alerta-error" role="alert">{{error()}}</p>
+}
+
+@if (cargando()) {
+    <div class="esqueleto lista-esqueleto"></div>
+} @else {
+    <ul class="lista">
+        @for (a of alquileres(); track a.id) {
+            <li class="tarjeta alquilar" [class.cancelada]="a.estado === 'CANCELADA'" data-testid="alquiler">
+                <div class="principal">
+                    <h2 class="nombre">{{a.herramientaNombre}}</h2>
+                    <p class="cuando">
+                        {{dia(a.fechaInicio)}} · {{dia(a.fechaFin)}}
+                    </p>
+                </div>
+
+                <strong class="valor">{{pesos(a.valorTotal)}}</strong>
+
+                <span class="chip estado" [class.chip-exito]="a.estado === 'RESERVADO'"
+                [class.chip-neutro]="a.estado === 'CANCELADA'" data-testid="estado-alquiler">
+                {{a.estado === 'RESERVADO' ? 'ALQUILADA' : 'CANCELADA'}}
+            </span>
+
+            <div class="acciones">
+                @if (sePuedeCancelar(a)) {
+                    @if (porConfirmar() === a.id) {
+                        <span class="pregunta">¿Cancelar este alquiler??</span>
+                        <button type="button" class="btn btn-peligro btn-sm" data-testid="confirmar-cancelacion"
+                        (click)="confirmarCancelacion(a)">
+                        Sí, cancelar
+                    </button>
+                    <button type="button" class="btn btn-secundario btn-sm"  (click)="porConfirmar.set(null)">No</button>
+                    }@else {
+                        <button type="button" class=" btn btn-secundario btn-sm" data-testid="boton-cancelar"
+                        (click)="porConfirmar.set(a.id)">
+                        cancelar
+                        </button>
+                    }
+                }
+            </div>
+            </li>
+        } @empty {
+            <li class="estado-vacio" data-testid="sin-alquileres">
+                Aún no has alquilado una herramienta. Escoge la que necesites.
+            </li>
+        }
+    </ul>
+}
+
+

@@ -14,12 +14,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/alquileres")
-public class AlquileresController {
+public class AlquilerController {
 
     private final AlquilerService alquilerService;
 
 
-    public AlquileresController(AlquilerService alquilerService) {
+    public AlquilerController(AlquilerService alquilerService) {
         this.alquilerService = alquilerService;
     }
 
@@ -36,7 +36,7 @@ public class AlquileresController {
         return ResponseEntity.ok(alquilerService.listarMias(authentication.getName()));
     }
 
-    @PreAuthorize("hasAuthority('ALQUILERES_CANCELAR_PROPIOS')")
+    @PreAuthorize("hasAnyAuthority('ALQUILERES_CANCELAR_PROPIOS', 'ALQUILERES_CANCELAR_TODAS')")
     @PatchMapping("/{id}/cancelar")
     public ResponseEntity<AlquilerResponse> cancelar(@PathVariable Long id,Authentication authentication){
         return ResponseEntity.ok(alquilerService.cancelar(id,authentication));
