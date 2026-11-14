@@ -63,7 +63,7 @@ class Fase1ClientesTest extends PruebaApi {
         try {
             assertEquals(200, cambiarEstado(admin, diana, false).estado(), "El administrador debería poder bloquear a Diana (200)");
             assertEquals(401, get("/api/herramientas", tokenViejo).estado(),
-                    "Con Diana bloqueada, su token anterior debería recibir 401 (el JwtFilter debe revisar que la cuenta siga activa)");
+                    "Con Diana bloqueada, su token anterior debería recibir 401 (el JwtFilter debe revisar que la cuenta siga activo)");
         } finally {
             cambiarEstado(admin, diana, true);
         }

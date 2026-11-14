@@ -35,7 +35,7 @@ class Fase3HerramientasTest extends PruebaApi {
         assertEquals(nombre, h.path("nombre").asString(), "La respuesta debería traer el nombre enviado");
         assertEquals(18000, h.path("precioDia").asInt(), "La respuesta debería traer el precioDia enviado");
         assertEquals(2, h.path("unidades").asInt(), "La respuesta debería traer las unidades enviadas");
-        assertTrue(h.path("activa").asBoolean(), "Una herramienta nueva entra activa");
+        assertTrue(h.path("activo").asBoolean(), "Una herramienta nueva entra activo");
         assertTrue(nombres(get("/api/herramientas", token(PEDRO)).json()).contains(nombre), "Pedro debería ver la herramienta nueva en el catálogo");
     }
 

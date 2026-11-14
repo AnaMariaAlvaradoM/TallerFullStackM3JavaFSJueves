@@ -1,0 +1,75 @@
+.lista {
+    display: grid;
+    gap: var(--espacio-sm);
+    list-style: none;
+  }
+  
+  .lista-esqueleto {
+    height: 240px;
+  }
+  
+  .Alquiler {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas:
+      'principal valor estado'
+      'acciones acciones acciones';
+    align-items: center;
+    gap: var(--espacio-xs) var(--espacio-md);
+    padding: var(--espacio-sm) var(--espacio-md);
+    border-left: 4px solid var(--miel);
+  }
+  
+  /* Lo cancelado pierde protagonismo */
+  .reserva.cancelada {
+    border-left-color: var(--borde);
+    opacity: 0.7;
+  }
+  
+  .principal {
+    grid-area: principal;
+  }
+  
+  .nombre {
+    font-size: var(--texto-lg);
+  }
+  
+  .cuando {
+    color: var(--texto-suave);
+    font-size: var(--texto-sm);
+  }
+  
+  .valor {
+    grid-area: valor;
+  }
+  
+  .estado {
+    grid-area: estado;
+  }
+  
+  .acciones {
+    grid-area: acciones;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--espacio-xs);
+  }
+  
+  .acciones:empty {
+    display: none;
+  }
+  
+  .pregunta {
+    font-size: var(--texto-sm);
+    font-weight: 700;
+  }
+  
+  @media (max-width: 640px) {
+    .reserva {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        'principal estado'
+        'valor valor'
+        'acciones acciones';
+    }
+  }

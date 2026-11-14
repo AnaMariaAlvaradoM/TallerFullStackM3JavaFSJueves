@@ -1,0 +1,59 @@
+<a routerLink="/herramientas" class="volver">Volver a Herramientas</a>
+
+@if (errorCarga()) {
+    <p class=" alerta alerta-error" role="alert">{{errorCarga()}}</p>
+}
+
+@if (herramienta(); as e) {
+    <div class="alquilar">
+        <section class="tarjeta ficha">
+            @if (e.imagenUrl) {
+                <img [src]="e.imagenUrl" [alt]="'Foto de '+  e.nombre">
+            }
+            <div class="ficha-cuerpo">
+                <h1 class="titulo-pagina" data-testid="nombre-herramienta">{{e.nombre}}</h1>
+                <p class="subtitulo"> {{e.descripcion}}</p>
+                <p class="datos">
+                    <span>{{pesos(e.precioDia)}} por día</span>
+                </p>
+            </div>
+        </section>
+
+        <form class="tarjeta formulario" (submit)="alquilar($event)" (input)="actualizar($event)" novalidate>
+            <h2 class="titulo-form">Reserva tu herramienta</h2>
+            <p>Solo se pueden reservar las herramientas por máximo 15 días</p>
+
+            <label class="campo">
+              <span>Desde</span>
+              <input type="date" name="fechaInicio" min="2026-11-14">
+              <span>Hasta</span>
+                <input type="date" name="fechaFin" min="2026-11-14">
+            </label>
+
+            @if (dias() >0) {
+                <p class="resumen" data-testid="resumen-valor" aria-live="polite">
+
+                    <span>Cantidad de días: {{dias().toLocaleString('es-CO')}} {{dias() == 1 ? 'día' : 'días'}}</span>
+                    <strong>Total a pagar: {{pesos(valor())}}</strong>
+                    <small>Se paga en el contador</small>
+                </p>
+            }
+
+            @if (errores().length > 0) {
+                <ul class=" alerta alerta-error" role="alert" data-testid="errores-formulario">
+                    @for (error  of errores(); track error) {
+                        <li>{{error}}</li>
+                    }
+                </ul>
+            }
+
+            @if (errorServidor()) {
+                <p class="alerta alerta-error" role="alert" data-testid="error-alquiler">{{errorServidor()}}</p>
+            }
+
+            <button type="submit" class="btn btn-primario btn-bloque" [disabled]="enviando()">
+                {{enviando() ? 'Alquilando...' : 'Confirmar Alquiler'}}
+            </button>
+        </form>
+    </div>
+}

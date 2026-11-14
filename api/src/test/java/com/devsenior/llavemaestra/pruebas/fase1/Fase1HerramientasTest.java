@@ -38,7 +38,7 @@ class Fase1HerramientasTest extends PruebaApi {
         List<String> nombres = nombres(r.json());
         assertTrue(nombres.containsAll(ACTIVAS), "Pedro debería ver las 5 herramientas activas");
         assertFalse(nombres.contains("Nivel láser"), "Pedro NO debería ver el Nivel láser: está retirado");
-        r.json().forEach(h -> assertTrue(h.path("activa").asBoolean(), "El cliente solo debería recibir herramientas con activa = true"));
+        r.json().forEach(h -> assertTrue(h.path("activo").asBoolean(), "El cliente solo debería recibir herramientas con activo = true"));
     }
 
     @Test
@@ -49,7 +49,7 @@ class Fase1HerramientasTest extends PruebaApi {
         assertEquals(25000, taladro.path("precioDia").asInt(), "El precioDia del taladro debería ser 25000");
         assertEquals(100000, taladro.path("deposito").asInt(), "El deposito del taladro debería ser 100000");
         assertEquals(3, taladro.path("unidades").asInt(), "El taladro debería tener 3 unidades");
-        assertTrue(taladro.path("activa").asBoolean(), "El taladro debería estar activa = true");
+        assertTrue(taladro.path("activo").asBoolean(), "El taladro debería estar activo = true");
     }
 
     @Test
