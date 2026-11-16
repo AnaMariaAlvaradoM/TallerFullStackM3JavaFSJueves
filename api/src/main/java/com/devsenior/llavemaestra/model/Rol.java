@@ -1,0 +1,31 @@
+package com.devsenior.llavemaestra.model;
+
+import java.util.Set;
+
+import static com.devsenior.llavemaestra.model.Permiso.*;
+
+public enum Rol {
+    ADMIN(Set.of(
+            ALQUILERES_GETSIONAR,
+            ALQUILERES_VER_TODOS,
+            CLIENTES_GESTIONAR,
+            HERRAMIENTAS_GESTIONAR,
+            HERRAMIENTAS_VER,
+            REPORTES_VER)),
+
+    CLIENTE(Set.of(
+            HERRAMIENTAS_VER,
+            ALQUILERES_CREAR,
+            ALQUILERES_VER_PROPIOS,
+            ALQUILERES_CANCELAR_PROPIOS));
+
+    private final Set<Permiso> permisos;
+
+    Rol(Set<Permiso> permisos) {
+        this.permisos = permisos;
+    }
+
+    public Set<Permiso> getPermisos() {
+        return permisos;
+    }
+}
