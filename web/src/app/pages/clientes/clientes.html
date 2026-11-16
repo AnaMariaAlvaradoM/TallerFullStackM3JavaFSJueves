@@ -1,0 +1,122 @@
+<header class="encabezado-pagina clientes__encabezado">
+  <div>
+    <p class="clientes__eyebrow">Administración</p>
+    <h1 class="titulo-pagina">Clientes</h1>
+    <p class="subtitulo">Gestiona las cuentas y el acceso al catálogo de herramientas.</p>
+  </div>
+  <span class="clientes__acceso">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 3 19 6v5c0 4.5-2.8 8-7 10-4.2-2-7-5.5-7-10V6l7-3Z"/>
+      <path d="m9 12 2 2 4-4"/>
+    </svg>
+    Solo administración
+  </span>
+</header>
+
+<section class="resumen clientes__resumen" aria-label="Resumen de clientes">
+  <article class="tarjeta indicador">
+    <span class="indicador__icono indicador__icono--total" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m5-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-7.8a4 4 0 0 1 0 7.6m5 10v-2a4 4 0 0 0-3-3.9"/></svg>
+    </span>
+    <span class="numero">{{ usuarios().length }}</span>
+    <span class="etiqueta">Cuentas registradas</span>
+  </article>
+  <article class="tarjeta indicador">
+    <span class="indicador__icono indicador__icono--activos" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>
+    </span>
+    <span class="numero">{{ activos() }}</span>
+    <span class="etiqueta">Cuentas activas</span>
+  </article>
+  <article class="tarjeta indicador">
+    <span class="indicador__icono indicador__icono--admin" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/></svg>
+    </span>
+    <span class="numero">{{ administradores() }}</span>
+    <span class="etiqueta">Administradores</span>
+  </article>
+</section>
+
+@if (error()) {
+  <p class="alerta alerta-error" role="alert">{{ error() }}</p>
+}
+
+<section class="clientes__panel tarjeta" aria-labelledby="clientes-lista-titulo">
+  <div class="clientes__panel-cabecera">
+    <div>
+      <h2 id="clientes-lista-titulo">Cuentas</h2>
+      <p>Consulta el estado y administra el acceso de cada persona.</p>
+    </div>
+    <span class="clientes__contador">{{ usuarios().length }} en total</span>
+  </div>
+
+  @if (cargando()) {
+    <div class="esqueleto clientes__esqueleto" role="status" aria-label="Cargando clientes"></div>
+  } @else if (usuarios().length === 0) {
+    <div class="estado-vacio clientes__vacio">
+      <h3>Aún no hay cuentas para mostrar</h3>
+      <p>Cuando se registren clientes, aparecerán aquí.</p>
+    </div>
+  } @else {
+    <div class="tabla-contenedor clientes__tabla-contenedor">
+      <table class="tabla clientes__tabla">
+        <caption class="clientes__sr-only">Cuentas y estado de acceso de clientes y administradores</caption>
+        <thead>
+          <tr>
+            <th scope="col">Persona</th>
+            <th scope="col">Rol</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Registro</th>
+            <th scope="col"><span class="clientes__sr-only">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of usuarios(); track u.id) {
+            <tr [class.cliente-inactivo]="!u.activo" data-testid="cliente">
+              <td>
+                <div class="cliente__persona">
+                  <span class="cliente__avatar" aria-hidden="true">{{ u.nombre.charAt(0).toUpperCase() }}</span>
+                  <span class="cliente__identidad">
+                    <strong>{{ u.nombre }}</strong>
+                    <span class="cliente__email">{{ u.email }}</span>
+                  </span>
+                </div>
+              </td>
+              <td>
+                <span
+                  class="chip"
+                  [class.chip-tinta]="u.rol === 'ADMIN'"
+                  [class.chip-miel]="u.rol === 'CLIENTE'">
+                  {{ nombreRol[u.rol] }}
+                </span>
+              </td>
+              <td>
+                <span class="chip" [class.chip-exito]="u.activo" [class.chip-neutro]="!u.activo">
+                  <span class="cliente__estado-punto" aria-hidden="true"></span>
+                  {{ u.activo ? 'Activa' : 'Bloqueada' }}
+                </span>
+              </td>
+              <td class="cliente__fecha">{{ fechaCorta(u.creadoEn) }}</td>
+              <td class="celda-accion">
+                @if (esYo(u)) {
+                  <span class="tu-cuenta">Tu cuenta</span>
+                } @else {
+                  <button
+                    type="button"
+                    class="btn btn-sm"
+                    [class.btn-peligro]="u.activo"
+                    [class.btn-secundario]="!u.activo"
+                    [attr.aria-label]="(u.activo ? 'Bloquear ' : 'Activar ') + u.nombre"
+                    data-testid="boton-estado"
+                    (click)="alternarEstado(u)">
+                    {{ u.activo ? 'Bloquear' : 'Activar' }}
+                  </button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

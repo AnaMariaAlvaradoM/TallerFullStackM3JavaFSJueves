@@ -13,6 +13,13 @@
   --naranja-oscura: #a8470a;
   --naranja-clara: #fff0e5;
 
+  /* Alias de marca usados por los componentes existentes */
+  --tinta: var(--acero);
+  --tinta-suave: var(--acero-suave);
+  --miel: var(--naranja);
+  --miel-oscura: var(--naranja-oscura);
+  --miel-clara: var(--naranja-clara);
+
   /* Neutros */
   --fondo: #f4f5f3;
   --superficie: #ffffff;
@@ -62,6 +69,8 @@
 }
 
 body {
+  min-width: 320px;
+  min-height: 100vh;
   font-family: var(--fuente);
   font-size: var(--texto-base);
   line-height: 1.6;
@@ -240,6 +249,16 @@ h3 {
 .chip-acero {
   background: var(--acero);
   color: #ffffff;
+}
+
+.chip-tinta {
+  background: var(--tinta);
+  color: #ffffff;
+}
+
+.chip-miel {
+  background: var(--miel);
+  color: var(--acero);
 }
 
 .alerta {

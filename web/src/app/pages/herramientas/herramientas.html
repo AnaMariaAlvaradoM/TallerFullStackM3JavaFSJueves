@@ -1,0 +1,129 @@
+<header class="encabezado-pagina herramientas__encabezado">
+  <div>
+    <p class="herramientas__eyebrow">Catálogo</p>
+    <h1 class="titulo-pagina">Herramientas</h1>
+    @if (gestiona()) {
+      <p class="subtitulo">
+        Administra el inventario y su disponibilidad.
+        <span class="herramientas__resumen">
+          {{ herramientas().length }} en total · {{ inactivos() }} retiradas
+        </span>
+      </p>
+    } @else {
+      <p class="subtitulo">Encuentra el equipo que necesitas para tu próximo proyecto.</p>
+    }
+  </div>
+</header>
+
+<section class="herramientas__filtros" aria-label="Filtros del catálogo">
+  <div class="herramientas__filtros-titulo">
+    <strong>Explorar por categoría</strong>
+    <span>Elige el tipo de herramienta</span>
+  </div>
+  <div class="filtros" role="group" aria-label="Filtrar por tipo">
+    @for (opcion of filtros; track opcion.valor) {
+      <button
+        type="button"
+        class="filtro"
+        [class.activo]="filtro() === opcion.valor"
+        [attr.aria-pressed]="filtro() === opcion.valor"
+        (click)="filtro.set(opcion.valor)">
+        {{ opcion.texto }}
+      </button>
+    }
+  </div>
+</section>
+
+@if (error()) {
+  <p class="alerta alerta-error" role="alert">{{ error() }}</p>
+}
+
+@if (cargando()) {
+  <div class="grilla" role="status" aria-label="Cargando herramientas">
+    <div class="esqueleto tarjeta-esqueleto" aria-hidden="true"></div>
+    <div class="esqueleto tarjeta-esqueleto" aria-hidden="true"></div>
+    <div class="esqueleto tarjeta-esqueleto" aria-hidden="true"></div>
+  </div>
+} @else {
+  <div class="grilla">
+    @for (e of herramientasFiltrados(); track e.id) {
+      <article
+        class="herramienta-card tarjeta"
+        [class.herramienta-card--inactiva]="!e.activa"
+        data-testid="herramienta">
+        <div class="herramienta-card__foto">
+          @if (e.imagenUrl) {
+            <img
+              [src]="e.imagenUrl"
+              [alt]="'Foto de ' + e.nombre"
+              loading="lazy"
+              decoding="async">
+          } @else {
+            <div class="herramienta-card__sin-foto" aria-hidden="true">
+              <img src="favicon.svg" alt="" width="42" height="42">
+            </div>
+          }
+          <span class="chip chip-naranja herramienta-card__categoria">
+            {{ nombreTipo[e.categoria] }}
+          </span>
+          @if (!e.activa) {
+            <span class="chip chip-neutro herramienta-card__estado">Retirada</span>
+          }
+        </div>
+
+        <div class="herramienta-card__cuerpo">
+          <div class="herramienta-card__titulo">
+            <h2 data-testid="nombre-herramienta">{{ e.nombre }}</h2>
+            @if (e.activa) {
+              <span class="herramienta-card__disponible">
+                <span aria-hidden="true"></span>
+                Activa
+              </span>
+            }
+          </div>
+
+          <p class="herramienta-card__descripcion">
+            {{ e.descripcion || 'Consulta los detalles de esta herramienta.' }}
+          </p>
+
+          <div class="herramienta-card__precio">
+            <span>Alquiler por día</span>
+            <strong data-testid="precio-dia">{{ pesos(e.precioDia) }}</strong>
+          </div>
+
+          <dl class="herramienta-card__datos">
+            <div>
+              <dt>Depósito</dt>
+              <dd>{{ pesos(e.deposito) }}</dd>
+            </div>
+            <div>
+              <dt>Unidades</dt>
+              <dd>{{ e.unidades }}</dd>
+            </div>
+          </dl>
+
+          <div class="herramienta-card__acciones" *appSiPuede="'HERRAMIENTAS_GESTIONAR'">
+            <button
+              type="button"
+              class="btn btn-sm"
+              [class.btn-peligro]="e.activa"
+              [class.btn-primario]="!e.activa"
+              [attr.aria-label]="(e.activa ? 'Retirar ' : 'Activar ') + e.nombre"
+              data-testid="boton-estado"
+              (click)="alternarEstado(e)">
+              {{ e.activa ? 'Retirar del catálogo' : 'Activar herramienta' }}
+            </button>
+          </div>
+        </div>
+      </article>
+    } @empty {
+      <div class="estado-vacio herramientas__vacio">
+        <h2>No hay herramientas en esta categoría</h2>
+        <p>Prueba otra categoría para encontrar lo que buscas.</p>
+        <button type="button" class="btn btn-secundario" (click)="filtro.set('TODOS')">
+          Ver todas las herramientas
+        </button>
+      </div>
+    }
+  </div>
+}
