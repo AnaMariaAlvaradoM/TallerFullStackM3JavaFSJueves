@@ -6,7 +6,7 @@ import static com.devsenior.llavemaestra.model.Permiso.*;
 
 public enum Rol {
     ADMIN(Set.of(
-            ALQUILERES_GETSIONAR,
+            ALQUILERES_GESTIONAR,
             ALQUILERES_VER_TODOS,
             CLIENTES_GESTIONAR,
             HERRAMIENTAS_GESTIONAR,

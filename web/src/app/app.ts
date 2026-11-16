@@ -7,12 +7,13 @@ interface EnlaceMenu {
   ruta: string;
   texto: string;
   permiso: Permiso;
+  testId: string;
 }
 
 // El menú completo: cada enlace dice qué permiso necesita para verse
 const MENU: EnlaceMenu[] = [
-  { ruta: '/herramientas', texto: 'Herramientas', permiso: 'HERRAMIENTAS_VER' },
-  { ruta: '/usuarios', texto: 'Clientes', permiso: 'CLIENTES_GESTIONAR' }
+  { ruta: '/herramientas', texto: 'Herramientas', permiso: 'HERRAMIENTAS_VER', testId: 'menu-herramientas' },
+  { ruta: '/usuarios', texto: 'Clientes', permiso: 'CLIENTES_GESTIONAR', testId: 'menu-clientes' }
 ];
 
 @Component({

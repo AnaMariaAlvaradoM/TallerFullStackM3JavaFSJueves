@@ -80,7 +80,7 @@ export class AuthService {
         this.tokenSignal.set(respuesta.token);
         localStorage.setItem(CLAVE_TOKEN, respuesta.token);
         this.cargandoSignal.set(false);
-        this.router.navigateByUrl('/espacios');
+        this.router.navigateByUrl('/herramientas');
       },
       error: (error: HttpErrorResponse) => {
         this.cargandoSignal.set(false);

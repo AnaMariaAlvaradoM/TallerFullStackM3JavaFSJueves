@@ -8,7 +8,7 @@
 
       <nav class="menu" aria-label="Menú principal">
         @for (enlace of enlaces(); track enlace.ruta) {
-          <a [routerLink]="enlace.ruta" routerLinkActive="activo" class="menu-enlace">
+          <a [routerLink]="enlace.ruta" routerLinkActive="activo" class="menu-enlace" [attr.data-testid]="enlace.testId">
             {{ enlace.texto }}
           </a>
         }
@@ -27,11 +27,11 @@
     <div class="principal">
       <header class="barra">
         <p class="saludo">
-          Hola, <strong>{{ authService.nombre() }}</strong>
+          Hola, <strong data-testid="nombre-usuario">{{ authService.nombre() }}</strong>
           <span class="chip" [class.chip-tinta]="authService.rol() === 'ADMIN'"
                 [class.chip-miel]="authService.rol() === 'CLIENTE'">{{ nombreRol() }}</span>
         </p>
-        <button type="button" class="btn btn-secundario btn-sm" (click)="authService.cerrarSesion()">
+        <button type="button" class="btn btn-secundario btn-sm" data-testid="cerrar-sesion" (click)="authService.cerrarSesion()">
           Cerrar sesión
         </button>
       </header>
