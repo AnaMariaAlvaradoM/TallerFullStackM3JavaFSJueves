@@ -47,20 +47,22 @@
   
   .foto {
     position: relative;
-    aspect-ratio: 4 / 3;
-    background: var(--neutro-claro);
+    height: 220px;
+    overflow: hidden;
+    background: #ffffff; 
   }
   
   .foto img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
   
-  .tipo {
-    position: absolute;
-    top: var(--espacio-xs);
-    left: var(--espacio-xs);
+  .tipo,
+  .estado {
+    z-index: 1;
   }
   
   .estado {

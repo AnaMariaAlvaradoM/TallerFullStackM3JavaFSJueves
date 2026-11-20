@@ -1,13 +1,14 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { pesos } from '../../core/formato';
-import { SiPuede } from '../../shared/si-puede';
+import { SiPuede } from '../../Shared/si-puede';
 import {
   Categoria,
   Herramienta,
   HerramientasService,
   NOMBRE_CATEGORIA
 } from '../../services/herramientas.service';
+
 
 type Filtro = Categoria | 'TODOS';
 

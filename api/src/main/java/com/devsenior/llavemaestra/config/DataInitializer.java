@@ -44,22 +44,22 @@ public class DataInitializer implements CommandLineRunner {
         // ---------- Herramientas ----------
         herramienta("Taladro percutor", Categoria.ELECTRICA, 25000, 100000, 3, true,
                 "Taladro percutor para concreto y mampostería",
-                "https://loremflickr.com/400/300/drill,tool");
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFHTPFmDrrsYhYhh-oP9u6GIQDnZqMgl5zNgelv5nLiMaMFIjfh5WNJElW&s=10");
         herramienta("Pulidora angular", Categoria.ELECTRICA, 22000, 80000, 2, true,
                 "Pulidora angular de 4 1/2 pulgadas",
-                "https://loremflickr.com/400/300/grinder,tool");
+                "https://media.falabella.com/sodimacCO/626498/w=1500,h=1500");
         herramienta("Mezcladora de concreto", Categoria.CONSTRUCCION, 60000, 300000, 1, true,
                 "Mezcladora de concreto para obra",
-                "https://loremflickr.com/400/300/concrete,mixer");
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2pcgKW9fqhhZmY7cg-03Y9Pc4ixjGNZWoDpxzBjHwbA&s=10");
         herramienta("Andamio tubular", Categoria.CONSTRUCCION, 15000, 120000, 4, true,
                 "Andamio tubular para alturas",
-                "https://loremflickr.com/400/300/scaffold");
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMGugmK3TrH9YwdMIioelKKDXQ5kJXry1Zy4mkjTro0w&s=10");
         herramienta("Guadañadora", Categoria.JARDIN, 35000, 150000, 2, true,
                 "Guadañadora para jardín y lote",
-                "https://loremflickr.com/400/300/trimmer,garden");
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmLshystf0lexjEAbOoKH-T9N06pyskto7yQrOkaDQGw&s=10");
         herramienta("Nivel láser", Categoria.MEDICION, 30000, 200000, 1, false,
                 "Nivel láser en mantenimiento",
-                "https://loremflickr.com/400/300/laser,level");
+                "https://clientebhp7b0eo.com.co/backend/admin/backend/web/archivosDelCliente/items/images/MEDICION-LASER-NIVELES-Y-PLOMADAS-LASER-NIVEL-LASER-AUTONIVELANTE-CRUZ-DEWALT-1191120220615104507.jpg");
     }
 
     private void usuario(String nombre, String email, Rol rol, boolean activo) {
