@@ -8,7 +8,7 @@ export interface Herramienta {
   id: number;
   nombre: string;
   categoria: string;
-  descripcion: string;
+  descripcion?: string | null;
   precioDia: number;
   deposito: number;
   unidades: number;
