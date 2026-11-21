@@ -1,0 +1,91 @@
+<div class="contenedor py-8">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-3xl font-bold">Mis Alquileres</h1>
+      <p class="text-gray-600">Historial y estado de tus herramientas reservadas y alquiladas</p>
+    </div>
+    <a routerLink="/herramientas" class="btn btn-primario">Alquilar más herramientas</a>
+  </div>
+
+  @if (alquileresService.error()) {
+    <div class="alerta alerta-error mb-6">
+      {{ alquileresService.error() }}
+    </div>
+  }
+
+  @if (alquileresService.cargando()) {
+    <div class="text-center py-12 text-gray-500">Cargando tus alquileres…</div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @for (a of alquileresService.alquileres(); track a.id) {
+        <div class="tarjeta p-6 flex flex-col justify-between" data-testid="alquiler">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <h2 class="text-xl font-bold">{{ a.herramientaNombre }}</h2>
+              <span
+                class="px-2 py-1 text-xs rounded font-medium"
+                data-testid="estado-alquiler"
+                [class.bg-blue-100]="a.estado === 'RESERVADO'"
+                [class.text-blue-800]="a.estado === 'RESERVADO'"
+                [class.bg-amber-100]="a.estado === 'ENTREGADO'"
+                [class.text-amber-800]="a.estado === 'ENTREGADO'"
+                [class.bg-green-100]="a.estado === 'DEVUELTO'"
+                [class.text-green-800]="a.estado === 'DEVUELTO'"
+                [class.bg-red-100]="a.estado === 'CANCELADO'"
+                [class.text-red-800]="a.estado === 'CANCELADO'"
+              >
+                {{ a.estado }}
+              </span>
+            </div>
+
+            <div class="text-sm text-gray-600 mb-2">
+              <p>Inicio: {{ a.fechaInicio }}</p>
+              <p>Fin: {{ a.fechaFin }} ({{ a.dias }} días)</p>
+            </div>
+
+            <div class="text-lg font-bold text-gray-800 mb-4">
+              Total: {{ formatearPesos(a.valorTotal) }}
+            </div>
+          </div>
+
+          @if (puedeCancelar(a)) {
+            <div class="pt-4 border-t border-gray-100">
+              @if (alquilerParaCancelar() === a.id) {
+                <div class="flex items-center gap-2">
+                  <button
+                    type="button"
+                    data-testid="confirmar-cancelacion"
+                    (click)="confirmarCancelacion(a)"
+                    class="btn btn-peligro text-sm flex-1"
+                  >
+                    Confirmar cancelación
+                  </button>
+                  <button
+                    type="button"
+                    (click)="alquilerParaCancelar.set(null)"
+                    class="btn btn-secundario text-sm"
+                  >
+                    Volver
+                  </button>
+                </div>
+              } @else {
+                <button
+                  type="button"
+                  data-testid="boton-cancelar"
+                  (click)="pedirCancelacion(a)"
+                  class="btn btn-peligro text-sm w-full"
+                >
+                  Cancelar alquiler
+                </button>
+              }
+            </div>
+          }
+        </div>
+      } @empty {
+        <div class="col-span-full tarjeta p-12 text-center text-gray-500" data-testid="sin-alquileres">
+          No tienes alquileres registrados.
+        </div>
+      }
+    </div>
+  }
+</div>

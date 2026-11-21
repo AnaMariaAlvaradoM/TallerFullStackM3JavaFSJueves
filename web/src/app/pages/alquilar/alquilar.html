@@ -1,0 +1,78 @@
+<div class="contenedor py-8 max-w-xl mx-auto">
+  <div class="tarjeta p-8">
+    <div class="mb-6">
+      <a routerLink="/herramientas" class="text-sm text-gray-500 hover:text-gray-700 mb-2 inline-block">
+        ← Volver al catálogo
+      </a>
+      <h1 class="text-2xl font-bold" data-testid="nombre-herramienta">
+        {{ herramienta()?.nombre || 'Cargando herramienta…' }}
+      </h1>
+      @if (herramienta(); as h) {
+        <p class="text-sm text-gray-600 mt-1">
+          {{ formatearPesos(h.precioDia) }} / día · Depósito: {{ formatearPesos(h.deposito) }}
+        </p>
+      }
+    </div>
+
+    @if (errorAlquiler()) {
+      <div class="alerta alerta-error mb-4" data-testid="error-alquiler">
+        {{ errorAlquiler() }}
+      </div>
+    }
+
+    @if (errores().length > 0) {
+      <div class="alerta alerta-error mb-4">
+        <ul data-testid="errores-formulario" class="list-disc pl-5">
+          @for (err of errores(); track err) {
+            <li>{{ err }}</li>
+          }
+        </ul>
+      </div>
+    }
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="campo mb-4">
+        <label class="etiqueta" for="fechaInicio">Fecha de inicio</label>
+        <input
+          id="fechaInicio"
+          name="fechaInicio"
+          type="date"
+          class="control"
+          [(ngModel)]="fechaInicio"
+          required
+        />
+      </div>
+
+      <div class="campo mb-6">
+        <label class="etiqueta" for="fechaFin">Fecha de fin</label>
+        <input
+          id="fechaFin"
+          name="fechaFin"
+          type="date"
+          class="control"
+          [(ngModel)]="fechaFin"
+          required
+        />
+      </div>
+
+      <div class="bg-gray-50 p-4 rounded mb-6 border border-gray-200">
+        <div class="text-sm text-gray-600 mb-1">Resumen del alquiler</div>
+        <div class="text-xl font-bold text-gray-800" data-testid="resumen-valor">
+          {{ dias() }} días · {{ formatearPesos(valorTotal()) }}
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primario w-full"
+        [disabled]="enviando() || !herramienta()"
+      >
+        @if (enviando()) {
+          Procesando…
+        } @else {
+          Confirmar Alquiler
+        }
+      </button>
+    </form>
+  </div>
+</div>

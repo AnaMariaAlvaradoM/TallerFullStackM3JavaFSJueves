@@ -1,0 +1,130 @@
+<div class="contenedor py-8 max-w-2xl mx-auto">
+  <div class="tarjeta p-8">
+    <div class="mb-6">
+      <a routerLink="/herramientas" class="text-sm text-gray-500 hover:text-gray-700 mb-2 inline-block">
+        ← Volver al catálogo
+      </a>
+      <h1 class="text-2xl font-bold">
+        {{ id() ? 'Editar Herramienta' : 'Nueva Herramienta' }}
+      </h1>
+    </div>
+
+    @if (errorHerramienta()) {
+      <div class="alerta alerta-error mb-6" data-testid="error-herramienta">
+        {{ errorHerramienta() }}
+      </div>
+    }
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="campo mb-4">
+        <label class="etiqueta" for="nombre">Nombre de la herramienta</label>
+        <input
+          id="nombre"
+          name="nombre"
+          type="text"
+          class="control"
+          [(ngModel)]="nombre"
+          placeholder="ej. Taladro percutor"
+          required
+        />
+      </div>
+
+      <div class="campo mb-4">
+        <label class="etiqueta" for="categoria">Categoría</label>
+        <select
+          id="categoria"
+          name="categoria"
+          class="control"
+          [(ngModel)]="categoria"
+          required
+        >
+          <option value="ELECTRICA">ELECTRICA</option>
+          <option value="MANUAL">MANUAL</option>
+          <option value="COMBUSTION">COMBUSTION</option>
+          <option value="MEDICION">MEDICION</option>
+          <option value="OTRO">OTRO</option>
+        </select>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div class="campo">
+          <label class="etiqueta" for="precioDia">Precio por día ($)</label>
+          <input
+            id="precioDia"
+            name="precioDia"
+            type="number"
+            class="control"
+            [(ngModel)]="precioDia"
+            placeholder="ej. 25000"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label class="etiqueta" for="deposito">Depósito de garantía ($)</label>
+          <input
+            id="deposito"
+            name="deposito"
+            type="number"
+            class="control"
+            [(ngModel)]="deposito"
+            placeholder="ej. 100000"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label class="etiqueta" for="unidades">Unidades disponibles</label>
+          <input
+            id="unidades"
+            name="unidades"
+            type="number"
+            class="control"
+            [(ngModel)]="unidades"
+            placeholder="ej. 3"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="campo mb-4">
+        <label class="etiqueta" for="descripcion">Descripción</label>
+        <textarea
+          id="descripcion"
+          name="descripcion"
+          class="control"
+          rows="3"
+          [(ngModel)]="descripcion"
+          placeholder="Detalles sobre potencia, uso, accesorios incluidos..."
+        ></textarea>
+      </div>
+
+      <div class="campo mb-6">
+        <label class="etiqueta" for="imagenUrl">URL de la imagen (opcional)</label>
+        <input
+          id="imagenUrl"
+          name="imagenUrl"
+          type="url"
+          class="control"
+          [(ngModel)]="imagenUrl"
+          placeholder="https://..."
+        />
+      </div>
+
+      <div class="flex items-center justify-end gap-4">
+        <a routerLink="/herramientas" class="btn btn-secundario">Cancelar</a>
+        <button
+          type="submit"
+          class="btn btn-primario"
+          [disabled]="guardando()"
+        >
+          @if (guardando()) {
+            Guardando…
+          } @else {
+            {{ id() ? 'Guardar Cambios' : 'Crear Herramienta' }}
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
