@@ -1,0 +1,59 @@
+.resumen {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--espacio-sm);
+    margin-bottom: var(--espacio-md);
+  }
+  
+  .indicador {
+    display: flex;
+    flex-direction: column;
+    padding: var(--espacio-sm) var(--espacio-md);
+  }
+  
+  .numero {
+    font-family: var(--fuente-titulos);
+    font-size: var(--texto-xl);
+    font-weight: 700;
+  }
+  
+  .etiqueta {
+    color: var(--texto-suave);
+    font-size: var(--texto-sm);
+  }
+  
+  .email {
+    display: block;
+    color: var(--texto-suave);
+    font-size: var(--texto-xs);
+  }
+  
+  .oculto {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  
+  .celda-accion {
+    text-align: right;
+  }
+  
+  .tu-cuenta {
+    color: var(--texto-suave);
+    font-size: var(--texto-xs);
+  }
+  
+  tr.inactivo {
+    opacity: 0.65;
+  }
+  
+  .tabla-esqueleto {
+    height: 240px;
+  }
+
+  :host {
+    display: block;
+    max-width: 960px;
+  }

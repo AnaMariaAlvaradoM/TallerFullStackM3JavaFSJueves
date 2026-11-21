@@ -1,0 +1,30 @@
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: var(--espacio-md);
+  }
+  
+  .formulario {
+    width: 100%;
+    max-width: 400px;
+    padding: var(--espacio-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacio-sm);
+  }
+  
+  .marca {
+    font-family: var(--fuente-titulos);
+    font-size: var(--texto-lg);
+    font-weight: 700;
+    color: var(--acero);
+  }
+  
+  .marca small {
+    color: var(--naranja-oscura);
+    font-size: var(--texto-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
