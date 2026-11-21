@@ -11,13 +11,15 @@ export class SiPuede {
   private plantilla = inject(TemplateRef);
   private contenedor = inject(ViewContainerRef);
 
-  permiso = input.required<Permiso>({ alias: 'appSiPuede' });
+  appSiPuede = input.required<Permiso>();
+  
+
 
   private dibujado = false;
 
   constructor() {
     effect(() => {
-      const puede = this.authService.puede(this.permiso());
+      const puede = this.authService.puede(this.appSiPuede());
 
       if (puede && !this.dibujado) {
         this.contenedor.createEmbeddedView(this.plantilla);
