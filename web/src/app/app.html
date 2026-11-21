@@ -1,6 +1,76 @@
-<main class="bienvenida">
-  <h1 class="titulo-pagina">Llave Maestra</h1>
-  <p class="subtitulo">Taller del Módulo 3 · Abre fases/FASE-1.md para empezar.</p>
-</main>
+<header class="barra-navegacion bg-white border-b border-gray-200">
+  <div class="contenedor flex items-center justify-between h-16">
+    <div class="flex items-center gap-6">
+      <a routerLink="/" class="logo font-bold text-xl text-primary-600 flex items-center gap-2">
+        <span>🔧</span>
+        <span>Llave Maestra</span>
+      </a>
 
-<router-outlet />
+      @if (auth.sesionActiva()) {
+        <nav class="flex items-center gap-4">
+          <a
+            routerLink="/herramientas"
+            routerLinkActive="activo"
+            data-testid="menu-herramientas"
+            class="enlace-nav"
+          >
+            Herramientas
+          </a>
+
+          <a
+            *appSiPuede="'ALQUILERES_VER_PROPIOS'"
+            routerLink="/mis-alquileres"
+            routerLinkActive="activo"
+            class="enlace-nav"
+          >
+            Mis alquileres
+          </a>
+
+          <a
+            *appSiPuede="'CLIENTES_GESTIONAR'"
+            routerLink="/clientes"
+            routerLinkActive="activo"
+            data-testid="menu-clientes"
+            class="enlace-nav"
+          >
+            Clientes
+          </a>
+
+          <a
+            *appSiPuede="'ALQUILERES_VER_TODOS'"
+            routerLink="/alquileres"
+            routerLinkActive="activo"
+            class="enlace-nav"
+          >
+            Alquileres
+          </a>
+
+          <a
+            *appSiPuede="'REPORTES_VER'"
+            routerLink="/panel"
+            routerLinkActive="activo"
+            class="enlace-nav"
+          >
+            Panel
+          </a>
+        </nav>
+      }
+    </div>
+
+    <div class="flex items-center gap-4">
+      @if (auth.sesionActiva()) {
+        <span class="text-sm text-gray-600" data-testid="nombre-usuario">{{ auth.nombre() }}</span>
+        <button (click)="auth.cerrarSesion()" data-testid="cerrar-sesion" class="btn btn-secundario text-sm">
+          Cerrar sesión
+        </button>
+      } @else {
+        <a routerLink="/login" class="btn btn-secundario text-sm">Iniciar sesión</a>
+        <a routerLink="/registro" class="btn btn-primario text-sm">Registrarse</a>
+      }
+    </div>
+  </div>
+</header>
+
+<main class="principal">
+  <router-outlet></router-outlet>
+</main>

@@ -1,17 +1,17 @@
 package com.devsenior.llavemaestra.config;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -29,116 +29,70 @@ import lombok.RequiredArgsConstructor;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-  private final JwtFilter jwtFilter;
-  private final UserDetailsService userDetailsService;
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+    private final JwtFilter jwtFilter;
 
-  @Bean
-  public DaoAuthenticationProvider authenticationProvider() {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-    DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) {
+        return config.getAuthenticationManager();
+    }
 
-    provider.setPasswordEncoder(passwordEncoder());
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return (request, response, exception) -> {
+            response.setStatus(401);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(
+                    "{\"codigo\":401,\"mensaje\":\"No autenticado. Debe proporcionar un token válido.\",\"fecha\":\""
+                            + LocalDateTime.now() + "\"}");
+        };
+    }
 
-    return provider;
-  }
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return (request, response, exception) -> {
+            response.setStatus(403);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(
+                    "{\"codigo\":403,\"mensaje\":\"No tiene permisos para acceder a este recurso.\",\"fecha\":\""
+                            + LocalDateTime.now() + "\"}");
+        };
+    }
 
-  @Bean
-  public AuthenticationManager authenticationManager(
-      AuthenticationConfiguration config) {
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
-    return config.getAuthenticationManager();
-  }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+        http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/registro").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authenticationEntryPoint())
+                        .accessDeniedHandler(accessDeniedHandler())
+                )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
-  @Bean
-  public AuthenticationEntryPoint authenticationEntryPoint() {
-
-    return (request, response, exception) -> {
-
-      response.setStatus(401);
-      response.setContentType("application/json");
-
-      response.getWriter().write(
-          "{\"error\":\"No autenticado. Debe proporcionar un token válido.\"}");
-    };
-  }
-
-  @Bean
-  public AccessDeniedHandler accessDeniedHandler() {
-
-    return (request, response, exception) -> {
-
-      response.setStatus(403);
-      response.setContentType("application/json");
-
-      response.getWriter().write(
-          "{\"error\":\"No tiene permisos para acceder a este recurso.\"}");
-    };
-  }
-
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of("http://localhost:4200"));
-    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-    configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept", "X-Requested-With", "Origin",
-        "Access-Control-Request-Method", "Access-Control-Request-Headers"));
-    configuration.setAllowCredentials(true);
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-  }
-
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) {
-
-    http
-        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-        // API REST
-        .csrf(csrf -> csrf.disable())
-
-        // Rutas
-        .authorizeHttpRequests(auth -> auth
-
-            // Autenticación pública
-            .requestMatchers("/api/auth/**")
-            .permitAll()
-
-            // Swagger público
-            .requestMatchers(
-                "/swagger-ui/**",
-                "/swagger-ui.html",
-                "/v3/api-docs/**")
-            .permitAll()
-
-            // Todo lo demás requiere autenticación
-            .anyRequest()
-            .authenticated())
-
-        // JWT no utiliza sesiones
-        .sessionManagement(session -> session
-            .sessionCreationPolicy(
-                SessionCreationPolicy.STATELESS))
-
-        // AuthenticationProvider
-        .authenticationProvider(authenticationProvider())
-
-        // Manejo de 401
-        .exceptionHandling(exception -> exception
-            .authenticationEntryPoint(
-                authenticationEntryPoint())
-            .accessDeniedHandler(
-                accessDeniedHandler()))
-
-        // JWT antes del filtro de Spring
-        .addFilterBefore(
-            jwtFilter,
-            UsernamePasswordAuthenticationFilter.class);
-
-    return http.build();
-  }
+        return http.build();
+    }
 }

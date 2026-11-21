@@ -1,0 +1,75 @@
+<div class="contenedor py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold">Panel de Control</h1>
+    <p class="text-gray-600">Resumen operativo y financiero del negocio</p>
+  </div>
+
+  @if (error()) {
+    <div class="alerta alerta-error mb-6">
+      {{ error() }}
+    </div>
+  }
+
+  @if (cargando()) {
+    <div class="text-center py-12 text-gray-500">Cargando métricas…</div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="tarjeta p-6">
+        <h2 class="text-sm font-medium text-gray-500 mb-2">Ingresos del Mes</h2>
+        <p class="text-3xl font-bold text-primary-600" data-testid="ingresos-mes">
+          {{ formatearPesos(resumen()?.ingresosMes ?? 0) }}
+        </p>
+      </div>
+
+      <div class="tarjeta p-6">
+        <h2 class="text-sm font-medium text-gray-500 mb-2">Alquileres Activos</h2>
+        <p class="text-3xl font-bold text-gray-800" data-testid="alquileres-activos">
+          {{ resumen()?.alquileresActivos ?? 0 }}
+        </p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div>
+        <h2 class="text-xl font-bold mb-4">Alquileres Vencidos</h2>
+        <div class="flex flex-col gap-4">
+          @for (v of resumen()?.vencidos ?? []; track v.id) {
+            <div class="tarjeta p-4 border-l-4 border-l-red-500" data-testid="vencido">
+              <div class="font-bold text-gray-800">{{ v.herramientaNombre }}</div>
+              <div class="text-sm text-gray-600">Cliente: {{ v.clienteNombre }}</div>
+              <div class="text-xs text-red-600 mt-1">
+                Venció el {{ v.fechaFin }} ({{ v.dias }} días)
+              </div>
+            </div>
+          } @empty {
+            <div class="tarjeta p-6 text-center text-gray-500" data-testid="sin-vencidos">
+              No hay alquileres vencidos.
+            </div>
+          }
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-xl font-bold mb-4">Herramientas Más Alquiladas</h2>
+        <div class="tarjeta overflow-hidden">
+          <table class="tabla w-full">
+            <thead>
+              <tr class="border-b text-left text-sm text-gray-500">
+                <th class="p-4">Herramienta</th>
+                <th class="p-4 text-right">Alquileres</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (m of resumen()?.masAlquiladas ?? []; track m.herramienta) {
+                <tr class="border-b last:border-0 hover:bg-gray-50" data-testid="mas-alquilada">
+                  <td class="p-4 font-medium">{{ m.herramienta }}</td>
+                  <td class="p-4 text-right font-bold text-primary-600">{{ m.alquileres }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  }
+</div>

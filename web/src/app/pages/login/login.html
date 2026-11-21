@@ -1,0 +1,56 @@
+<div class="contenedor py-12 max-w-md mx-auto">
+  <div class="tarjeta p-8">
+    <h1 class="text-2xl font-bold mb-6 text-center">Iniciar Sesión</h1>
+
+    @if (auth.error()) {
+      <div class="alerta alerta-error mb-4" data-testid="error-login">
+        {{ auth.error() }}
+      </div>
+    }
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="campo mb-4">
+        <label class="etiqueta" for="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          class="control"
+          [(ngModel)]="email"
+          placeholder="tu@correo.com"
+          required
+        />
+      </div>
+
+      <div class="campo mb-6">
+        <label class="etiqueta" for="password">Contraseña</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          class="control"
+          [(ngModel)]="password"
+          placeholder="••••••••"
+          required
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primario w-full"
+        [disabled]="auth.cargando() || !email || !password"
+      >
+        @if (auth.cargando()) {
+          Entrando…
+        } @else {
+          Entrar
+        }
+      </button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-gray-600">
+      ¿No tienes cuenta?
+      <a routerLink="/registro" data-testid="enlace-registro" class="text-primary-600 hover:underline">Regístrate aquí</a>
+    </p>
+  </div>
+</div>

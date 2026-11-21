@@ -1,6 +1,7 @@
 package com.devsenior.llavemaestra.config;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -9,95 +10,181 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import com.devsenior.llavemaestra.enums.Categoria;
-import com.devsenior.llavemaestra.enums.Rol;
-import com.devsenior.llavemaestra.models.Herramienta;
-import com.devsenior.llavemaestra.models.Usuario;
-import com.devsenior.llavemaestra.repositories.HerramientaRepository;
-import com.devsenior.llavemaestra.repositories.UsuarioRepository;
+import com.devsenior.llavemaestra.model.Alquiler;
+import com.devsenior.llavemaestra.model.Categoria;
+import com.devsenior.llavemaestra.model.EstadoAlquiler;
+import com.devsenior.llavemaestra.model.Herramienta;
+import com.devsenior.llavemaestra.model.Rol;
+import com.devsenior.llavemaestra.model.Usuario;
+import com.devsenior.llavemaestra.repository.AlquilerRepository;
+import com.devsenior.llavemaestra.repository.HerramientaRepository;
+import com.devsenior.llavemaestra.repository.UsuarioRepository;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
 
-  private final UsuarioRepository usuarioRepository;
-  private final HerramientaRepository herramientaRepository;
-  private final PasswordEncoder passwordEncoder;
+    private final UsuarioRepository usuarioRepository;
+    private final HerramientaRepository herramientaRepository;
+    private final AlquilerRepository alquilerRepository;
+    private final PasswordEncoder passwordEncoder;
 
-  public DataInitializer(UsuarioRepository usuarioRepository,
-      HerramientaRepository herramientaRepository,
-      PasswordEncoder passwordEncoder) {
-    this.usuarioRepository = usuarioRepository;
-    this.herramientaRepository = herramientaRepository;
-    this.passwordEncoder = passwordEncoder;
-  }
-
-  @Override
-  public void run(String... args) throws Exception {
-    // 1. Sembrar Usuarios (solo si la tabla está vacía)
-    if (usuarioRepository.count() == 0) {
-      String passwordDefault = passwordEncoder.encode("llave123");
-
-      Usuario hernan = new Usuario();
-      hernan.setNombre("Hernán Rojas");
-      hernan.setEmail("admin@llavemaestra.co");
-      hernan.setUsername("admin@llavemaestra.co");
-      hernan.setPassword(passwordDefault);
-      hernan.setRol(Rol.ADMIN);
-      hernan.setActivo(true);
-      hernan.setCreadoEn(LocalDateTime.now(ZoneId.systemDefault()));
-
-      Usuario pedro = new Usuario();
-      pedro.setNombre("Pedro Salazar");
-      pedro.setEmail("pedro@correo.com");
-      pedro.setUsername("pedro@correo.com");
-      pedro.setPassword(passwordDefault);
-      pedro.setRol(Rol.CLIENTE);
-      pedro.setActivo(true);
-      pedro.setCreadoEn(LocalDateTime.now(ZoneId.systemDefault()));
-
-      Usuario diana = new Usuario();
-      diana.setNombre("Diana Mejía");
-      diana.setEmail("diana@correo.com");
-      diana.setUsername("diana@correo.com");
-      diana.setPassword(passwordDefault);
-      diana.setRol(Rol.CLIENTE);
-      diana.setActivo(true);
-      diana.setCreadoEn(LocalDateTime.now(ZoneId.systemDefault()));
-
-      Usuario jorge = new Usuario();
-      jorge.setNombre("Jorge Pinzón");
-      jorge.setEmail("jorge@correo.com");
-      jorge.setUsername("jorge@correo.com");
-      jorge.setPassword(passwordDefault);
-      jorge.setRol(Rol.CLIENTE);
-      jorge.setActivo(false); // Inactivo
-      jorge.setCreadoEn(LocalDateTime.now(ZoneId.systemDefault()));
-
-      usuarioRepository.saveAll(List.of(hernan, pedro, diana, jorge));
+    public DataInitializer(
+            UsuarioRepository usuarioRepository,
+            HerramientaRepository herramientaRepository,
+            AlquilerRepository alquilerRepository,
+            PasswordEncoder passwordEncoder) {
+        this.usuarioRepository = usuarioRepository;
+        this.herramientaRepository = herramientaRepository;
+        this.alquilerRepository = alquilerRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    // 2. Sembrar Herramientas (solo si la tabla está vacía)
-    if (herramientaRepository.count() == 0) {
-      Herramienta h1 = new Herramienta(null, "Taladro percutor", Categoria.ELECTRICA,
-          "Taladro potente para concreto y madera", BigDecimal.valueOf(25000.0), BigDecimal.valueOf(100000.0), 3,
-          "https://loremflickr.com/300/200/drill", true);
-      Herramienta h2 = new Herramienta(null, "Pulidora angular", Categoria.ELECTRICA,
-          "Ideal para cortes y desbaste en metal", BigDecimal.valueOf(22000.0), BigDecimal.valueOf(80000.0), 2,
-          "https://loremflickr.com/300/200/grinder", true);
-      Herramienta h3 = new Herramienta(null, "Mezcladora de concreto", Categoria.CONSTRUCCION,
-          "Mezcladora trompo para obra", BigDecimal.valueOf(60000.0), BigDecimal.valueOf(300000.0), 1,
-          "https://loremflickr.com/300/200/mixer", true);
-      Herramienta h4 = new Herramienta(null, "Andamio tubular", Categoria.CONSTRUCCION,
-          "Estructura metálica para trabajos en altura", BigDecimal.valueOf(15000.0), BigDecimal.valueOf(120000.0), 4,
-          "https://loremflickr.com/300/200/scaffolding", true);
-      Herramienta h5 = new Herramienta(null, "Guadañadora", Categoria.JARDIN,
-          "Para mantenimiento de prados y maleza", BigDecimal.valueOf(35000.0), BigDecimal.valueOf(150000.0), 2,
-          "https://loremflickr.com/300/200/brushcutter", true);
-      Herramienta h6 = new Herramienta(null, "Nivel láser", Categoria.MEDICION,
-          "Nivelación láser de alta precisión", BigDecimal.valueOf(30000.0), BigDecimal.valueOf(200000.0), 1,
-          "https://loremflickr.com/300/200/laser", false); // Retirada/inactiva
+    @Override
+    public void run(String... args) {
+        // 1. Sembrar Usuarios
+        if (usuarioRepository.count() == 0) {
+            String passwordDefault = passwordEncoder.encode("llave123");
 
-      herramientaRepository.saveAll(List.of(h1, h2, h3, h4, h5, h6));
+            Usuario hernan = Usuario.builder()
+                    .nombre("Hernán Rojas")
+                    .email("admin@llavemaestra.co")
+                    .username("admin@llavemaestra.co")
+                    .password(passwordDefault)
+                    .rol(Rol.ADMIN)
+                    .activo(true)
+                    .creadoEn(LocalDateTime.now(ZoneId.systemDefault()))
+                    .build();
+
+            Usuario pedro = Usuario.builder()
+                    .nombre("Pedro Salazar")
+                    .email("pedro@correo.com")
+                    .username("pedro@correo.com")
+                    .password(passwordDefault)
+                    .rol(Rol.CLIENTE)
+                    .activo(true)
+                    .creadoEn(LocalDateTime.now(ZoneId.systemDefault()))
+                    .build();
+
+            Usuario diana = Usuario.builder()
+                    .nombre("Diana Mejía")
+                    .email("diana@correo.com")
+                    .username("diana@correo.com")
+                    .password(passwordDefault)
+                    .rol(Rol.CLIENTE)
+                    .activo(true)
+                    .creadoEn(LocalDateTime.now(ZoneId.systemDefault()))
+                    .build();
+
+            Usuario jorge = Usuario.builder()
+                    .nombre("Jorge Pinzón")
+                    .email("jorge@correo.com")
+                    .username("jorge@correo.com")
+                    .password(passwordDefault)
+                    .rol(Rol.CLIENTE)
+                    .activo(false)
+                    .creadoEn(LocalDateTime.now(ZoneId.systemDefault()))
+                    .build();
+
+            usuarioRepository.saveAll(List.of(hernan, pedro, diana, jorge));
+        }
+
+        // 2. Sembrar Herramientas
+        if (herramientaRepository.count() == 0) {
+            Herramienta h1 = Herramienta.builder()
+                    .nombre("Taladro percutor")
+                    .categoria(Categoria.ELECTRICA)
+                    .descripcion("Taladro potente para concreto y madera")
+                    .precioDia(BigDecimal.valueOf(25000))
+                    .deposito(BigDecimal.valueOf(100000))
+                    .unidades(3)
+                    .imagenUrl("https://loremflickr.com/300/200/drill")
+                    .activa(true)
+                    .build();
+
+            Herramienta h2 = Herramienta.builder()
+                    .nombre("Pulidora angular")
+                    .categoria(Categoria.ELECTRICA)
+                    .descripcion("Ideal para cortes y desbaste en metal")
+                    .precioDia(BigDecimal.valueOf(22000))
+                    .deposito(BigDecimal.valueOf(80000))
+                    .unidades(2)
+                    .imagenUrl("https://loremflickr.com/300/200/grinder")
+                    .activa(true)
+                    .build();
+
+            Herramienta h3 = Herramienta.builder()
+                    .nombre("Mezcladora de concreto")
+                    .categoria(Categoria.CONSTRUCCION)
+                    .descripcion("Mezcladora trompo para obra")
+                    .precioDia(BigDecimal.valueOf(60000))
+                    .deposito(BigDecimal.valueOf(300000))
+                    .unidades(1)
+                    .imagenUrl("https://loremflickr.com/300/200/mixer")
+                    .activa(true)
+                    .build();
+
+            Herramienta h4 = Herramienta.builder()
+                    .nombre("Andamio tubular")
+                    .categoria(Categoria.CONSTRUCCION)
+                    .descripcion("Estructura metálica para trabajos en altura")
+                    .precioDia(BigDecimal.valueOf(15000))
+                    .deposito(BigDecimal.valueOf(120000))
+                    .unidades(4)
+                    .imagenUrl("https://loremflickr.com/300/200/scaffolding")
+                    .activa(true)
+                    .build();
+
+            Herramienta h5 = Herramienta.builder()
+                    .nombre("Guadañadora")
+                    .categoria(Categoria.JARDIN)
+                    .descripcion("Para mantenimiento de prados y maleza")
+                    .precioDia(BigDecimal.valueOf(35000))
+                    .deposito(BigDecimal.valueOf(150000))
+                    .unidades(2)
+                    .imagenUrl("https://loremflickr.com/300/200/brushcutter")
+                    .activa(true)
+                    .build();
+
+            Herramienta h6 = Herramienta.builder()
+                    .nombre("Nivel láser")
+                    .categoria(Categoria.MEDICION)
+                    .descripcion("Nivelación láser de alta precisión")
+                    .precioDia(BigDecimal.valueOf(30000))
+                    .deposito(BigDecimal.valueOf(200000))
+                    .unidades(1)
+                    .imagenUrl("https://loremflickr.com/300/200/laser")
+                    .activa(false)
+                    .build();
+
+            herramientaRepository.saveAll(List.of(h1, h2, h3, h4, h5, h6));
+        }
+
+        // 3. Sembrar el alquiler vencido de Jorge Pinzón (Pulidora angular)
+        if (alquilerRepository.count() == 0) {
+            Usuario jorge = usuarioRepository.findByEmail("jorge@correo.com").orElse(null);
+            Herramienta pulidora = herramientaRepository.findByNombre("Pulidora angular").orElse(null);
+
+            if (jorge != null && pulidora != null) {
+                LocalDate hoy = LocalDate.now(ZoneId.systemDefault());
+                LocalDate inicio = hoy.minusDays(10);
+                LocalDate fin = hoy.minusDays(3);
+                int dias = 8;
+                BigDecimal valorTotal = pulidora.getPrecioDia().multiply(BigDecimal.valueOf(dias));
+
+                Alquiler vencido = Alquiler.builder()
+                        .herramienta(pulidora)
+                        .cliente(jorge)
+                        .fechaInicio(inicio)
+                        .fechaFin(fin)
+                        .dias(dias)
+                        .valorTotal(valorTotal)
+                        .deposito(pulidora.getDeposito())
+                        .estado(EstadoAlquiler.ENTREGADO)
+                        .creadoEn(inicio.atTime(9, 0))
+                        .build();
+
+                alquilerRepository.save(vencido);
+            }
+        }
     }
-  }
 }

@@ -1,16 +1,19 @@
 package com.devsenior.llavemaestra.config;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.devsenior.llavemaestra.services.JwtService;
+import com.devsenior.llavemaestra.model.Usuario;
+import com.devsenior.llavemaestra.repository.UsuarioRepository;
+import com.devsenior.llavemaestra.service.JwtService;
 
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -23,69 +26,68 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-  private final JwtService jwtService;
-  private final UserDetailsService userDetailsService;
+    private final JwtService jwtService;
+    private final UsuarioRepository usuarioRepository;
 
-  @Override
-  protected void doFilterInternal(
-      HttpServletRequest request,
-      HttpServletResponse response,
-      FilterChain filterChain)
-      throws ServletException, IOException {
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain)
+            throws ServletException, IOException {
 
-    String header = request.getHeader("Authorization");
+        String header = request.getHeader("Authorization");
 
-    // No hay token
-    if (header == null || !header.startsWith("Bearer ")) {
-      filterChain.doFilter(request, response);
-      return;
-    }
-
-    String token = header.substring(7);
-
-    try {
-
-      // Extraer username del token
-      String username = jwtService.extraerUsername(token);
-
-      // Verificar que todavía no exista autenticación
-      if (username != null
-          && SecurityContextHolder.getContext()
-              .getAuthentication() == null) {
-
-        // Buscar usuario
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-        // Validar token
-        if (jwtService.esValido(token, userDetails)) {
-
-          UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-              userDetails,
-              null,
-              userDetails.getAuthorities());
-
-          authentication.setDetails(
-              new WebAuthenticationDetailsSource()
-                  .buildDetails(request));
-
-          SecurityContextHolder.getContext()
-              .setAuthentication(authentication);
+        if (header == null || !header.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
         }
-      }
 
-      filterChain.doFilter(request, response);
+        String token = header.substring(7);
 
-    } catch (JwtException | IllegalArgumentException e) {
+        try {
+            String username = jwtService.extraerUsername(token);
 
-      // Token inválido, manipulado o vencido
-      SecurityContextHolder.clearContext();
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                Usuario usuario = usuarioRepository.findByEmail(username)
+                        .or(() -> usuarioRepository.findByUsername(username))
+                        .orElse(null);
 
-      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-      response.setContentType("application/json");
+                // Verifica isActivo() antes de autenticar
+                if (usuario == null || !usuario.isActivo()) {
+                    SecurityContextHolder.clearContext();
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write(
+                            "{\"codigo\":401,\"mensaje\":\"Tu cuenta está desactivada o no existe\",\"fecha\":\""
+                                    + LocalDateTime.now() + "\"}");
+                    return;
+                }
 
-      response.getWriter().write(
-          "{\"error\":\"Token inválido o expirado\"}");
+                if (jwtService.esValido(token, usuario.getEmail())) {
+                    List<SimpleGrantedAuthority> authorities = usuario.getRol().getPermisos().stream()
+                            .map(p -> new SimpleGrantedAuthority(p.name()))
+                            .toList();
+
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            usuario.getEmail(),
+                            null,
+                            authorities);
+
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            }
+
+            filterChain.doFilter(request, response);
+
+        } catch (JwtException | IllegalArgumentException e) {
+            SecurityContextHolder.clearContext();
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(
+                    "{\"codigo\":401,\"mensaje\":\"Token inválido o expirado\",\"fecha\":\""
+                            + LocalDateTime.now() + "\"}");
+        }
     }
-  }
-
 }
