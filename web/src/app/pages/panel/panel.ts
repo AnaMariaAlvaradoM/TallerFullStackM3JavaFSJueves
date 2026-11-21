@@ -1,5 +1,4 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { mensajeDeError } from '../../core/errores';
 import { pesos } from '../../core/formato';
 import { ReportesService, Resumen } from '../../services/reportes.service';
@@ -7,11 +6,11 @@ import { ReportesService, Resumen } from '../../services/reportes.service';
 @Component({
   selector: 'app-panel',
   standalone: true,
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './panel.html',
 })
 export class Panel implements OnInit {
-  private reportesService = inject(ReportesService);
+  private readonly reportesService = inject(ReportesService);
 
   resumen = signal<Resumen | null>(null);
   cargando = signal<boolean>(true);

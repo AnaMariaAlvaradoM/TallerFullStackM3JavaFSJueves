@@ -22,7 +22,7 @@ spring:
     open-in-view: false
 
 server:
-  port: 8081
+  port: 8080
 
 jwt:
   secret: ${SECRET}
