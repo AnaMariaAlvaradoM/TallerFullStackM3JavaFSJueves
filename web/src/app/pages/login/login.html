@@ -1,0 +1,23 @@
+<div class="contenedor-login">
+  <form (ngSubmit)="onSubmit()">
+    <h2>Ingresar a Llave Maestra</h2>
+    
+    @if (authService.error()) {
+      <p data-testid="error-login" class="error">{{ authService.error() }}</p>
+    }
+
+    <div>
+      <label>Correo Electrónico</label>
+      <input type="email" [(ngModel)]="email" name="email" required />
+    </div>
+
+    <div>
+      <label>Contraseña</label>
+      <input type="password" [(ngModel)]="password" name="password" required />
+    </div>
+
+    <button type="submit" [disabled]="authService.cargando()">
+      {{ authService.cargando() ? 'Ingresando...' : 'Entrar' }}
+    </button>
+  </form>
+</div>

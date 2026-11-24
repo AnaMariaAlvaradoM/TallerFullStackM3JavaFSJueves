@@ -1,6 +1,32 @@
-<main class="bienvenida">
-  <h1 class="titulo-pagina">Llave Maestra</h1>
-  <p class="subtitulo">Taller del Módulo 3 · Abre fases/FASE-1.md para empezar.</p>
-</main>
+@if (authService.sesionActiva()) {
+  <header class="barra-superior">
+    <div class="logo">Llave Maestra</div>
+    <div class="usuario-info">
+      <span data-testid="nombre-usuario">{{ authService.nombre() }}</span>
+      <button data-testid="cerrar-sesion" (click)="authService.cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </header>
 
-<router-outlet />
+  <div class="contenedor-principal">
+    <aside class="menu-lateral">
+      <nav>
+        @if (authService.puede('HERRAMIENTAS_VER')) {
+          <a routerLink="/herramientas" routerLinkActive="activo" data-testid="menu-herramientas">
+            Herramientas
+          </a>
+        }
+        @if (authService.puede('CLIENTES_GESTIONAR')) {
+          <a routerLink="/clientes" routerLinkActive="activo" data-testid="menu-clientes">
+            Clientes
+          </a>
+        }
+      </nav>
+    </aside>
+
+    <main class="contenido">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+} @else {
+  <router-outlet></router-outlet>
+}

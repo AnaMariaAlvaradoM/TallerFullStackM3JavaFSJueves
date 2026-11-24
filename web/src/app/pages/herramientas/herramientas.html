@@ -1,0 +1,27 @@
+<div class="herramientas-contenedor">
+  <h2>Catálogo de Herramientas</h2>
+
+  @if (herramientasService.cargando()) {
+    <p>Cargando herramientas...</p>
+  } @else {
+    <div class="grid-herramientas">
+      @for (h of herramientasService.herramientas(); track h.id) {
+        <div class="tarjeta" data-testid="herramienta">
+          <img [src]="h.imagenUrl" [alt]="h.nombre" />
+          <h3 data-testid="nombre-herramienta">{{ h.nombre }}</h3>
+          <p class="categoria">{{ h.categoria }}</p>
+          <p class="descripcion">{{ h.descripcion }}</p>
+          <p class="precio" data-testid="precio-dia">{{ formatoPesos(h.precioDia) }} / día</p>
+          
+          <button 
+            *appSiPuede="'HERRAMIENTAS_GESTIONAR'" 
+            data-testid="boton-estado"
+            (click)="herramientasService.cambiarEstado(h, !h.activa)"
+          >
+            {{ h.activa ? 'Retirar' : 'Ofrecer' }}
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

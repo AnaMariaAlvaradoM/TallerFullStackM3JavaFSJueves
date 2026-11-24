@@ -1,0 +1,41 @@
+<div class="clientes-contenedor">
+  <h2>Gestión de Clientes</h2>
+
+  @if (usuariosService.error()) {
+    <p class="error">{{ usuariosService.error() }}</p>
+  }
+
+  @if (usuariosService.cargando()) {
+    <p>Cargando clientes...</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of usuariosService.usuarios(); track u.id) {
+          <tr data-testid="cliente">
+            <td>{{ u.nombre }}</td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.activo ? 'Activo' : 'Bloqueado' }}</td>
+            <td>
+              @if (u.email !== authService.email()) {
+                <button 
+                  data-testid="boton-estado"
+                  (click)="usuariosService.cambiarEstado(u, !u.activo)"
+                >
+                  {{ u.activo ? 'Bloquear' : 'Desbloquear' }}
+                </button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
