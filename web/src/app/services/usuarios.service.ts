@@ -1,10 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { API_URL } from '../core/api';
+
 import { mensajeDeError } from '../core/errores';
 import { Rol } from '../core/permisos';
 
-export interface UsuarioDto {
+export interface Usuario {
   id: number;
   nombre: string;
   email: string;
@@ -13,48 +13,44 @@ export interface UsuarioDto {
   creadoEn: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class UsuariosService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
-  private usuariosSignal = signal<UsuarioDto[]>([]);
-  private cargandoSignal = signal(false);
-  private errorSignal = signal<string | null>(null);
+  readonly usuarios = signal<Usuario[]>([]);
+  readonly cargando = signal<boolean>(false);
+  readonly error = signal<string | null>(null);
 
-  usuarios = this.usuariosSignal.asReadonly();
-  cargando = this.cargandoSignal.asReadonly();
-  error = this.errorSignal.asReadonly();
+  cargar(): void {
+    this.cargando.set(true);
+    this.error.set(null);
 
-  cargar() {
-    this.cargandoSignal.set(true);
-    this.errorSignal.set(null);
-
-    this.http.get<UsuarioDto[]>(`${API_URL}/usuarios`).subscribe({
-      next: (data) => {
-        this.usuariosSignal.set(data);
-        this.cargandoSignal.set(false);
+    this.http.get<Usuario[]>('/api/usuarios').subscribe({
+      next: (lista) => {
+        this.usuarios.set(lista);
+        this.cargando.set(false);
       },
-      error: (err: HttpErrorResponse) => {
-        this.errorSignal.set(mensajeDeError(err));
-        this.cargandoSignal.set(false);
+      error: (err) => {
+        this.error.set(mensajeDeError(err));
+        this.cargando.set(false);
       }
     });
   }
 
-  cambiarEstado(usuario: UsuarioDto, activo: boolean) {
-    this.errorSignal.set(null);
+  cambiarEstado(usuario: Usuario, activo: boolean): void {
+    this.error.set(null);
 
-    this.http.patch<UsuarioDto>(`${API_URL}/usuarios/${usuario.id}/estado`, { activo }).subscribe({
-      next: (actualizado) => {
-        this.usuariosSignal.update(lista =>
-          lista.map(item => (item.id === actualizado.id ? actualizado : item))
-        );
-      },
-      error: (err: HttpErrorResponse) => {
-        this.errorSignal.set(mensajeDeError(err));
-      }
-    });
+    this.http
+      .patch<Usuario>(`/api/usuarios/${usuario.id}/estado`, { activo })
+      .subscribe({
+        next: (actualizado) => {
+          this.usuarios.update((actual) =>
+            actual.map((item) => (item.id === actualizado.id ? actualizado : item))
+          );
+        },
+        error: (err) => {
+          this.error.set(mensajeDeError(err));
+        }
+      });
   }
 }

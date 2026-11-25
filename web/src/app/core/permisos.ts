@@ -10,20 +10,3 @@ export type Permiso =
   | 'ALQUILERES_GESTIONAR'
   | 'CLIENTES_GESTIONAR'
   | 'REPORTES_VER';
-
-export const NOMBRE_ROL: Record<Rol, string> = {
-  ADMIN: 'Administrador',
-  CLIENTE: 'Cliente'
-};
-
-export const DESCRIPCION_PERMISO: Record<Permiso, string> = {
-  HERRAMIENTAS_VER: 'Ver herramientas',
-  HERRAMIENTAS_GESTIONAR: 'Gestionar herramientas',
-  ALQUILERES_CREAR: 'Crear alquileres',
-  ALQUILERES_VER_PROPIOS: 'Ver mis alquileres',
-  ALQUILERES_CANCELAR_PROPIOS: 'Cancelar mis alquileres',
-  ALQUILERES_VER_TODOS: 'Ver todos los alquileres',
-  ALQUILERES_GESTIONAR: 'Gestionar alquileres',
-  CLIENTES_GESTIONAR: 'Gestionar clientes',
-  REPORTES_VER: 'Ver reportes'
-};

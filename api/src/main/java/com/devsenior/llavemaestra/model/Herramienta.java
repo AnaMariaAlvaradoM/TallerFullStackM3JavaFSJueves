@@ -1,6 +1,15 @@
 package com.devsenior.llavemaestra.model;
 
-import jakarta.persistence.*;
+import java.math.BigDecimal;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "herramientas")
@@ -10,30 +19,31 @@ public class Herramienta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 80)
     private String nombre;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Categoria categoria;
+    private CategoriaHerramienta categoria;
 
-    @Column(length = 1000)
+    @Column(length = 300)
     private String descripcion;
 
-    @Column(nullable = false)
-    private Double precioDia;
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal precioDia;
+
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal deposito;
 
     @Column(nullable = false)
-    private Double deposito;
+    private int unidades;
 
-    @Column(nullable = false)
-    private Integer unidades;
-
+    @Column(length = 300)
     private String imagenUrl;
 
+    @Column(nullable = false)
     private boolean activa = true;
 
-    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -50,11 +60,11 @@ public class Herramienta {
         this.nombre = nombre;
     }
 
-    public Categoria getCategoria() {
+    public CategoriaHerramienta getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
+    public void setCategoria(CategoriaHerramienta categoria) {
         this.categoria = categoria;
     }
 
@@ -66,27 +76,27 @@ public class Herramienta {
         this.descripcion = descripcion;
     }
 
-    public Double getPrecioDia() {
+    public BigDecimal getPrecioDia() {
         return precioDia;
     }
 
-    public void setPrecioDia(Double precioDia) {
+    public void setPrecioDia(BigDecimal precioDia) {
         this.precioDia = precioDia;
     }
 
-    public Double getDeposito() {
+    public BigDecimal getDeposito() {
         return deposito;
     }
 
-    public void setDeposito(Double deposito) {
+    public void setDeposito(BigDecimal deposito) {
         this.deposito = deposito;
     }
 
-    public Integer getUnidades() {
+    public int getUnidades() {
         return unidades;
     }
 
-    public void setUnidades(Integer unidades) {
+    public void setUnidades(int unidades) {
         this.unidades = unidades;
     }
 

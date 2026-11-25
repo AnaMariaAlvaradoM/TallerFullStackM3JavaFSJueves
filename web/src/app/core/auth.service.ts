@@ -1,95 +1,158 @@
-import { Injectable, inject, signal, computed } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { API_URL } from './api';
+import { tap } from 'rxjs';
+
 import { mensajeDeError } from './errores';
 import { Permiso, Rol } from './permisos';
 
-export interface Credenciales {
+const TOKEN_KEY = 'llave_token';
+
+interface JwtPayload {
+  sub?: string;
+  nombre?: string;
+  rol?: Rol;
+  permisos?: Permiso[];
+  exp?: number;
+}
+
+interface CredencialesLogin {
   email: string;
   password: string;
 }
 
-interface RespuestaAuth {
+interface DatosRegistro {
+  nombre: string;
+  email: string;
+  password: string;
+}
+
+interface RespuestaToken {
   token: string;
 }
 
-interface ContenidoToken {
-  sub: string;
-  nombre: string;
-  rol: Rol;
-  permisos: Permiso[];
-  exp: number;
-}
-
-const CLAVE_TOKEN = 'llave_token';
-
-function leerToken(token: string): ContenidoToken | null {
+function decodificarPayloadUtf8(token: string): JwtPayload | null {
   try {
-    const payload = token.split('.')[1];
-    const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
-    const bytes = Uint8Array.from(atob(base64), letra => letra.charCodeAt(0));
-    return JSON.parse(new TextDecoder().decode(bytes));
+    const partes = token.split('.');
+    if (partes.length !== 3) {
+      return null;
+    }
+
+    const base64Url = partes[1].replace(/-/g, '+').replace(/_/g, '/');
+    const pad = base64Url.length % 4;
+    const base64 = pad ? base64Url + '='.repeat(4 - pad) : base64Url;
+
+    const binario = atob(base64);
+    const bytes = new Uint8Array(binario.length);
+    for (let i = 0; i < binario.length; i++) {
+      bytes[i] = binario.charCodeAt(i);
+    }
+
+    const json = new TextDecoder('utf-8').decode(bytes);
+    return JSON.parse(json) as JwtPayload;
   } catch {
     return null;
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+function tokenVigente(payload: JwtPayload | null): boolean {
+  if (!payload || typeof payload.exp !== 'number') {
+    return false;
+  }
+  const ahoraSegundos = Math.floor(Date.now() / 1000);
+  return payload.exp > ahoraSegundos;
+}
+
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private http = inject(HttpClient);
-  private router = inject(Router);
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
 
-  private tokenSignal = signal<string | null>(localStorage.getItem(CLAVE_TOKEN));
-  private errorSignal = signal<string | null>(null);
-  private cargandoSignal = signal(false);
+  readonly token = signal<string | null>(this.leerTokenInicial());
+  readonly error = signal<string | null>(null);
+  readonly cargando = signal<boolean>(false);
 
-  private contenido = computed(() => {
-    const token = this.tokenSignal();
-    return token ? leerToken(token) : null;
+  private readonly payload = computed<JwtPayload | null>(() => {
+    const actual = this.token();
+    if (!actual) {
+      return null;
+    }
+    const parsed = decodificarPayloadUtf8(actual);
+    return tokenVigente(parsed) ? parsed : null;
   });
 
-  sesionActiva = computed(() => {
-    const contenido = this.contenido();
-    return contenido !== null && contenido.exp * 1000 > Date.now();
-  });
+  readonly sesionActiva = computed<boolean>(() => this.payload() !== null);
+  readonly nombre = computed<string>(() => this.payload()?.nombre ?? '');
+  readonly rol = computed<Rol | null>(() => this.payload()?.rol ?? null);
+  readonly permisos = computed<Permiso[]>(() => this.payload()?.permisos ?? []);
 
-  nombre = computed(() => (this.sesionActiva() ? this.contenido()!.nombre : ''));
-  email = computed(() => (this.sesionActiva() ? this.contenido()!.sub : ''));
-  rol = computed(() => (this.sesionActiva() ? this.contenido()!.rol : null));
-  permisos = computed(() => (this.sesionActiva() ? this.contenido()!.permisos : []));
+  private leerTokenInicial(): string | null {
+    try {
+      return localStorage.getItem(TOKEN_KEY);
+    } catch {
+      return null;
+    }
+  }
 
-  token = this.tokenSignal.asReadonly();
-  error = this.errorSignal.asReadonly();
-  cargando = this.cargandoSignal.asReadonly();
+  private guardarToken(nuevoToken: string | null): void {
+    this.token.set(nuevoToken);
+    try {
+      if (nuevoToken) {
+        localStorage.setItem(TOKEN_KEY, nuevoToken);
+      } else {
+        localStorage.removeItem(TOKEN_KEY);
+      }
+    } catch {
+      // Ignorar errores de almacenamiento en entornos restringidos
+    }
+  }
 
   puede(permiso: Permiso): boolean {
+    if (!this.sesionActiva()) {
+      return false;
+    }
     return this.permisos().includes(permiso);
   }
 
-  iniciarSesion(credenciales: Credenciales) {
-    this.errorSignal.set(null);
-    this.cargandoSignal.set(true);
+  iniciarSesion(credenciales: CredencialesLogin): void {
+    this.cargando.set(true);
+    this.error.set(null);
 
-    this.http.post<RespuestaAuth>(`${API_URL}/auth/login`, credenciales).subscribe({
-      next: (respuesta) => {
-        this.tokenSignal.set(respuesta.token);
-        localStorage.setItem(CLAVE_TOKEN, respuesta.token);
-        this.cargandoSignal.set(false);
-        this.router.navigateByUrl('/herramientas');
+    this.http.post<RespuestaToken>('/api/auth/login', credenciales).subscribe({
+      next: (res) => {
+        this.guardarToken(res.token);
+        this.cargando.set(false);
+        void this.router.navigate(['/herramientas']);
       },
-      error: (error: HttpErrorResponse) => {
-        this.cargandoSignal.set(false);
-        this.errorSignal.set(mensajeDeError(error));
+      error: (err) => {
+        this.error.set(mensajeDeError(err));
+        this.cargando.set(false);
       }
     });
   }
 
-  cerrarSesion() {
-    this.tokenSignal.set(null);
-    localStorage.removeItem(CLAVE_TOKEN);
-    this.router.navigateByUrl('/login');
+  registrarse(datos: DatosRegistro) {
+    this.cargando.set(true);
+    this.error.set(null);
+
+    return this.http.post<RespuestaToken>('/api/auth/registro', datos).pipe(
+      tap({
+        next: (res) => {
+          this.guardarToken(res.token);
+          this.cargando.set(false);
+          void this.router.navigate(['/herramientas']);
+        },
+        error: (err) => {
+          this.error.set(mensajeDeError(err));
+          this.cargando.set(false);
+        }
+      })
+    );
+  }
+
+  cerrarSesion(): void {
+    this.guardarToken(null);
+    this.error.set(null);
+    void this.router.navigate(['/login']);
   }
 }

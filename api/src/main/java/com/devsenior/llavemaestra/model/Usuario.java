@@ -1,7 +1,16 @@
 package com.devsenior.llavemaestra.model;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "usuarios")
@@ -11,9 +20,10 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, length = 80)
     private String nombre;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false, unique = true, length = 120)
     private String email;
 
     @Column(nullable = false)
@@ -23,11 +33,19 @@ public class Usuario {
     @Column(nullable = false)
     private Rol rol;
 
+    @Column(nullable = false)
     private boolean activo = true;
 
-    private LocalDateTime creadoEn;
+    @Column(nullable = false, updatable = false)
+    private Instant creadoEn;
 
-    // Getters y Setters
+    @PrePersist
+    protected void onCreate() {
+        if (creadoEn == null) {
+            creadoEn = Instant.now();
+        }
+    }
+
     public Long getId() {
         return id;
     }
@@ -76,11 +94,11 @@ public class Usuario {
         this.activo = activo;
     }
 
-    public LocalDateTime getCreadoEn() {
+    public Instant getCreadoEn() {
         return creadoEn;
     }
 
-    public void setCreadoEn(LocalDateTime creadoEn) {
+    public void setCreadoEn(Instant creadoEn) {
         this.creadoEn = creadoEn;
     }
 }

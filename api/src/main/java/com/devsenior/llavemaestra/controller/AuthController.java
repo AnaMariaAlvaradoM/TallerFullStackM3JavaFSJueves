@@ -1,54 +1,41 @@
 package com.devsenior.llavemaestra.controller;
 
-import com.devsenior.llavemaestra.model.Usuario;
-import com.devsenior.llavemaestra.repository.UsuarioRepository;
-import com.devsenior.llavemaestra.service.JwtService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.devsenior.llavemaestra.dto.LoginRequest;
+import com.devsenior.llavemaestra.dto.RegistroRequest;
+import com.devsenior.llavemaestra.dto.TokenResponse;
+import com.devsenior.llavemaestra.service.AuthService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Autenticación", description = "Inicio de sesión y registro público de clientes")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final UsuarioRepository usuarioRepository;
-    private final JwtService jwtService;
+    private final AuthService authService;
 
-    public AuthController(AuthenticationManager authenticationManager,
-            UsuarioRepository usuarioRepository,
-            JwtService JwtService) {
-        this.authenticationManager = authenticationManager;
-        this.usuarioRepository = usuarioRepository;
-        this.jwtService = JwtService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
-        // Autentica las credenciales con Spring Security
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.email(), request.password()));
-
-        // Busca al usuario en la base de datos
-        Usuario usuario = usuarioRepository.findByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-        // Genera el token JWT
-        String token = jwtService.generarToken(usuario);
-
-        return ResponseEntity.ok(new LoginResponse(token));
+    @Operation(summary = "Iniciar sesión", description = "Valida credenciales y devuelve un JWT con permisos.")
+    public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.login(request));
     }
 
-    // DTOs internos para el request y response del login
-    public record LoginRequest(
-            @NotBlank @Email String email,
-            @NotBlank String password) {
-    }
-
-    public record LoginResponse(String token) {
+    @PostMapping("/registro")
+    @Operation(summary = "Registrar nuevo cliente", description = "Crea una cuenta pública con rol CLIENTE y devuelve un JWT.")
+    public ResponseEntity<TokenResponse> registro(@Valid @RequestBody RegistroRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(authService.registro(request));
     }
 }

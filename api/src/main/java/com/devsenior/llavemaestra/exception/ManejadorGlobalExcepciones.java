@@ -62,7 +62,10 @@ public class ManejadorGlobalExcepciones {
     // 403: autenticado, pero sin el permiso que pide esta accion
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> accesoDenegado(AccessDeniedException ex) {
-        return responder(HttpStatus.FORBIDDEN, "No tienes permiso para realizar esta acción");
+        String mensaje = (ex.getMessage() != null && !ex.getMessage().isBlank())
+                ? ex.getMessage()
+                : "No tienes permiso para realizar esta acción";
+        return responder(HttpStatus.FORBIDDEN, mensaje);
     }
 
     // 404: recurso no encontrado
@@ -81,6 +84,12 @@ public class ManejadorGlobalExcepciones {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorResponse> datoDuplicado(DataIntegrityViolationException ex) {
         return responder(HttpStatus.CONFLICT, "Ya existe un registro con esos datos");
+    }
+
+    // 500: error inesperado sin exponer detalles internos ni trazas
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> errorGeneral(Exception ex) {
+        return responder(HttpStatus.INTERNAL_SERVER_ERROR, "Ocurrió un error inesperado en el servidor");
     }
 
     private ResponseEntity<ErrorResponse> responder(HttpStatus estado, String mensaje) {

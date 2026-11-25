@@ -1,6 +1,6 @@
 package com.devsenior.llavemaestra.model;
 
-public enum Categoria {
+public enum CategoriaHerramienta {
     ELECTRICA,
     CONSTRUCCION,
     JARDIN,

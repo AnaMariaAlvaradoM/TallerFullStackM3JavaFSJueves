@@ -1,32 +1,70 @@
-@if (authService.sesionActiva()) {
-  <header class="barra-superior">
-    <div class="logo">Llave Maestra</div>
-    <div class="usuario-info">
-      <span data-testid="nombre-usuario">{{ authService.nombre() }}</span>
-      <button data-testid="cerrar-sesion" (click)="authService.cerrarSesion()">Cerrar sesión</button>
-    </div>
-  </header>
+<div class="app-shell">
+  @if (auth.sesionActiva()) {
+    <header class="topbar">
+      <div class="marca">Llave Maestra</div>
 
-  <div class="contenedor-principal">
-    <aside class="menu-lateral">
-      <nav>
-        @if (authService.puede('HERRAMIENTAS_VER')) {
-          <a routerLink="/herramientas" routerLinkActive="activo" data-testid="menu-herramientas">
-            Herramientas
-          </a>
-        }
-        @if (authService.puede('CLIENTES_GESTIONAR')) {
-          <a routerLink="/clientes" routerLinkActive="activo" data-testid="menu-clientes">
-            Clientes
-          </a>
-        }
+      <nav class="menu-nav" aria-label="Navegación principal">
+        <a
+          *appSiPuede="'HERRAMIENTAS_VER'"
+          routerLink="/herramientas"
+          routerLinkActive="activo"
+          data-testid="menu-herramientas"
+        >
+          Herramientas
+        </a>
+
+        <a
+          *appSiPuede="'ALQUILERES_VER_PROPIOS'"
+          routerLink="/mis-alquileres"
+          routerLinkActive="activo"
+          data-testid="menu-mis-alquileres"
+        >
+          Mis alquileres
+        </a>
+
+        <a
+          *appSiPuede="'REPORTES_VER'"
+          routerLink="/panel"
+          routerLinkActive="activo"
+          data-testid="menu-panel"
+        >
+          Panel
+        </a>
+
+        <a
+          *appSiPuede="'ALQUILERES_VER_TODOS'"
+          routerLink="/alquileres"
+          routerLinkActive="activo"
+          data-testid="menu-alquileres"
+        >
+          Alquileres
+        </a>
+
+        <a
+          *appSiPuede="'CLIENTES_GESTIONAR'"
+          routerLink="/clientes"
+          routerLinkActive="activo"
+          data-testid="menu-clientes"
+        >
+          Clientes
+        </a>
       </nav>
-    </aside>
 
-    <main class="contenido">
-      <router-outlet></router-outlet>
-    </main>
-  </div>
-} @else {
-  <router-outlet></router-outlet>
-}
+      <div class="usuario-barra">
+        <span data-testid="nombre-usuario">{{ auth.nombre() }}</span>
+        <button
+          type="button"
+          class="btn-secundario"
+          data-testid="cerrar-sesion"
+          (click)="auth.cerrarSesion()"
+        >
+          Cerrar sesión
+        </button>
+      </div>
+    </header>
+  }
+
+  <main class="contenedor-principal">
+    <router-outlet />
+  </main>
+</div>
