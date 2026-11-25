@@ -1,6 +1,6 @@
 {
   "curso": "🔧 Llave Maestra · Taller Full Stack · Módulo 3",
-  "fechaLimite": "2026-11-15T23:59:00-05:00",
+  "fechaLimite": "",
   "patronTest": "^\\s*(it\\(|@Test\\b)",
   "entregables": [
     "api/src/main/",
@@ -9,7 +9,8 @@
     "web/src/index.html",
     "web/public/",
     "PRUEBAS.md",
-    "BITACORA-IA.md"
+    "BITACORA-IA.md",
+    "README.md"
   ],
   "protegidos": [
     ".github/",
@@ -48,6 +49,24 @@
     { "id": "2.6", "titulo": "Angular · Errores y servicio", "test": "web/src/pruebas/fase2/06-alquileres-service.spec.ts" },
     { "id": "2.7", "titulo": "Angular · Página Alquilar", "test": "web/src/pruebas/fase2/07-alquilar.spec.ts" },
     { "id": "2.8", "titulo": "Angular · Mis alquileres", "test": "web/src/pruebas/fase2/08-mis-alquileres.spec.ts" },
-    { "id": "2.9", "titulo": "Estructura y PRUEBAS.md", "test": "web/src/pruebas/fase2/09-estructura.test.mjs" }
+    { "id": "2.9", "titulo": "Estructura y PRUEBAS.md", "test": "web/src/pruebas/fase2/09-estructura.test.mjs" },
+    { "id": "3.1", "titulo": "Backend · Entregar y devolver", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase3/Fase3GestionAlquileresTest.java" },
+    { "id": "3.2", "titulo": "Backend · Resumen del negocio", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase3/Fase3ResumenTest.java" },
+    { "id": "3.3", "titulo": "Backend · Registro público", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase3/Fase3RegistroTest.java" },
+    { "id": "3.4", "titulo": "Backend · Crear y editar herramientas", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase3/Fase3HerramientasTest.java" },
+    { "id": "3.5", "titulo": "Angular · Servicios", "test": "web/src/pruebas/fase3/05-servicios.spec.ts" },
+    { "id": "3.6", "titulo": "Angular · Panel", "test": "web/src/pruebas/fase3/06-panel.spec.ts" },
+    { "id": "3.7", "titulo": "Angular · Alquileres de Hernán", "test": "web/src/pruebas/fase3/07-alquileres.spec.ts" },
+    { "id": "3.8", "titulo": "Angular · Registro", "test": "web/src/pruebas/fase3/08-registro.spec.ts" },
+    { "id": "3.9", "titulo": "Angular · Formulario de herramientas", "test": "web/src/pruebas/fase3/09-herramienta-form.spec.ts" },
+    { "id": "3.10", "titulo": "Estructura de la Fase 3", "test": "web/src/pruebas/fase3/10-estructura.test.mjs" },
+    { "id": "4.1", "titulo": "Backend · Tokens que no se dejan engañar", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase4/Fase4TokensTest.java" },
+    { "id": "4.2", "titulo": "Backend · Sin datos sensibles", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase4/Fase4DatosSensiblesTest.java" },
+    { "id": "4.3", "titulo": "Backend · Swagger documentado", "test": "api/src/test/java/com/devsenior/llavemaestra/pruebas/fase4/Fase4SwaggerTest.java" },
+    { "id": "4.4", "titulo": "Refactor del backend (SOLID)", "test": "web/src/pruebas/fase4/04-estructura-api.test.mjs" },
+    { "id": "4.5", "titulo": "Angular · Optimización y limpieza", "test": "web/src/pruebas/fase4/05-optimizacion-web.test.mjs" },
+    { "id": "4.6", "titulo": "Angular · Build de producción", "test": "web/src/pruebas/fase4/06-build.test.mjs", "tiempoMs": 240000 },
+    { "id": "4.7", "titulo": "README del proyecto", "test": "web/src/pruebas/fase4/07-readme.test.mjs" },
+    { "id": "4.8", "titulo": "Bitácora de IA", "test": "web/src/pruebas/fase4/08-bitacora.test.mjs" }
   ]
 }

@@ -368,10 +368,12 @@ function primeraLineaDeError(lineas, desde) {
 
 function correrNode(ejercicio) {
   const total = contarTests(ejercicio.test);
+  // Algunas partes (el build de producción de la Fase 4) necesitan más tiempo: "tiempoMs" en calificacion.json
   const proceso = spawnSync(process.execPath, ["--test-reporter=tap", path.join(RAIZ, ejercicio.test)], {
     cwd: WEB,
     encoding: "utf8",
-    timeout: 30000,
+    timeout: ejercicio.tiempoMs || 30000,
+    maxBuffer: 16 * 1024 * 1024,
   });
   const lineas = (proceso.stdout || "").split(/\r?\n/);
   const fallidos = [];
