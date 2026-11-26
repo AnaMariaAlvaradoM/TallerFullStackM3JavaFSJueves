@@ -1,0 +1,33 @@
+<main class="login">
+  <form class="tarjeta formulario" (submit)="ingresar($event)">
+    <div class="marca">
+      <img src="favicon.svg" alt="" width="44" height="44">
+      <span>Colmena <small>Coworking</small></span>
+    </div>
+
+    <div>
+      <h1 class="titulo-pagina">Inicia sesión</h1>
+      <p class="subtitulo">Reserva herramientas.</p>
+    </div>
+
+    @if (error()) {
+      <p class="alerta alerta-error" role="alert">{{ error() }}</p>
+    }
+
+    <label class="campo">
+      <span>Email</span>
+      <input name="email" type="email" autocomplete="username" required autofocus>
+    </label>
+
+    <label class="campo">
+      <span>Contraseña</span>
+      <input name="password" type="password" autocomplete="current-password" required>
+    </label>
+
+    <button type="submit" class="btn btn-primario btn-bloque" [disabled]="cargando()">
+      {{ cargando() ? 'Ingresando...' : 'Ingresar' }}
+    </button>
+
+    <p class="alterno">¿Primera vez en Llave Maestra? <a routerLink="/registro">Crea tu cuenta</a></p>
+  </form>
+</main>

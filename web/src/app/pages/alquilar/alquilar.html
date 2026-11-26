@@ -1,0 +1,70 @@
+<a routerLink="/herramientas" class="volver">← Volver a herramientas</a>
+<a
+  *appSiPuede="'ALQUILERES_VER_PROPIOS'"
+  routerLink="/mis-alquileres"
+  routerLinkActive="activo"
+  data-testid="menu-mis-alquileres"
+>
+  Mis alquileres
+</a>
+
+@if (errorCarga()) {
+  <p class="alerta alerta-error" role="alert">{{ errorCarga() }}</p>
+}
+
+@if (herramienta(); as h) {
+  <div class="alquilar">
+    <section class="tarjeta ficha">
+      @if (h.imagenUrl) {
+        <img [src]="h.imagenUrl" [alt]="'Foto de ' + h.nombre">
+      }
+      <div class="ficha-cuerpo">
+        <h1 class="titulo-pagina" data-testid="nombre-herramienta">{{ h.nombre }}</h1>
+        @if (h.descripcion) {
+          <p class="subtitulo">{{ h.descripcion }}</p>
+        }
+        <p class="datos">
+          <span>{{ pesos(h.precioDia) }} por día</span>
+          <span>Depósito: {{ pesos(h.deposito) }}</span>
+        </p>
+      </div>
+    </section>
+
+    <form class="tarjeta formulario" (submit)="reservar($event)" (input)="actualizar($event)" novalidate>
+      <h2 class="titulo-form">Alquila esta herramienta</h2>
+
+      <div class="fechas">
+        <label class="campo">
+          <span>Desde</span>
+          <input name="fechaInicio" type="date" [min]="hoy">
+        </label>
+        <label class="campo">
+          <span>Hasta</span>
+          <input name="fechaFin" type="date" [min]="hoy">
+        </label>
+      </div>
+
+      @if (dias() > 0) {
+        <p class="resumen" data-testid="resumen-valor" aria-live="polite">
+          {{ dias() }} {{ dias() === 1 ? 'día' : 'días' }} · {{ pesos(valor()) }}
+        </p>
+      }
+
+      @if (errores().length > 0) {
+        <ul class="alerta alerta-error" role="alert" data-testid="errores-formulario">
+          @for (error of errores(); track error) {
+            <li>{{ error }}</li>
+          }
+        </ul>
+      }
+
+      @if (errorServidor()) {
+        <p class="alerta alerta-error" role="alert" data-testid="error-alquiler">{{ errorServidor() }}</p>
+      }
+
+      <button type="submit" class="btn btn-primario btn-bloque" [disabled]="enviando()">
+        {{ enviando() ? 'Enviando...' : 'Confirmar alquiler' }}
+      </button>
+    </form>
+  </div>
+}
