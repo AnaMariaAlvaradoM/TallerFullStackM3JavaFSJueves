@@ -1,4 +1,4 @@
-package com.devsenior.llavemaestra.service;
+package com.devsenior.llavemaestra.service.impl;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -8,6 +8,8 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.devsenior.llavemaestra.service.AuthService;
+import com.devsenior.llavemaestra.service.JwtService;
 import com.devsenior.llavemaestra.dto.AuthResponse;
 import com.devsenior.llavemaestra.dto.LoginRequest;
 import com.devsenior.llavemaestra.dto.RegistroRequest;
@@ -84,3 +86,5 @@ public class AuthServiceImpl implements AuthService {
         return new AuthResponse(token);
     }
 }
+
+

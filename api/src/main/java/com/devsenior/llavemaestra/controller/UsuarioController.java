@@ -15,21 +15,26 @@ import com.devsenior.llavemaestra.dto.EstadoUsuarioRequest;
 import com.devsenior.llavemaestra.dto.UsuarioResponse;
 import com.devsenior.llavemaestra.service.UsuarioService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/usuarios")
 @RequiredArgsConstructor
+@Tag(name = "Usuarios", description = "Gestión de clientes (solo ADMIN)")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
+    @Operation(summary = "Listar clientes", description = "ADMIN: lista todos los usuarios registrados con rol CLIENTE")
     @GetMapping
     @PreAuthorize("hasAuthority('CLIENTES_GESTIONAR')")
     public ResponseEntity<List<UsuarioResponse>> listarUsuarios() {
         return ResponseEntity.ok(usuarioService.listarUsuarios());
     }
 
+    @Operation(summary = "Activar o bloquear cliente", description = "ADMIN: activa o bloquea la cuenta de un cliente")
     @PatchMapping("/{id}/estado")
     @PreAuthorize("hasAuthority('CLIENTES_GESTIONAR')")
     public ResponseEntity<UsuarioResponse> cambiarEstado(

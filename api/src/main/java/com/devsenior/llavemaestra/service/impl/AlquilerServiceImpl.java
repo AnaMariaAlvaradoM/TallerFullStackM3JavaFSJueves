@@ -1,4 +1,4 @@
-package com.devsenior.llavemaestra.service;
+package com.devsenior.llavemaestra.service.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.devsenior.llavemaestra.service.AlquilerService;
 import com.devsenior.llavemaestra.dto.AlquilerRequest;
 import com.devsenior.llavemaestra.dto.AlquilerResponse;
 import com.devsenior.llavemaestra.exception.DatoInvalidoException;
@@ -215,3 +216,5 @@ public class AlquilerServiceImpl implements AlquilerService {
         );
     }
 }
+
+

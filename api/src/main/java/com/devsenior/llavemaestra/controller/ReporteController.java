@@ -9,15 +9,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.devsenior.llavemaestra.dto.ResumenResponse;
 import com.devsenior.llavemaestra.service.ReporteService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/reportes")
 @RequiredArgsConstructor
+@Tag(name = "Reportes", description = "Resúmenes y estadísticas del negocio (solo ADMIN)")
 public class ReporteController {
 
     private final ReporteService reporteService;
 
+    @Operation(summary = "Obtener resumen ejecutivo", description = "Facturado del mes, alquileres activos y herramientas vencidas")
     @GetMapping("/resumen")
     @PreAuthorize("hasAuthority('REPORTES_VER')")
     public ResponseEntity<ResumenResponse> obtenerResumen() {

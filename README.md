@@ -1,308 +1,153 @@
-# 🔧 Llave Maestra · Taller Full Stack · Módulo 3
+# 🔑 Llave Maestra — Sistema de Alquiler de Herramientas
 
-**Java Full Stack Developer · Dev Senior Code · jueves**
-
----
-
-## ¿Qué es esto?
-
-**Llave Maestra** es una alquiladora (ficticia) de herramientas en Cajicá. Su dueño, Hernán Rojas, lo anota todo en un cuaderno y ya le pasó de todo: alquiló la misma mezcladora dos veces, un cliente canceló lo que no era suyo y otro vio lo que les cobra a los demás.
-
-Durante el Módulo 3 vas a construir su sistema completo, **backend en Spring Boot y frontend en Angular**, por fases:
-
-- En clase, la profe construye **Colmena** (reservas de un coworking).
-- Tú aplicas **el mismo concepto** a Llave Maestra. Mismo patrón, otro negocio: así aprendes a transferir, no a copiar.
-
-### La nota se calcula sola
-
-Cada vez que haces `git push`, GitHub corre las **pruebas automáticas** del taller sobre tu código y pone tu nota en tu Pull Request.
-
-### ¿Qué es una prueba automática?
-
-**Definición técnica:** código que ejecuta tu código con datos conocidos y compara el resultado con el esperado.
-
-**En la vida real:** el control de calidad de una fábrica: cada pieza pasa por la misma revisión, sin excepciones y sin favoritismos.
-
-### Los tres tipos de prueba de este taller
-
-- **Backend:** levantan **tu** API con una base de datos en memoria (no tocan tu PostgreSQL) y le hacen peticiones HTTP, igual que Swagger o Postman. Revisan códigos (`200`, `401`, `403`, `409`…) y respuestas.
-- **Frontend:** crean tus componentes y servicios de Angular, simulan el backend y revisan lo que se ve en pantalla.
-- **Estructura:** leen tus archivos y revisan la arquitectura (permisos con `hasAuthority`, rutas con `loadComponent`, nada de Angular viejo).
+> Sistema web Full Stack para que Hernán gestione el alquiler de sus herramientas industriales.  
+> Backend en Spring Boot · Frontend en Angular · Base de datos PostgreSQL · Autenticación JWT
 
 ---
 
-## Las fases
+## Qué es
 
-| Fase | Se publica | Tema | Enunciado | Checkpoint |
-|---|---|---|---|---|
-| 1 | Jue 22 oct | Base y control de acceso | [`fases/FASE-1.md`](fases/FASE-1.md) | Mié 28 oct · 11:59 p. m. |
-| 2 | Jue 22 oct | Alquilar con reglas | [`fases/FASE-2.md`](fases/FASE-2.md) | Mié 4 nov · 11:59 p. m. |
-| 3 | Jue 29 oct | La vista del negocio + revisión entre pares | [`fases/FASE-3.md`](fases/FASE-3.md) | Dom 8 nov · 11:59 p. m. |
-| 4 | Jue 5 nov | Calidad, refactor y entrega | [`fases/FASE-4.md`](fases/FASE-4.md) | **Entrega final · fecha por confirmar** |
+Hernán es dueño de un taller y alquila herramientas industriales (taladros, pulidoras, mezcladoras, etc.) a clientes de la zona. Hasta ahora llevaba todo en cuadernos y calculaba los cobros a mano. Con **Llave Maestra** puede:
 
-Todas las fases se trabajan **en este mismo repo** y se entregan en **el mismo Pull Request**.
+- Publicar su catálogo de herramientas con precio por día y depósito.
+- Dejar que sus clientes consulten la disponibilidad y reserven en línea.
+- Ver en tiempo real qué herramientas están reservadas, entregadas o vencidas.
+- Consultar el facturado del mes y bloquear clientes problemáticos.
 
----
-
-## Antes de empezar
-
-| Herramienta | Versión | Cómo verificar |
-|---|---|---|
-| Java (JDK) | **17 o superior** | `java -version` |
-| Node.js | **24 LTS** (24.15 o superior) | `node -v` |
-| Angular CLI | **22** | `ng version` |
-| PostgreSQL + pgAdmin | Cualquiera reciente | Abre pgAdmin |
-| Git | Cualquiera reciente | `git --version` |
-
-No necesitas instalar Maven: el backend trae `mvnw` (el *wrapper* de Maven).
+Los clientes solo ven y reservan; Hernán administra el ciclo completo (reservar → entregar → devolver).
 
 ---
 
-## Paso 1 · Fork (tu copia del repo)
+## Tecnologías
 
-**Definición técnica:** un *fork* es una copia de un repositorio en tu propia cuenta de GitHub, conectada con el original.
-
-**En la vida real:** fotocopiar el cuaderno de la profe. Escribes en tu fotocopia; el original no cambia.
-
-1. Inicia sesión en GitHub.
-2. En la página de este repo, clic en **Fork** (arriba a la derecha).
-3. Deja el nombre como está y clic en **Create fork**.
-
-**Cómo saber que quedó bien:** arriba a la izquierda dice **tu-usuario / nombre-del-repo** y debajo *forked from …*.
+| Capa | Tecnología |
+|---|---|
+| Backend | Java 21 · Spring Boot 3 · Spring Security · Spring Data JPA |
+| Autenticación | JWT (jjwt) firmado con HMAC-SHA256 |
+| Base de datos | PostgreSQL 16 (producción) · H2 en memoria (pruebas) |
+| Frontend | Angular 22 · Standalone components · Signals · Tailwind CSS |
+| Documentación | Springdoc OpenAPI 2 (Swagger UI) |
+| Pruebas | JUnit 5 · Vitest |
 
 ---
 
-## Paso 2 · Clone y primer arranque
+## Cómo levantarlo
 
-### Bajar tu fork
+### Requisitos previos
+- Java 21+
+- Node.js 22.22.3+ o 24+
+- PostgreSQL 16+ corriendo localmente
 
-1. En **tu fork** (no en el de la profe), clic en el botón verde **Code** y copia la URL HTTPS.
-2. En VS Code abre la terminal (**Terminal → New Terminal**) y ve a tu carpeta de proyectos.
-3. Ejecuta (cambia la URL por la tuya):
+### 1. Base de datos
 
-```bash
-git clone https://github.com/TU-USUARIO/NOMBRE-DEL-REPO.git
-cd NOMBRE-DEL-REPO
-code .
+```sql
+-- En psql o pgAdmin:
+CREATE DATABASE llave_db;
 ```
 
-### Instalar el frontend
-
-En la nueva ventana de VS Code, abre la terminal. Desde la raíz del repo (tarda de 1 a 3 minutos):
+### 2. Backend
 
 ```bash
-cd web
+# Dentro de la carpeta api/
+cp .env.example .env        # o crea api/.env con tus valores (ver Variables de entorno)
+./mvnw spring-boot:run      # Linux/Mac
+mvnw.cmd spring-boot:run    # Windows
+```
+
+La API queda disponible en **http://localhost:8080**  
+Swagger UI: **http://localhost:8080/swagger-ui.html**
+
+### 3. Frontend
+
+```bash
+# Dentro de la carpeta web/
 npm install
+ng serve
 ```
 
-### Crear la base de datos
-
-En pgAdmin crea una base **vacía** llamada `llave_db`. Si tu usuario o tu clave de PostgreSQL no son `postgres`, cámbialos en `api/src/main/resources/application.properties`.
-
-### Levantar el backend
-
-Abre **otra** terminal (el ícono **+** de la terminal). Desde la raíz del repo:
-
-```bash
-cd api
-mvnw.cmd spring-boot:run
-```
-
-En macOS o Linux el comando es `./mvnw spring-boot:run`. La primera vez descarga dependencias: tarda unos minutos.
-
-**Resultado esperado:** la terminal termina en `Started LlaveMaestraApplication` y `http://localhost:8080/swagger-ui.html` abre Swagger (todavía casi vacío).
-
-### Levantar el frontend
-
-En la terminal de `web`:
-
-```bash
-ng serve -o
-```
-
-**Resultado esperado:** el navegador abre `http://localhost:4200` con *"Llave Maestra · Taller del Módulo 3"*.
+La app queda disponible en **http://localhost:4200**
 
 ---
 
-## Paso 3 · Resolver la fase
+## Variables de entorno
 
-1. Abre el enunciado de la fase: [`fases/FASE-1.md`](fases/FASE-1.md).
-2. El backend va en **`api/src/main/`**. El frontend va en **`web/src/app/`**.
-3. Crea los componentes con el CLI, igual que en clase (`ng g c pages/... --skip-tests`).
+Crea el archivo `api/.env` con las siguientes variables:
 
-### Lo que ya viene listo
+| Variable | Para qué sirve | Valor por defecto |
+|---|---|---|
+| `JWT_SECRET` | Clave para firmar y verificar los tokens JWT. Mín. 32 caracteres. | `llave-maestra-clave-secreta-de-desarrollo-2026-segura` |
+| `DB_USERNAME` | Usuario de PostgreSQL | `postgres` |
+| `DB_PASSWORD` | Contraseña de PostgreSQL | `postgres` |
+| `URL` | URL JDBC completa de la base de datos | `jdbc:postgresql://localhost:5432/llave_db` |
 
-| Dónde | Qué trae |
+> **Importante:** nunca subas el archivo `.env` a un repositorio público. El `.gitignore` ya lo excluye.
+
+Ejemplo de `api/.env`:
+```properties
+URL=jdbc:postgresql://localhost:5432/llave_db
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+JWT_SECRET=llave-maestra-clave-secreta-de-desarrollo-2026-segura
+```
+
+---
+
+## Usuarios de prueba
+
+| Rol | Email | Contraseña |
+|---|---|---|
+| ADMIN (Hernán) | `admin@llavemaestra.co` | `llave123` |
+| CLIENTE | `pedro@correo.com` | `llave123` |
+| CLIENTE | `diana@correo.com` | `llave123` |
+| CLIENTE | `jorge@correo.com` | `llave123` |
+
+---
+
+## Roles y permisos
+
+| Rol | Permisos |
 |---|---|
-| `api/` | `pom.xml` con todas las dependencias, `application.properties`, la clase principal, Swagger, `ErrorResponse` y el manejador global de errores |
-| `web/` | El proyecto Angular 22 creado, el sistema de diseño en `src/styles.css`, `core/api.ts` y `core/formato.ts` |
+| `ADMIN` | `HERRAMIENTAS_VER` · `HERRAMIENTAS_GESTIONAR` · `ALQUILERES_VER_TODOS` · `ALQUILERES_GESTIONAR` · `ALQUILERES_CANCELAR_PROPIOS` · `CLIENTES_GESTIONAR` · `REPORTES_VER` |
+| `CLIENTE` | `HERRAMIENTAS_VER` · `ALQUILERES_CREAR` · `ALQUILERES_VER_PROPIOS` · `ALQUILERES_CANCELAR_PROPIOS` |
 
-### Las tres reglas de oro
-
-1. **Nombres exactos.** Rutas, permisos, archivos, clases, selectores y `data-testid` se escriben **tal cual** dice el enunciado. Las pruebas los buscan así.
-2. **No toques las pruebas** ni los archivos de configuración (lista abajo).
-3. **Lo moderno:** permisos con `hasAuthority`, Angular 22 con `input()`, `@for`, `@if` y componentes standalone.
-
-### ¿Qué es un `data-testid`?
-
-Es un atributo HTML que no cambia cómo se ve la página; sirve para que las pruebas encuentren un elemento sin depender del diseño. Ejemplo de la **forma** (no resuelve nada del taller):
-
-```html
-<p data-testid="saludo">Hola</p>
-```
+**Los 9 permisos del sistema:**
+1. `HERRAMIENTAS_VER` — Consultar el catálogo
+2. `HERRAMIENTAS_GESTIONAR` — Crear, editar, activar/retirar herramientas
+3. `ALQUILERES_CREAR` — Reservar una herramienta
+4. `ALQUILERES_VER_PROPIOS` — Ver los alquileres propios
+5. `ALQUILERES_VER_TODOS` — Ver todos los alquileres del sistema
+6. `ALQUILERES_GESTIONAR` — Entregar y devolver herramientas
+7. `ALQUILERES_CANCELAR_PROPIOS` — Cancelar alquiler propio (estado RESERVADO)
+8. `CLIENTES_GESTIONAR` — Activar o bloquear clientes
+9. `REPORTES_VER` — Ver el panel ejecutivo con facturado y estadísticas
 
 ---
 
-## Paso 4 · Ver tu nota en tu computador
+## Decisiones técnicas
 
-Desde la **raíz** del repo (no dentro de `api` ni de `web`):
+- **JWT verificado con firma HMAC-SHA256 en cada petición:** el `JwtFilter` extrae el email del token y busca al usuario en la base de datos antes de autenticar. Así, un token adulterado (firma cambiada), un token vencido o un token de una cuenta que ya no existe, todos dan `401`. Esta verificación cubre los 6 ataques de la Fase 4 sin código adicional.
 
-| Comando | Qué califica |
-|---|---|
-| `npm run calificar` | Todo lo publicado hasta hoy |
-| `npm run calificar -- 1` | Solo la Fase 1 |
-| `npm run calificar -- 1.5` | Solo la parte 1.5 (más rápido mientras corriges) |
+- **Un solo mensaje de error para credenciales incorrectas:** tanto "email no existe" como "contraseña incorrecta" devuelven exactamente el mismo `401 { "mensaje": "Email o contraseña incorrectos" }`. Revelar cuál de los dos falló permitiría a un atacante descubrir qué cuentas existen (ataque de enumeración de usuarios).
 
-No necesitas tener el backend corriendo: las pruebas levantan su propia copia con una base de datos en memoria. Sí necesitas haber hecho `npm install` dentro de `web`.
+- **Control de disponibilidad por unidades, no por herramienta:** el sistema cuenta cuántos alquileres activos (`RESERVADO` o `ENTREGADO`) se superponen con las fechas pedidas y los compara con `unidades`. Esto permite que Hernán tenga dos martillos y los alquile en paralelo sin conflicto, reflejando con exactitud la realidad del inventario.
 
-### Cómo leer el resultado
+- **Separación estricta de capas (SOLID):** los controladores solo conocen la interfaz del servicio (ej. `AlquilerService`), nunca la implementación (`AlquilerServiceImpl`) ni los repositorios. Las implementaciones viven en `service/impl/`. Esto hace que cambiar la lógica de negocio no afecte a los controladores, y facilita escribir pruebas unitarias con mocks.
 
-- ✅ todas las pruebas de esa parte pasan.
-- 🟡 pasan algunas: debajo dice cuáles fallan y por qué.
-- ❌ no pasa ninguna. Lee el aviso ⚠️: casi siempre dice el archivo y la línea.
+- **Lazy loading de componentes en Angular:** todas las rutas usan `loadComponent` para cargar cada página solo cuando el usuario la visita. Esto reduce el bundle inicial de la app y acelera el primer pintado.
 
 ---
 
-## Paso 5 · Subir tu trabajo
+## Demo
 
-Desde la raíz del repo, en este orden:
+> 📹 **[Ver video demo en YouTube](https://www.youtube.com/watch?v=dQw4w9WgXcQ)** *(pendiente de enlace definitivo — actualizar con el video real)*
 
-```bash
-git add .
-git commit -m "Fase 1"
-git push
-```
-
-- `git add .` → mete en la caja todos los cambios.
-- `git commit -m "..."` → cierra la caja y le pone una etiqueta.
-- `git push` → envía la caja a **tu fork** en GitHub.
+El video muestra:
+1. Login como Pedro y como Hernán (menús distintos por rol)
+2. Intento de alquiler rechazado por solapamiento de fechas
+3. Pedro cancela uno de sus alquileres
+4. Hernán revisa el panel: facturado del mes y herramientas vencidas
+5. Hernán bloquea a un cliente y ese cliente ya no puede entrar
 
 ---
 
-## Paso 6 · Abrir tu Pull Request (solo UNO en todo el módulo)
-
-**Definición técnica:** un *Pull Request* (PR) es una solicitud para que revisen los cambios de tu fork contra el repo original.
-
-**En la vida real:** radicar un documento en ventanilla: queda con número, se revisa y te responden ahí mismo.
-
-1. En **tu fork**, clic en **Contribute → Open pull request**.
-2. Revisa que diga: base repository **el de la profe** · base **main** ← head repository **el tuyo** · compare **main**.
-3. **Título:** tu nombre completo (por ejemplo `Ana María Pérez Gómez`).
-4. Clic en **Create pull request**.
-
-Un solo PR para las 4 fases: cada `git push` lo actualiza solo. **No abras otro.**
-
----
-
-## Paso 7 · Ver tu nota en GitHub
-
-A los pocos minutos de cada `push` (la calificación tarda entre 3 y 6 minutos):
-
-- En tu PR aparece un **comentario** con la nota y una tabla por parte.
-- El PR tiene una **etiqueta** `Nota X.X`.
-- El enlace **"Ver qué falta por corregir"** muestra el detalle de cada prueba.
-
-> [!IMPORTANT]
-> **La nota se calcula sobre las fases publicadas.** Cuando sale una fase nueva, tu nota baja hasta que la completes: es normal.
-
-> [!WARNING]
-> **Fecha límite del taller:** la profe la confirma pronto. Mientras tanto, cada `push` sigue actualizando tu nota.
-
-### La nota del taller
-
-| Componente | Peso |
-|---|---|
-| Pruebas automáticas (la nota del PR) | 70 % |
-| Revisión de la profe: README, video demo, `PRUEBAS.md`, revisión entre pares, bitácora de IA y diseño | 30 % |
-
----
-
-## Paso 8 · Cuando se publica una fase nueva
-
-Tu fork no se actualiza solo:
-
-1. En **tu fork** en GitHub, clic en **Sync fork → Update branch**.
-2. En tu computador, desde la raíz del repo:
-
-```bash
-git pull
-```
-
-3. Abre el nuevo `fases/FASE-N.md` y sigue con el Paso 3.
-
-Si **Sync fork** dice que hay conflictos, es porque modificaste un archivo que no debías. Pide ayuda en la tutoría.
-
----
-
-## Archivos que NO debes modificar
-
-- `api/src/test/` (todas las pruebas del backend)
-- `web/src/pruebas/` (todas las pruebas del frontend)
-- `scripts/`, `fases/` y `.github/`
-- `package.json` (el de la raíz)
-- `api/pom.xml`, `api/mvnw`, `api/mvnw.cmd` y `api/.mvn/`
-- `web/package.json`, `web/package-lock.json`, `web/angular.json` y los `web/tsconfig*.json`
-
-**Si los modificas:** tu PR queda con la etiqueta `⚠️ Revisar` y la profe lo revisa a mano. La nota se calcula igual, **con las pruebas originales**: cambiarlas no sube la nota.
-
----
-
-## Errores frecuentes
-
-### `java`, `ng` o `npm` no se reconoce como comando
-Falta instalarlo, o la terminal se abrió antes de instalarlo: ciérrala y ábrela.
-
-### "The Angular CLI requires a minimum Node.js version…"
-Tu Node es viejo. Instala Node 24 LTS desde nodejs.org.
-
-### "No encuentro Angular: ejecuta npm install dentro de la carpeta web/"
-Te faltó `cd web` y `npm install`.
-
-### "./mvnw: Permission denied" (macOS o Linux)
-Ejecuta una sola vez `chmod +x api/mvnw`.
-
-### "Tu backend no compiló: api/…/Archivo.java, línea N…"
-Hay un error de Java en ese archivo y esa línea. Mientras el backend no compile, **ninguna** prueba de backend puede correr.
-
-### "Tu aplicación no arrancó: …"
-Compila, pero Spring no logra levantarla. El mensaje dice la causa: casi siempre es una clase sin `@Service`/`@Repository` o un método de repositorio con un campo que no existe.
-
-### "POST /api/auth/login con … debería responder 200 (¿sembraste ese usuario…?)"
-El login todavía no funciona o los usuarios no están en tu `DataInitializer` con la clave `llave123`.
-
-### "No compiló: No encuentro el archivo web/src/app/…"
-El archivo no existe con **ese nombre exacto** o está en otra carpeta. Revisa mayúsculas, guiones y la ruta.
-
-### "…existe, pero no exporta …"
-La clase se llama distinto. En Angular 22 es `Herramientas`, no `HerramientasComponent`. Revisa también que diga `export`.
-
-### "Angular no conoce <app-…>"
-Usas un componente en una plantilla sin agregarlo al `imports` del componente que lo usa.
-
-### "Please tell me who you are" al hacer commit
-Git no sabe tu nombre. Ejecuta una sola vez (con tus datos):
-
-```bash
-git config --global user.name "Tu Nombre"
-git config --global user.email "tu-correo@ejemplo.com"
-```
-
-### Error 403 al hacer `git push`
-Clonaste el repo de la profe y no tu fork. Repite el Paso 2 con la URL de **tu** fork.
-
-### El backend no arranca: "Port 8080 was already in use"
-Ya tienes otro backend corriendo (¿Colmena?). Detenlo con `Ctrl+C` en su terminal.
-
----
-
-<sub>© 2026 Ana Alvarado · Educadora Tech & Desarrolladora Full Stack · Todos los derechos reservados · linkedin.com/in/ana-alvarado-instructora-full-stack</sub>
+<sub>Proyecto Final · Módulo 3 · DevSenior Code · 2026</sub>

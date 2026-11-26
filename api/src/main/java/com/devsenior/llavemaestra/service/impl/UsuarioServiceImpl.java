@@ -1,10 +1,11 @@
-package com.devsenior.llavemaestra.service;
+package com.devsenior.llavemaestra.service.impl;
 
 import java.util.List;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.devsenior.llavemaestra.service.UsuarioService;
 import com.devsenior.llavemaestra.dto.UsuarioResponse;
 import com.devsenior.llavemaestra.exception.ConflictoException;
 import com.devsenior.llavemaestra.exception.RecursoNoEncontradoException;
@@ -53,3 +54,5 @@ public class UsuarioServiceImpl implements UsuarioService {
         );
     }
 }
+
+

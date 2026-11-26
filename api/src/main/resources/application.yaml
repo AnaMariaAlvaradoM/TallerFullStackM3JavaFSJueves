@@ -25,5 +25,5 @@ server:
   port: 8080
 
 jwt:
-  secret: ${SECRET}
+  secret: ${JWT_SECRET:${SECRET:llave-maestra-clave-secreta-de-desarrollo-2026-segura}}
   expiration: 86400000

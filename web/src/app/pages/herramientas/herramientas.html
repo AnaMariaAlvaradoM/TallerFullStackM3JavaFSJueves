@@ -29,7 +29,7 @@
         <div class="tarjeta flex flex-col justify-between p-6" data-testid="herramienta">
           <div>
             @if (h.imagenUrl) {
-              <img [src]="h.imagenUrl" [alt]="h.nombre" class="w-full h-48 object-cover rounded mb-4" />
+              <img [src]="h.imagenUrl" [alt]="h.nombre" loading="lazy" class="w-full h-48 object-cover rounded mb-4" />
             }
             <div class="flex items-start justify-between gap-2 mb-2">
               <h2 class="text-xl font-bold" data-testid="nombre-herramienta">{{ h.nombre }}</h2>

@@ -1,4 +1,4 @@
-package com.devsenior.llavemaestra.service;
+package com.devsenior.llavemaestra.service.impl;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.devsenior.llavemaestra.service.ReporteService;
 import com.devsenior.llavemaestra.dto.AlquilerResponse;
 import com.devsenior.llavemaestra.dto.HerramientaMasAlquiladaResponse;
 import com.devsenior.llavemaestra.dto.ResumenResponse;
@@ -78,3 +79,5 @@ public class ReporteServiceImpl implements ReporteService {
         );
     }
 }
+
+
