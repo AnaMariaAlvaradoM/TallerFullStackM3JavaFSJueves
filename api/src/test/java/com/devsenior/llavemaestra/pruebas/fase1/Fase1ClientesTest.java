@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 // 1.4 · Clientes y cuentas bloqueadas (solo con CLIENTES_GESTIONAR)
 class Fase1ClientesTest extends PruebaApi {
 
-    private Respuesta cambiarEstado(String token, long id, boolean activo) {
-        return patch("/api/usuarios/" + id + "/estado", token, "{\"activo\":" + activo + "}");
+    private Respuesta cambiarEstado(String token, long id, boolean activa) {
+        return patch("/api/usuarios/" + id + "/estado", token, "{\"activa\":" + activa + "}");
     }
 
     @Test
