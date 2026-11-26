@@ -1,6 +1,70 @@
-<main class="bienvenida">
-  <h1 class="titulo-pagina">Llave Maestra</h1>
-  <p class="subtitulo">Taller del Módulo 3 · Abre fases/FASE-1.md para empezar.</p>
-</main>
+<div class="app-shell">
+  @if (auth.sesionActiva()) {
+    <header class="topbar">
+      <div class="marca">Llave Maestra</div>
 
-<router-outlet />
+      <nav class="menu-nav" aria-label="Navegación principal">
+        <a
+          *appSiPuede="'HERRAMIENTAS_VER'"
+          routerLink="/herramientas"
+          routerLinkActive="activo"
+          data-testid="menu-herramientas"
+        >
+          Herramientas
+        </a>
+
+        <a
+          *appSiPuede="'ALQUILERES_VER_PROPIOS'"
+          routerLink="/mis-alquileres"
+          routerLinkActive="activo"
+          data-testid="menu-mis-alquileres"
+        >
+          Mis alquileres
+        </a>
+
+        <a
+          *appSiPuede="'REPORTES_VER'"
+          routerLink="/panel"
+          routerLinkActive="activo"
+          data-testid="menu-panel"
+        >
+          Panel
+        </a>
+
+        <a
+          *appSiPuede="'ALQUILERES_VER_TODOS'"
+          routerLink="/alquileres"
+          routerLinkActive="activo"
+          data-testid="menu-alquileres"
+        >
+          Alquileres
+        </a>
+
+        <a
+          *appSiPuede="'CLIENTES_GESTIONAR'"
+          routerLink="/clientes"
+          routerLinkActive="activo"
+          data-testid="menu-clientes"
+        >
+          Clientes
+        </a>
+      </nav>
+
+      <div class="usuario-barra">
+        <span data-testid="nombre-usuario">{{ auth.nombre() }}</span>
+        <button
+          type="button"
+          class="btn-secundario"
+          data-testid="cerrar-sesion"
+          (click)="auth.cerrarSesion()"
+        >
+          Cerrar sesión
+        </button>
+      </div>
+    </header>
+  }
+
+  <main class="contenedor-principal">
+    <router-outlet />
+  </main>
+</div>
