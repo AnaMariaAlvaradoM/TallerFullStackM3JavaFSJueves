@@ -1,5 +1,5 @@
 # Llave Maestra
-
+h
 ## Qué es
 
 **Llave Maestra** es una aplicación web full stack para la gestión operativa de una alquiladora de herramientas en Cajicá, administrada por Hernán Rojas. Permite controlar el catálogo de herramientas, su disponibilidad y retiro, la administración de clientes, el registro y cancelación de alquileres con validación de fechas, y la operación diaria con control de acceso basado en roles.

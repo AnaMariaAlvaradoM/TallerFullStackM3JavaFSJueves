@@ -1,5 +1,5 @@
 # Bitácora de uso de IA · Llave Maestra
-
+h
 Registro de interacciones y apoyo de inteligencia artificial durante el desarrollo del proyecto.
 
 | Fecha | Fase / Tema | Herramienta IA | Prompt / Objetivo | Qué se generó o decidió | Verificación realizada | Estado |
