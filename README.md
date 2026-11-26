@@ -37,8 +37,8 @@ Cada vez que haces `git push`, GitHub corre las **pruebas automáticas** del tal
 |---|---|---|---|---|
 | 1 | Jue 22 oct | Base y control de acceso | [`fases/FASE-1.md`](fases/FASE-1.md) | Mié 28 oct · 11:59 p. m. |
 | 2 | Jue 22 oct | Alquilar con reglas | [`fases/FASE-2.md`](fases/FASE-2.md) | Mié 4 nov · 11:59 p. m. |
-| 3 | Jue 29 oct | La vista del negocio + revisión entre pares | Se publica después de la Clase 3 | Dom 8 nov |
-| 4 | Jue 5 nov | Calidad, refactor y entrega | Se publica después de la Clase 4 | **Dom 15 nov** |
+| 3 | Jue 29 oct | La vista del negocio + revisión entre pares | [`fases/FASE-3.md`](fases/FASE-3.md) | Dom 8 nov · 11:59 p. m. |
+| 4 | Jue 5 nov | Calidad, refactor y entrega | [`fases/FASE-4.md`](fases/FASE-4.md) | **Entrega final · fecha por confirmar** |
 
 Todas las fases se trabajan **en este mismo repo** y se entregan en **el mismo Pull Request**.
 
@@ -216,7 +216,7 @@ A los pocos minutos de cada `push` (la calificación tarda entre 3 y 6 minutos):
 > **La nota se calcula sobre las fases publicadas.** Cuando sale una fase nueva, tu nota baja hasta que la completes: es normal.
 
 > [!WARNING]
-> **Fecha límite del taller:** domingo 15 de noviembre de 2026, 11:59 p. m. Después de esa hora los `push` ya no cambian la nota. Una primera entrega después del cierre queda con la etiqueta `⏰ Fuera de plazo`.
+> **Fecha límite del taller:** la profe la confirma pronto. Mientras tanto, cada `push` sigue actualizando tu nota.
 
 ### La nota del taller
 
