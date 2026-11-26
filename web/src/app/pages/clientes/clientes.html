@@ -1,0 +1,62 @@
+<div class="contenedor py-8">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-3xl font-bold">Gestión de Clientes</h1>
+      <p class="text-gray-600">Listado y administración de cuentas de usuario</p>
+    </div>
+  </div>
+
+  @if (usuariosService.error()) {
+    <div class="alerta alerta-error mb-6">
+      {{ usuariosService.error() }}
+    </div>
+  }
+
+  @if (usuariosService.cargando()) {
+    <div class="text-center py-12 text-gray-500">Cargando clientes…</div>
+  } @else {
+    <div class="tarjeta overflow-x-auto">
+      <table class="tabla w-full">
+        <thead>
+          <tr class="border-b text-left text-sm text-gray-500">
+            <th class="p-4">Nombre</th>
+            <th class="p-4">Email</th>
+            <th class="p-4">Rol</th>
+            <th class="p-4">Estado</th>
+            <th class="p-4 text-right">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of usuariosService.usuarios(); track u.id) {
+            <tr class="border-b last:border-0 hover:bg-gray-50" data-testid="cliente">
+              <td class="p-4 font-semibold">{{ u.nombre }}</td>
+              <td class="p-4 text-gray-600">{{ u.email }}</td>
+              <td class="p-4">
+                <span class="px-2 py-1 text-xs rounded font-medium" [class.bg-blue-100]="u.rol === 'ADMIN'" [class.text-blue-800]="u.rol === 'ADMIN'" [class.bg-gray-100]="u.rol === 'CLIENTE'">
+                  {{ u.rol }}
+                </span>
+              </td>
+              <td class="p-4">
+                <span class="px-2 py-1 text-xs rounded font-medium" [class.bg-green-100]="u.activo" [class.text-green-800]="u.activo" [class.bg-red-100]="!u.activo" [class.text-red-800]="!u.activo">
+                  {{ u.activo ? 'Activo' : 'Bloqueado' }}
+                </span>
+              </td>
+              <td class="p-4 text-right">
+                <button
+                  type="button"
+                  data-testid="boton-estado"
+                  (click)="cambiarEstado(u)"
+                  class="btn text-xs"
+                  [class.btn-peligro]="u.activo"
+                  [class.btn-secundario]="!u.activo"
+                >
+                  {{ u.activo ? 'Bloquear' : 'Activar' }}
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

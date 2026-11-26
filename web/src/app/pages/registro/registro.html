@@ -1,0 +1,92 @@
+<div class="contenedor py-12 max-w-md mx-auto">
+  <div class="tarjeta p-8">
+    <h1 class="text-2xl font-bold mb-6 text-center">Crear Cuenta</h1>
+
+    @if (authService.error()) {
+      <div class="alerta alerta-error mb-4" data-testid="error-registro">
+        {{ authService.error() }}
+      </div>
+    }
+
+    @if (errores().length > 0) {
+      <div class="alerta alerta-error mb-4">
+        <ul data-testid="errores-registro" class="list-disc pl-5">
+          @for (err of errores(); track err) {
+            <li>{{ err }}</li>
+          }
+        </ul>
+      </div>
+    }
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="campo mb-4">
+        <label class="etiqueta" for="nombre">Nombre completo</label>
+        <input
+          id="nombre"
+          name="nombre"
+          type="text"
+          class="control"
+          [(ngModel)]="nombre"
+          placeholder="Tu nombre completo"
+          required
+        />
+      </div>
+
+      <div class="campo mb-4">
+        <label class="etiqueta" for="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          class="control"
+          [(ngModel)]="email"
+          placeholder="tu@correo.com"
+          required
+        />
+      </div>
+
+      <div class="campo mb-4">
+        <label class="etiqueta" for="password">Contraseña (mínimo 8 caracteres)</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          class="control"
+          [(ngModel)]="password"
+          placeholder="••••••••"
+          required
+        />
+      </div>
+
+      <div class="campo mb-6">
+        <label class="etiqueta" for="confirmacion">Confirmar contraseña</label>
+        <input
+          id="confirmacion"
+          name="confirmacion"
+          type="password"
+          class="control"
+          [(ngModel)]="confirmacion"
+          placeholder="••••••••"
+          required
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primario w-full"
+        [disabled]="authService.cargando()"
+      >
+        @if (authService.cargando()) {
+          Registrando…
+        } @else {
+          Crear cuenta
+        }
+      </button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-gray-600">
+      ¿Ya tienes cuenta?
+      <a routerLink="/login" class="text-primary-600 hover:underline">Inicia sesión aquí</a>
+    </p>
+  </div>
+</div>
