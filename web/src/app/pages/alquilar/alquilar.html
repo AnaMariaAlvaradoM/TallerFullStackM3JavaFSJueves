@@ -1,0 +1,47 @@
+<a class="volver" routerLink="/herramientas">← Volver al catálogo</a>
+
+<section class="tarjeta alquilar">
+  <p class="subtitulo">Alquilar</p>
+  <h1 class="titulo-pagina" data-testid="nombre-herramienta">{{ herramienta()?.nombre }}</h1>
+
+  @if (herramienta(); as h) {
+    <p class="detalle">{{ pesos(h.precioDia) }} por día · depósito {{ pesos(h.deposito) }}</p>
+  }
+
+  <form (submit)="alquilar($event)" (input)="actualizar($event)" novalidate>
+    <div class="fechas">
+      <label class="campo">
+        <span>Desde</span>
+        <input name="fechaInicio" type="date" [min]="hoy" />
+      </label>
+      <label class="campo">
+        <span>Hasta</span>
+        <input name="fechaFin" type="date" [min]="hoy" />
+      </label>
+    </div>
+
+    @if (dias() > 0) {
+      <p class="resumen" data-testid="resumen-valor">
+        {{ dias() }} {{ dias() === 1 ? 'día' : 'días' }} · {{ pesos(valor()) }}
+      </p>
+    }
+
+    @if (errores().length > 0) {
+      <div class="alerta alerta-error" data-testid="errores-formulario">
+        <ul>
+          @for (error of errores(); track error) {
+            <li>{{ error }}</li>
+          }
+        </ul>
+      </div>
+    }
+
+    @if (errorServidor()) {
+      <p class="alerta alerta-error" data-testid="error-alquiler">{{ errorServidor() }}</p>
+    }
+
+    <button class="btn btn-acento btn-bloque" type="submit" [disabled]="enviando()">
+      {{ enviando() ? 'Reservando…' : 'Reservar' }}
+    </button>
+  </form>
+</section>

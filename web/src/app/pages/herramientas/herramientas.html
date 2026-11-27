@@ -1,0 +1,66 @@
+<header class="encabezado-pagina">
+  <div>
+    <h1 class="titulo-pagina">Herramientas</h1>
+    <p class="subtitulo">El catálogo de Llave Maestra</p>
+  </div>
+</header>
+
+@if (servicio.error()) {
+  <p class="alerta alerta-error">{{ servicio.error() }}</p>
+}
+
+@if (servicio.cargando()) {
+  <div class="rejilla">
+    <div class="esqueleto tarjeta-carga"></div>
+    <div class="esqueleto tarjeta-carga"></div>
+    <div class="esqueleto tarjeta-carga"></div>
+  </div>
+} @else {
+  <div class="rejilla">
+    @for (h of servicio.herramientas(); track h.id) {
+      <article class="tarjeta herramienta" [class.retirada]="!h.activa" data-testid="herramienta">
+        @if (h.imagenUrl) {
+          <img [src]="h.imagenUrl" [alt]="h.nombre" loading="lazy" />
+        }
+        <div class="cuerpo">
+          <div class="chips">
+            <span class="chip chip-naranja">{{ h.categoria }}</span>
+            @if (!h.activa) {
+              <span class="chip chip-neutro">Retirada</span>
+            }
+          </div>
+          <h2 data-testid="nombre-herramienta">{{ h.nombre }}</h2>
+          <p class="descripcion">{{ h.descripcion }}</p>
+          <p class="precio"><strong data-testid="precio-dia">{{ pesos(h.precioDia) }}</strong> / día</p>
+          <p class="detalle">Depósito {{ pesos(h.deposito) }} · {{ h.unidades }} unidad(es)</p>
+
+          <div class="acciones">
+            @if (h.activa) {
+              <a
+                *appSiPuede="'ALQUILERES_CREAR'"
+                class="btn btn-acento btn-sm"
+                [routerLink]="['/herramientas', h.id, 'alquilar']"
+                data-testid="boton-alquilar"
+              >
+                Alquilar
+              </a>
+            }
+            <button
+              *appSiPuede="'HERRAMIENTAS_GESTIONAR'"
+              type="button"
+              class="btn btn-sm"
+              [class.btn-peligro]="h.activa"
+              [class.btn-secundario]="!h.activa"
+              (click)="servicio.cambiarEstado(h, !h.activa)"
+              data-testid="boton-estado"
+            >
+              {{ h.activa ? 'Retirar' : 'Volver a ofrecer' }}
+            </button>
+          </div>
+        </div>
+      </article>
+    } @empty {
+      <p class="estado-vacio">No hay herramientas para mostrar.</p>
+    }
+  </div>
+}
