@@ -1,0 +1,56 @@
+<header class="encabezado-pagina">
+  <div>
+    <h1 class="titulo-pagina">Mis alquileres</h1>
+    <p class="subtitulo">Puedes cancelar lo reservado mientras no haya empezado</p>
+  </div>
+</header>
+
+@if (servicio.error()) {
+  <p class="alerta alerta-error">{{ servicio.error() }}</p>
+}
+
+<div class="lista">
+  @for (a of servicio.alquileres(); track a.id) {
+    <article class="tarjeta alquiler" data-testid="alquiler">
+      <div class="info">
+        <h2>{{ a.herramientaNombre }}</h2>
+        <p>{{ fechaCorta(a.fechaInicio) }} → {{ fechaCorta(a.fechaFin) }} · {{ a.dias }} {{ a.dias === 1 ? 'día' : 'días' }}</p>
+        <p class="valores">
+          Valor <strong>{{ pesos(a.valorTotal) }}</strong> · Depósito {{ pesos(a.deposito) }}
+        </p>
+      </div>
+
+      <div class="lado">
+        <span
+          class="chip"
+          [class.chip-naranja]="a.estado === 'RESERVADO'"
+          [class.chip-exito]="a.estado === 'ENTREGADO'"
+          [class.chip-neutro]="a.estado === 'DEVUELTO' || a.estado === 'CANCELADO'"
+          data-testid="estado-alquiler"
+        >
+          {{ etiquetas[a.estado] }}
+        </span>
+
+        @if (sePuedeCancelar(a)) {
+          @if (porConfirmar() === a.id) {
+            <div class="confirmacion">
+              <span>¿Seguro?</span>
+              <button type="button" class="btn btn-peligro btn-sm" (click)="confirmarCancelacion(a)" data-testid="confirmar-cancelacion">
+                Sí, cancelar
+              </button>
+              <button type="button" class="btn btn-secundario btn-sm" (click)="desistir()">No</button>
+            </div>
+          } @else {
+            <button type="button" class="btn btn-secundario btn-sm" (click)="pedirConfirmacion(a)" data-testid="boton-cancelar">
+              Cancelar
+            </button>
+          }
+        }
+      </div>
+    </article>
+  } @empty {
+    <p class="estado-vacio" data-testid="sin-alquileres">
+      {{ servicio.cargando() ? 'Cargando…' : 'Todavía no tienes alquileres. Ve al catálogo y separa tu primera herramienta.' }}
+    </p>
+  }
+</div>
